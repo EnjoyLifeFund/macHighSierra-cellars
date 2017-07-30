@@ -1,0 +1,72 @@
+with-readline
+-------------
+
+with-readline allows readline editing to be applied to an arbitrary
+program without recompiling it.
+
+For example:
+
+  with-readline -- sftp HOSTNAME
+
+adds basic line editing to an sftp session.
+
+I test with-readline on Linux and Mac OS X.  Other UNIX platforms
+might or might not work (patches invited).
+
+Installation
+------------
+
+  ./configure
+  make
+  make install
+
+You will need Readline installed.  If it is not in the default search
+paths then you must tell configure.  For instance on my Mac:
+
+  ./configure CPPFLAGS='-isystem /sw/include' LDFLAGS='-L/sw/lib'
+
+On BSD systems (including Macs) you must run the installation step as
+root, and the program will be installed setuid to root.
+
+As ever see INSTALL for more information.
+
+Documentation
+-------------
+
+After installation, 'man with-readline' should display the man page
+for with-readline.
+
+Mailing Lists
+-------------
+
+http://www.chiark.greenend.org.uk/mailman/listinfo/sgo-software-announce
+ - new versions will be announced here
+
+http://www.chiark.greenend.org.uk/mailman/listinfo/sgo-software-discuss
+ - for discussion, feature requests, bug reports, etc
+
+Copyright
+---------
+
+with-readline - apply Readline to arbitrary applications
+Copyright (C) 2005 Richard Kettlewell <rjk@greenend.org.uk>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+USA
+
+
+Local Variables:
+mode:text
+End:

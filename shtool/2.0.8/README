@@ -1,0 +1,73 @@
+       _     _              _
+   ___| |__ | |_ ___   ___ | |
+  / __| '_ \| __/ _ \ / _ \| |
+  \__ \ | | | || (_) | (_) | |
+  |___/_| |_|\__\___/ \___/|_|
+
+  GNU shtool -- The GNU Portable Shell Tool
+  Copyright (c) 1994-2008 Ralf S. Engelschall <rse@engelschall.com>
+
+  http://www.gnu.org/software/shtool/
+  ftp://ftp.gnu.org/gnu/shtool/
+
+  Version 2.0.8 (18-Jul-2008)
+
+  The GNU shtool program is a compilation of small but very stable and
+  portable shell scripts into a single shell tool. All ingredients
+  were in successful use over many years in various free software
+  projects. The compiled shtool program is intended to be used inside
+  the source tree of free software packages. There it can take over
+  various (usually non-portable) tasks related to the building and
+  installation of such packages.
+
+  It currently contains the following tools:
+
+  echo       Print string with optional construct expansion
+  mdate      Pretty-print modification time of a file or dir
+  table      Pretty print a field-separated list as a table
+  prop       Display progress with a running propeller
+  move       Move files with simultan substitution
+  install    Install a program, script or datafile
+  mkdir      Make one or more directories
+  mkln       Make link with calculation of relative paths
+  mkshadow   Make a shadow tree
+  fixperm    Fix file permissions inside a source tree
+  rotate     Rotate logfiles
+  tarball    Roll distribution tarballs
+  subst      Apply sed(1) substitution operations
+  platform   Platform identification utility
+  arx        Extended archive command
+  slo        Separate linker options by library class
+  scpp       Sharing C Pre-Processor
+  version    Generate and maintain a version information file
+  path       Deal with program paths
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+
+  NOTICE: Given that you include GNU shtool verbatim into your own
+  source tree, you are justified in saying that it remains separate from
+  your package, and that this way you are simply just using GNU shtool.
+  So, in this situation, there is no requirement that your package
+  itself is licensed under the GNU General Public License in order to
+  take advantage of GNU shtool.
+
+  The documentation and latest release can be found on
+
+  http://www.gnu.org/software/shtool/
+  ftp://ftp.gnu.org/gnu/shtool/
+                                       Ralf S. Engelschall
+                                       rse@engelschall.com
+                                       www.engelschall.com

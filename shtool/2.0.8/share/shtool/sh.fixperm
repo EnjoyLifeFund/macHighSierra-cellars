@@ -1,0 +1,142 @@
+##
+##  fixperm -- Fix file permissions inside a source tree
+##  Copyright (c) 1996-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="fixperm"
+str_usage="[-v|--verbose] [-t|--trace] <path> [<path> ...]"
+arg_spec="1+"
+opt_spec="v.t."
+opt_alias="v:verbose,t:trace"
+opt_v=no
+opt_t=no
+
+. ./sh.common
+
+paths="$*"
+
+#   check whether the test command supports the -x option
+if [ -x /bin/sh ] 2>/dev/null; then
+    minusx="-x"
+else
+    minusx="-r"
+fi
+
+#   iterate over paths
+for p in $paths; do
+    for file in `find $p -depth -print`; do
+        if [ -f $file ]; then
+            if [ $minusx $file ]; then
+                if [ ".$opt_v" = .yes ]; then
+                    echo "-rwxr-xr-x $file" 2>&1
+                fi
+                if [ ".$opt_t" = .yes ]; then
+                    echo "chmod 755 $file" 2>&1
+                fi
+                chmod 755 $file
+            else
+                if [ ".$opt_v" = .yes ]; then
+                    echo "-rw-r--r-- $file" 2>&1
+                fi
+                if [ ".$opt_t" = .yes ]; then
+                    echo "chmod 644 $file" 2>&1
+                fi
+                chmod 644 $file
+            fi
+            continue
+        fi
+        if [ -d $file ]; then
+            if [ ".$opt_v" = .yes ]; then
+                echo "drwxr-xr-x $file" 2>&1
+            fi
+            if [ ".$opt_t" = .yes ]; then
+                echo "chmod 755 $file" 2>&1
+            fi
+            chmod 755 $file
+            continue
+        fi
+        if [ ".$opt_v" = .yes ]; then
+            echo "?????????? $file" 2>&1
+        fi
+    done
+done
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool fixperm> - B<GNU shtool> file permission fixing command
+
+=head1 SYNOPSIS
+
+B<shtool fixperm>
+[B<-v>|B<--verbose>]
+[B<-t>|B<--trace>]
+I<path>
+[I<path> ...]
+
+=head1 DESCRIPTION
+
+B<shtool fixperm> fixes file permissions inside a source tree under
+I<path> by cleaning up the permission bits. It determines the cleaned up
+permission from the already set bits. It is intended to be run before
+a tarball is rolled (usually with B<shtool tarball>) out of a source
+tree. The trick is that this is more convenient than having to set the
+permissions manually or by using a large file list.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-v>, B<--verbose>
+
+Display some processing information.
+
+=item B<-t>, B<--trace>
+
+Enable the output of the essential shell commands which are executed.
+
+=back
+
+=head1 EXAMPLE
+
+ #   Makefile.in
+ dist:
+     shtool fixperm -v *
+     ...
+
+=head1 HISTORY
+
+The B<GNU shtool> B<fixperm> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1996 for I<OSSP eperl>.
+It was later taken over into B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1), chmod(1).
+
+=cut
+

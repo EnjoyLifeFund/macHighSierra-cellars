@@ -1,0 +1,177 @@
+##
+##  arx -- Extended archive command
+##  Copyright (c) 1999-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="arx"
+str_usage="[-t|--trace] [-C|--command <cmd>] <op> <archive> [<file> ...]"
+arg_spec="2+"
+opt_spec="t.C:"
+opt_alias="t:trace,C:command"
+opt_t=no
+opt_C="ar"
+
+. ./sh.common
+
+ar_prg="$opt_C"
+ar_cmd="$1"; shift
+archive="$1"; shift
+files="$*"
+
+#   walk through the file list and expand archives members
+ar_tmpdir=`echo $archive | sed -e 's;[^/]*$;.arx;'`
+nfiles=''
+if [ ".$files" != . ]; then
+    for file in $files; do
+        if [ ! -f $file ]; then
+            echo "$msgprefix:Error: input file not found: $file" 1>&2
+            shtool_exit 1
+        fi
+        case $file in
+            *.a )
+                if [ ! -d $ar_tmpdir ]; then
+                    if [ ".$opt_t" = .yes ]; then
+                        echo "mkdir $ar_tmpdir" 1>&2
+                    fi
+                    mkdir $ar_tmpdir
+                fi
+                case $ar_tmpdir in
+                     .arx )
+                         from="../$file"
+                         ;;
+                     * )
+                         dir=`echo $file | sed -e 's;[^/]*$;;' -e 's;\(.\)/$;\1;' -e 's;^$;.;'`
+                         base=`echo $file | sed -e 's;.*/\([^/]*\)$;\1;'`
+                         from="`cd $dir; pwd`/$base"
+                         ;;
+                esac
+                if [ ".$opt_t" = .yes ]; then
+                    echo "(cd $ar_tmpdir && $ar_prg x $from)" 1>&2
+                fi
+                (cd $ar_tmpdir && eval $ar_prg x $from)
+                if [ $? -ne 0 ]; then
+                    echo "$msgprefix:Error: member extraction failed for archive: $file" 1>&2
+                    shtool_exit 1
+                fi
+                for member in - `eval $ar_prg t $file | sed -e '/_\.SYMDEF/d'`; do
+                    [ ".$member" = .- ] && continue
+                    nfiles="$nfiles $ar_tmpdir/$member"
+                done
+                ;;
+            * )
+                nfiles="$nfiles $file"
+                ;;
+        esac
+    done
+fi
+
+#   run the final archive command
+if [ ".$opt_t" = .yes ]; then
+    echo "$ar_prg $ar_cmd $archive $nfiles" 1>&2
+fi
+eval $ar_prg $ar_cmd $archive $nfiles
+if [ $? -ne 0 ]; then
+    echo "$msgprefix:Error: archive command failed" 1>&2
+    shtool_exit $?
+fi
+
+#   cleanup and die gracefully
+if [ -d $ar_tmpdir ]; then
+    if [ ".$opt_t" = .yes ]; then
+        echo "rm -rf $ar_tmpdir" 1>&2
+    fi
+    rm -rf $ar_tmpdir
+fi
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool arx> - B<GNU shtool> ar(1) extensional command
+
+=head1 SYNOPSIS
+
+B<shtool arx>
+[B<-t>|B<--trace>]
+[B<-C>|B<--command> I<cmd>]
+I<op>
+I<archive>
+I<file> [I<file> ...]
+
+=head1 DESCRIPTION
+
+B<shtool arx> is a wrapper around the archiving tool ar(1). It provides
+the ability to create archives out of existing archives, i.e., if one of
+I<file> matches "C<*.a>", the archive member files of I<file> are used
+instead of I<file> itself.
+
+The trick of this command is the automatic handling of archive members
+which is especially interesting if one wants to construct a (usually
+top-level) library archive out of pre-built sub-library archives
+(usually staying inside subdirs) in a large source tree. For B<GNU
+libtool> based projects, a similar functionality is provided by B<GNU
+libtool> internally, too.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-t>, B<--trace>
+
+Shows the actually involved shell commands.
+
+=item B<-C>, B<--command> I<cmd>
+
+Set the used ar(1) command to I<cmd> instead of just "ar" (searched in C<$PATH>).
+
+=back
+
+=head1 EXAMPLE
+
+ #   Makefile
+ AR=ar
+ RANLIB=ranlib
+   :
+ OBJS=foo.o bar.o
+ LIBS=baz/libbaz.a quux/libquux.a
+   :
+ libfoo.a: $(OBJS) $(LIBS)
+     shtool arx -C $(AR) rc libfoo.a $(OBJS) $(LIBS)
+     $(RANLIB) libfoo.a
+
+=head1 HISTORY
+
+The B<GNU shtool> B<arx> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1999 for B<GNU shtool>. It
+was prompted by need to build libraries out of sub-libraries inside the
+B<OSSP> project.
+
+=head1 SEE ALSO
+
+shtool(1), ar(1).
+
+=cut
+

@@ -1,0 +1,11 @@
+prefix=/usr/local/Cellar/gd/2.2.4_1
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: gd
+Description: GD graphics library
+Version: 2.2.4
+Cflags: -I${includedir}
+Libs.private:    -lz -L/usr/local/opt/libpng/lib -L/usr/local/Cellar/libpng/1.6.29/lib -lpng16 -L/usr/local/opt/freetype/lib -L/usr/local/opt/freetype/lib -lfreetype -L/usr/local/opt/fontconfig/lib  -lfontconfig -L/usr/local/opt/jpeg/lib  -ljpeg -L/usr/local/opt/libtiff/lib  -ltiff -L/usr/local/opt/webp/lib  -lwebp -liconv
+Libs: -L${libdir} -lgd

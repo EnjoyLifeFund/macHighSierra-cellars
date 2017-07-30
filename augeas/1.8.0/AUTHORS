@@ -1,0 +1,147 @@
+-*- coding: utf-8 -*-
+
+Written by:
+
+  David Lutterkort <lutter@redhat.com>
+
+Committers:
+
+  Matthew Booth               <mbooth@redhat.com>
+  Michael Chapman             <mike@very.puzzling.org>
+  Dominic Cleal               <dcleal@redhat.com>
+  Francis Giraldeau           <francis.giraldeau@revolutionlinux.com>
+  Raphaël Pinson              <raphael.pinson@camptocamp.com>
+
+Contributions by:
+
+  Jasper Lievisse Adriaanse   <jasper@humppa.nl>
+  Partha Aji                  <paji@redhat.com>
+  Erik B. Andersen            <erik.b.andersen@gmail.com>
+  Sebastien Aperghis-Tramoni  <sebastien@aperghis.net>
+  Mathieu Arnold              <mat@FreeBSD.org>
+  Sergio Ballestrero
+  Sylvain Baubeau             <bob@glumol.com>
+  Oliver Beattie              <oliver@obeattie com>
+  Tim Bishop                  <tim@bishnet.net>
+  Anders F Björklund          <afb@users.sourceforge.net>
+  Jurjen Bokma                <j.bokma@rug.nl>
+  Aurelien Bompard            <aurelien@bompard.org>
+  Joey Boggs                  <jboggs@redhat.com>
+  Lorenzo Dalrio              <lorenzo.dalrio@gmail.com>
+  Francois Deppierraz         <francois.deppierraz@camptocamp.com>
+  Luc Didry                   <luc@didry.org>
+  Dominique Dumont            <dominique.dumont@hp.com>
+  Craig Dunn                  <craig@craigdunn.org>
+  Free Ekanayaka              <free@64studio.com>
+  Michal Filka                <michal.filka@suse.cz>
+  Freakin                     <brendanaye@gmail.com>
+  Marc Fournier               <marc.fournier@camptocamp.com>
+  Davide Guerri               <davide.guerri@gmail.com>
+  Andy Grimm                  <agrimm@redhat.com>
+  Travis Groth                <tgroth@gmail.com>
+  Adam Helms                  <helms.adam@gmail.com>
+  Harald Hoyer                <harald@redhat.com>
+  Shannon Hughes              <shughes@redhat.com>
+  Richard W.M. Jones          <rjones@redhat.com>
+  Simon Josi                  <josi@puzzle.ch>
+  Bryan Kearney               <bkearney@redhat.com>
+  Jason Kincl                 <jkincl@gmail.com>
+  Andrew Colin Kissa          <andrew@topdog.za.net>
+  Francois Lebel              <francoislebel@gmail.com>
+  Frédéric Lespez             <frederic.lespez@free.fr>
+  Miroslav Lichvar            <mlichvar@redhat.com>
+  Jasper Lievisse Adriaanse   <jasper@humppa.nl>
+  Tom Limoncelli              <tal@whatexit.org>
+  Erinn Looney-Triggs         <erinn.looneytriggs@gmail.com>
+  Duncan Mac-Vicar P.         <dmacvicar@suse.de>
+  Jeroen van Meeuwen          <vanmeeuwen@kolabsys.com>
+  Jim Meyering                <meyering@redhat.com>
+  Sean Millichamp             <sean@bruenor.org>
+  Craig Miskell               <craig@stroppykitten.com>
+  Michael Moll                <kvedulv@kvedulv.de>
+  Tim Mooney                  <Tim.Mooney@ndsu.edu>
+  Joel Nimety                 <jnimety@perimeterusa.com>
+  Matthaus Owens              <matthaus@puppetlabs.com>
+  Matt Palmer                 <matt@anchor.net.au>
+  Bill Pemberton              <wfp5p@virginia.edu>
+  Dan Prince                  <dprince@redhat.com>
+  Alan Pevec                  <apevec@redhat.com>
+  Brett Porter                <brett@apache.org>
+  Robin Lee Powell            <rlpowell@digitalkingdom.org>
+  Michael Pimmer              <blubb@fonfon.at>
+  Branan Purvine-Riley        <branan@puppetlabs.com>
+  Andrew Replogle             <areplogl@redhat.com>
+  Pat Riehecky                <riehecky@fnal.gov>
+  Lubomir Rintel              <lubo.rintel@gooddata.com>
+  Roman Rakus                 <rrakus@redhat.com>
+  David Salmen                <dsalmen@dsalmen.com>
+  Carlos Sanchez              <csanchez@maestrodev.com>
+  Satoru SATOH                <satoru.satoh@gmail.com>
+  Nicolas Valcárcel Scerpella <nvalcarcel@ubuntu.com>
+  Gonzalo Servat              <gservat@gmail.com>
+  Nahum Shalman               <nshalman elys com>
+  Borislav Stoichkov          <borislav.stoichkov@gmail.com>
+  Tim Stoop                   <tim.stoop@gmail.com>
+  Laine Stump                 <laine@laine.org>
+  Jiri Suchomel               <jsuchome@suse.cz>
+  Ivana Hutarova Varekova     <varekova@redhat.com>
+  Simon Vocella               <voxsim@gmail.com>
+  Frederik Wagner             <wagner@lrz.de>
+  Dean Wilson                 <dwilson@blueowl.it>
+  Igor Pashev                 <pashev.igor@gmail.com>
+  Micah Anderson              <micah@riseup.net>
+  Domen Kožar                 <domen@dev.si>
+  Filip Andres                <filip.andres@gooddata.com>
+  Josh Kayse                  <jokajak@gmail.com>
+  Jacob M. McCann             <jacob.m.mccann@usps.gov>
+  Danny Yates                 <danny@codeaholics.org>
+  Terence Haddock             <thaddock@tripi.com>
+  Athir Nuaimi                <athir@nuaimi.com>
+  Ian Berry                   <iberry@barracuda.com>
+  Gabriel de Perthuis	        <g2p.code+augeas@gmail.com>
+  Brian Harrington            <bharrington@redhat.com>
+  Mathieu Alorent             <malorent@kumy.net>
+  Rob Tucker                  <rtucker@mozilla.com>
+  Stephen P. Schaefer
+  Pascal Lalonde              <plalonde@google.com>
+  Tom Hendrikx                <tom@whyscream.net>
+  Yanis Guenane               <yguenane@gmail.com>
+  Esteve Fernandez            <esteve.fernandez@gmail.com>
+  Dietmar Kling               <baldur@email.de>
+  Michael Haslgrübler         <work-michael@haslgruebler.eu>
+  Andrew N Golovkov           <a.golovkov@dwteam.ru>
+  Matteo Cerutti              <matteo.cerutti@hotmail.co.uk>
+  Tomas Hoger                 <thoger@redhat.com>
+  Tomas Klouda                <tomas.klouda@gooddata.com>
+  Kaarle Ritvanen             <kaarle.ritvanen@datakunkku.fi>
+  François Maillard           <fmaillard@gmail.com>
+  Mykola Nikishov             <mn@mn.com.ua>
+  Robert Drake                <rdrake@direcpath.com>
+  Simon Séhier                <simon.sehier@camptocamp.com>
+  Vincent Brillault           <vincent.brillault@cern.ch>
+  Mike Latimer                <mlatimer@suse.com>
+  Lorenzo M. Catucci          <lorenzo@sancho.ccd.uniroma2.it>
+  Joel Loudermilk             <joel@loudermilk.org>
+  Frank Grötzner              <frank@unforgotten.de>
+  Pino Toscano                <ptoscano@redhat.com>
+  Geoffrey Gardella           <gardella@gmail.com>
+  Matt Dainty                 <matt@bodgit-n-scarper.com>
+  Jan Doleschal               <jan.doleschal@lgl.bwl.de>
+  Joe Topjian                 <joe@topjian.net>
+  Julien Pivotto              <roidelapluie@inuits.eu>
+  Gregory Smith               <gasmith@nutanix.com>
+  Justin Akers                <justin.akers@opengear.com>
+  Oliver Mangold              <o.mangold@gmail.com>
+  Geoff Williams              <geoff.williams@puppetlabs.com>
+  Florian Chazal              <florianchazal@gmail.com>
+  Dimitar Dimitrov            <mitkofr@yahoo.fr>
+  Cédric Bosdonnat            <cedric.bosdonnat@free.fr>
+  Christoph Maser             <cmaser@gmx.de>
+  Chris Reeves                <chris.reeves@york.ac.uk>
+  Gerlof Fokkema              <gerlof.fokkema@gmail.com>
+  Daniel Trebbien             <dtrebbien@gmail.com>
+  Robert Moucha               <robert.moucha@gooddata.com>
+  Craig Miskell               <craig@catalyst.net.nz>
+  Anton Baranov               <abaranov@linuxfoundation.org>
+  Josef Reidinger             <jreidinger@suse.cz>
+  James Valleroy              <jvalleroy@mailbox.org>

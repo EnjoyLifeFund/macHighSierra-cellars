@@ -1,0 +1,13 @@
+prefix=/usr/local/Cellar/qt/5.9.0
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+
+Name: Qt5 3DQuickScene2D
+Description: Qt 3DQuickScene2D module
+Version: 5.9.0
+Libs: -F${libdir} -framework Qt3DQuickScene2D 
+Cflags: -I${includedir}/Qt3DQuickScene2D -I${includedir}
+Requires: Qt5Core Qt5Gui Qt5Qml Qt53DCore Qt53DRender Qt53DQuick
+

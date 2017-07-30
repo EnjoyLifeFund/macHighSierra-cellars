@@ -1,0 +1,13 @@
+prefix=/usr/local/Cellar/qt/5.9.0
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+
+Name: Qt5 SerialBus
+Description: Qt SerialBus module
+Version: 5.9.0
+Libs: -F${libdir} -framework QtSerialBus 
+Cflags: -I${includedir}/QtSerialBus -I${includedir}
+Requires: Qt5Core
+

@@ -1,0 +1,11 @@
+QT.webenginewidgets_private.VERSION = 5.9.0
+QT.webenginewidgets_private.name = QtWebEngineWidgets
+QT.webenginewidgets_private.module =
+QT.webenginewidgets_private.libs = $$QT_MODULE_LIB_BASE
+QT.webenginewidgets_private.includes = $$QT_MODULE_LIB_BASE/QtWebEngineWidgets.framework/Headers/5.9.0 $$QT_MODULE_LIB_BASE/QtWebEngineWidgets.framework/Headers/5.9.0/QtWebEngineWidgets
+QT.webenginewidgets_private.frameworks =
+QT.webenginewidgets_private.depends = webenginewidgets
+QT.webenginewidgets_private.uses =
+QT.webenginewidgets_private.module_config = v2 lib_bundle internal_module
+QT.webenginewidgets_private.enabled_features =
+QT.webenginewidgets_private.disabled_features =

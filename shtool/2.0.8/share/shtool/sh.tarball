@@ -1,0 +1,291 @@
+##
+##  tarball -- Roll distribution tarballs
+##  Copyright (c) 1999-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="tarball"
+str_usage="[-t|--trace] [-v|--verbose] [-o|--output <tarball>] [-c|--compress <prog>] [-d|--directory <dir>] [-u|--user <user>] [-g|--group <group>] [-e|--exclude <pattern>] <path> [<path> ...]"
+gen_tmpfile=yes
+arg_spec="1+"
+opt_spec="t.v.o:c:d:u:g:e:"
+opt_alias="t:trace,v:verbose,o:output,c:compress,d:directory,u:user,g:group,e:exclude"
+opt_t=no
+opt_v=no
+opt_o=""
+opt_c=""
+opt_d=""
+opt_u=""
+opt_g=""
+opt_e="CVS,\\.cvsignore,\\.svn,\\.[oa]\$"
+
+. ./sh.common
+
+srcs="$*"
+
+#   check whether the test command supports the -x option
+if [ -x /bin/sh ] 2>/dev/null; then
+    minusx="-x"
+else
+    minusx="-r"
+fi
+
+#   find the tools
+paths="`echo $PATH |\
+        sed -e 's%/*:%:%g' -e 's%/*$%%' \
+            -e 's/^:/.:/' -e 's/::/:.:/g' -e 's/:$/:./' \
+            -e 's/:/ /g'`"
+for spec in find:gfind,find tar:gtar,tar tardy:tardy,tarcust; do
+    prg=`echo $spec | sed -e 's/:.*$//'`
+    tools=`echo $spec | sed -e 's/^.*://'`
+    eval "prg_${prg}=''"
+    #   iterate over tools
+    for tool in `echo $tools | sed -e 's/,/ /g'`; do
+        #   iterate over paths
+        for path in $paths; do
+            if [ $minusx "$path/$tool" ] && [ ! -d "$path/$tool" ]; then
+                eval "prg_${prg}=\"$path/$tool\""
+                break
+            fi
+        done
+        eval "val=\$prg_${prg}"
+        if [ ".$val" != . ]; then
+            break
+        fi
+    done
+done
+
+#   expand source paths
+exclude=''
+for pat in `echo $opt_e | sed 's/,/ /g'`; do
+    exclude="$exclude | grep -v '$pat'"
+done
+if [ ".$opt_t" = .yes ]; then
+    echo "cp /dev/null $tmpfile.lst" 1>&2
+fi
+cp /dev/null $tmpfile.lst
+for src in $srcs; do
+    if [ -d $src ]; then
+        if [ ".$opt_t" = .yes ]; then
+            echo "(cd $src && $prg_find . -type f -depth -print) | sed -e 's:^\\.\$::' -e 's:^\\./::' | cat $exclude >>$tmpfile.lst" 1>&2
+        fi
+        (cd $src && $prg_find . -type f -depth -print) |\
+        sed -e 's:^\.$::' -e 's:^\./::' | eval cat $exclude >>$tmpfile.lst
+    else
+        if [ ".$opt_t" = .yes ]; then
+            echo "echo $src >>$tmpfile.lst" 1>&2
+        fi
+        echo $src >>$tmpfile.lst
+    fi
+done
+sort <$tmpfile.lst >$tmpfile.lst.n
+mv $tmpfile.lst.n $tmpfile.lst
+if [ ".$opt_v" = .yes ]; then
+    cat $tmpfile.lst | sed -e 's/^/  /' 1>&2
+fi
+
+#   determine tarball file and directory name
+if [ ".$opt_o" != . ]; then
+    tarfile="$opt_o"
+    if [ ".$opt_d" != . ]; then
+        tarname="$opt_d"
+    else
+        tarname=`echo $tarfile | sed -e 's/\.tar.*$//' -e 's;.*/\([^/]*\)$;\1;'`
+    fi
+else
+    if [ ".$opt_d" != . ]; then
+        tarname="$opt_d"
+    elif [ -d "$from" ]; then
+        tarname=`echo $from | sed -e 's;.*/\([^/]*\)$;\1;'`
+    else
+        tarname="out"
+    fi
+    tarfile="$tarname.tar"
+fi
+
+#   roll the tarball
+compress=''
+if [ ".$opt_c" != . ]; then
+    compress="| $opt_c"
+fi
+if [ ".$prg_tardy" != . ]; then
+    #   the elegant hackers way
+    tardy_opt="--prefix=$tarname"
+    tardy_opt="$tardy_opt --user_number=0 --group_number=0" # security!
+    if [ ".$opt_u" != . ]; then
+        tardy_opt="$tardy_opt --user_name=$opt_u"
+    fi
+    if [ ".$opt_g" != . ]; then
+        tardy_opt="$tardy_opt --group_name=$opt_g"
+    fi
+    if [ ".$opt_t" = .yes ]; then
+        echo "cat $tmpfile.lst | xargs $prg_tar cf - | $prg_tardy $tardy_opt | cat $compress >$tmpfile.out" 1>&2
+    fi
+    cat $tmpfile.lst |\
+    xargs $prg_tar cf - |\
+    $prg_tardy $tardy_opt |\
+    eval cat $compress >$tmpfile.out
+    if [ ".$opt_t" = .yes ]; then
+        echo "cp $tmpfile.out $tarfile" 1>&2
+    fi
+    cp $tmpfile.out $tarfile
+else
+    #  the portable standard way
+    if [ ".$opt_t" = .yes ]; then
+        echo "mkdir $tmpdir/$tarname" 1>&2
+    fi
+    mkdir $tmpdir/$tarname || shtool_exit 1
+    if [ ".$opt_t" = .yes ]; then
+        echo "cat $tmpfile.lst | xargs $prg_tar cf - | (cd $tmpdir/$tarname && $prg_tar xf -)" 1>&2
+    fi
+    cat $tmpfile.lst |\
+    xargs $prg_tar cf - |\
+    (cd $tmpdir/$tarname && $prg_tar xf -)
+    if [ ".$opt_u" != . ]; then
+        if [ ".$opt_t" = .yes ]; then
+            echo "chown -R $opt_u $tmpdir/$tarname >/dev/null 2>&1" 2>&1
+        fi
+        chown -R $opt_u $tmpdir/$tarname >/dev/null 2>&1 ||\
+        echo "$msgprefix:Warning: cannot set user name \`$opt_u' (would require root privileges)"
+    fi
+    if [ ".$opt_g" != . ]; then
+        if [ ".$opt_t" = .yes ]; then
+            echo "chgrp -R $opt_g $tmpdir/$tarname >/dev/null 2>&1" 2>&1
+        fi
+        chgrp -R $opt_g $tmpdir/$tarname >/dev/null 2>&1 ||\
+        echo "$msgprefix:Warning: cannot set group name \`$opt_g' (would require root privileges)"
+    fi
+    if [ ".$opt_t" = .yes ]; then
+        echo "(cd $tmpdir && $prg_find $tarname -type f -depth -print | sort | xargs $prg_tar cf -) | cat $compress >$tmpfile.out" 1>&2
+    fi
+    (cd $tmpdir && $prg_find $tarname -type f -depth -print | sort | xargs $prg_tar cf -) |\
+    eval cat $compress >$tmpfile.out
+    if [ ".$opt_t" = .yes ]; then
+        echo "cp $tmpfile.out $tarfile" 1>&2
+    fi
+    cp $tmpfile.out $tarfile
+    if [ ".$opt_t" = .yes ]; then
+        echo "rm -rf $tmpdir/$tarname" 1>&2
+    fi
+    rm -rf $tmpdir/$tarname
+fi
+
+#   cleanup
+if [ ".$opt_t" = .yes ]; then
+    echo "rm -f $tmpfile.lst $tmpfile.out" 1>&2
+fi
+rm -f $tmpfile.lst $tmpfile.out
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool tarball> - B<GNU shtool> command for rolling standardized tarballs
+
+=head1 SYNOPSIS
+
+B<shtool tarball>
+[B<-t>|B<--trace>]
+[B<-v>|B<--verbose>]
+[B<-o>|B<--output> I<tarball>]
+[B<-c>|B<--compress> I<prog>]
+[B<-d>|B<--directory> I<directory>]
+[B<-u>|B<--user> I<user>]
+[B<-g>|B<--group> I<group>]
+[B<-e>|B<--exclude> I<pattern>]
+I<path> [I<path> ...]
+
+=head1 DESCRIPTION
+
+This command is for rolling input files under I<path> into a
+distribution tarballs which can be extracted by tar(1).
+
+The four important aspects of good open source software tarballs are:
+(1) unpack into a single top-level directory, (2) top-level directory
+corresponds to the tarball filename, (3) tarball files should be sorted
+and (4) arbitrary names for file owner and group.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-v>, B<--verbose>
+
+Display some processing information.
+
+=item B<-t>, B<--trace>
+
+Enable the output of the essential shell commands which are executed.
+
+=item B<-o>, B<--output> I<tarball>
+
+Output tarball to file I<tarball>.
+
+=item B<-c>, B<--compress> I<prog>
+
+Pipe resulting tarball through compression program I<prog>.
+
+=item B<-d>, B<--directory> I<directory>
+
+Sets the top-level directory into which the tarball unpacks.
+By default it is I<tarball> without the trailing C<.tar.*> extension.
+
+=item B<-u>, B<--user> I<user>
+
+The user (owner) of files and directories in the tarball to I<user>.
+
+=item B<-g>, B<--group> I<group>
+
+The group of files and directories in the tarball to I<group>.
+
+=item B<-e>, B<--exclude> I<pattern>
+
+Exclude files and directories matching comma-separated list of
+regex I<pattern> from the tarball. Directories are expanded
+before the filtering takes place. The default filter pattern is
+"C<CVS,\\.cvsignore,\\.svn,\\.[oa]\$>".
+
+=back
+
+=head1 EXAMPLE
+
+ #   Makefile.in
+ dist:
+     ...
+     V=`shtool version -d short ...`; \
+     shtool tarball -o foobar-$$V.tar.gz -c 'gzip -9' \
+                    -u bar -g gnu -e 'CVS,\.cvsignore' .
+
+=head1 HISTORY
+
+The B<GNU shtool> B<tarball> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1999 for B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1), tar(1), compress(1).
+
+=cut
+

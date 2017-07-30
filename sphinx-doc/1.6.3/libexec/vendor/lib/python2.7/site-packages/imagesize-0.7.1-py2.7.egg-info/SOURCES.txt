@@ -1,0 +1,10 @@
+README.rst
+setup.cfg
+setup.py
+imagesize/__init__.py
+imagesize/get.py
+imagesize.egg-info/PKG-INFO
+imagesize.egg-info/SOURCES.txt
+imagesize.egg-info/dependency_links.txt
+imagesize.egg-info/top_level.txt
+test/test_get.py

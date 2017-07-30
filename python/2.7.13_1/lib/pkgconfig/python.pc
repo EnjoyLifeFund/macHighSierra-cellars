@@ -1,0 +1,1 @@
+../../Frameworks/Python.framework/Versions/Current/lib/pkgconfig/python.pc

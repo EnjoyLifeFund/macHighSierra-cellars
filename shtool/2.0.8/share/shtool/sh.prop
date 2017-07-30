@@ -1,0 +1,122 @@
+##
+##  prop -- Display progress with a running propeller
+##  Copyright (c) 1998-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="prop"
+str_usage="[-p|--prefix <str>]"
+arg_spec="0="
+opt_spec="p:"
+opt_alias="p:prefix"
+opt_p=""
+
+. ./sh.common
+
+perl=''
+for dir in `echo $PATH | sed -e 's/:/ /g'` .; do
+    if [ -f "$dir/perl" ]; then
+        perl="$dir/perl"
+        break
+    fi
+done
+if [ ".$perl" != . ]; then
+    #   Perl is preferred because writing to STDERR in
+    #   Perl really writes immediately as one would expect
+    $perl -e '
+        @p = ("|","/","-","\\");
+        $i = 0;
+        while (<STDIN>) {
+            printf(STDERR "\r%s...%s\b", $ARGV[0], $p[$i++]);
+            $i = 0 if ($i > 3);
+        }
+        printf(STDERR "\r%s    \n", $ARGV[0]);
+    ' "$opt_p"
+else
+    #   But if Perl doesn't exists we use Awk even
+    #   some Awk's buffer even the /dev/stderr writing :-(
+    awk '
+        BEGIN {
+            split("|#/#-#\\", p, "#");
+            i = 1;
+        }
+        {
+            printf("\r%s%c\b", prefix, p[i++]) > "/dev/stderr";
+            if (i > 4) { i = 1; }
+        }
+        END {
+            printf("\r%s    \n", prefix) > "/dev/stderr";
+        }
+    ' "prefix=$opt_p"
+fi
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool prop> - B<GNU shtool> propeller processing indication
+
+=head1 SYNOPSIS
+
+B<shtool prop>
+[B<-p>|B<--prefix> I<str>]
+
+=head1 DESCRIPTION
+
+This command displays a processing indication though a running
+propeller. It is intended to be run at the end of a pipe ("C<|>")
+sequence where on C<stdin> logging/processing informations found. For
+every line on C<stdin> the propeller advances one step clock-wise.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-p>, B<--prefix> I<str>
+
+Set a particular prefix I<str> which is displayed in front of the
+propeller. The default is no prefix string.
+
+=back
+
+=head1 EXAMPLE
+
+ #   shell script
+ configure 2>&1 |\
+     tee logfile |\
+     shtool prop -p "Configuring sources"
+
+=head1 HISTORY
+
+The B<GNU shtool> B<prop> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1998 for B<mod_ssl>. It was
+later taken over into B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1).
+
+=cut
+

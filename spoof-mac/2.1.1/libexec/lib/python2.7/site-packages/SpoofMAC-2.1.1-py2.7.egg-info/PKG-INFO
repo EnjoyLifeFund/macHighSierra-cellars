@@ -1,0 +1,14 @@
+Metadata-Version: 1.0
+Name: SpoofMAC
+Version: 2.1.1
+Summary: 
+Easily spoof your MAC address in OS X, Windows & Linux.
+
+Home-page: http://feross.org/spoofmac/
+Author: Feross Aboukhadijeh
+Author-email: feross@feross.org
+License: MIT
+Description: 
+        Easily spoof your MAC address in OS X, Windows & Linux.
+        
+Platform: UNKNOWN

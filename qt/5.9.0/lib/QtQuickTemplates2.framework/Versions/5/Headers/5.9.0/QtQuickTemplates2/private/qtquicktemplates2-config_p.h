@@ -1,0 +1,1 @@
+#define QT_FEATURE_quicktemplates2_hover 1

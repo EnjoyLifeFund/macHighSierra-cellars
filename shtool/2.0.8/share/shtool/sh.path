@@ -1,0 +1,250 @@
+##
+##  path -- Deal with program paths
+##  Copyright (c) 1998-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="path"
+str_usage="[-s|--suppress] [-r|--reverse] [-d|--dirname] [-b|--basename] [-m|--magic] [-p|--path <path>] <str> [<str> ...]"
+gen_tmpfile=yes
+arg_spec="1+"
+opt_spec="s.r.d.b.m.p:"
+opt_alias="s:suppress,r:reverse,d:dirname,b:basename,m:magic,p:path"
+opt_s=no
+opt_r=no
+opt_d=no
+opt_b=no
+opt_m=no
+opt_p="$PATH"
+
+. ./sh.common
+
+namelist="$*"
+
+#   check whether the test command supports the -x option
+if [ -x /bin/sh ] 2>/dev/null; then
+    minusx="-x"
+else
+    minusx="-r"
+fi
+
+#   split path string
+paths="`echo $opt_p |\
+        sed -e 's/^:/.:/' \
+            -e 's/::/:.:/g' \
+            -e 's/:$/:./' \
+            -e 's/:/ /g'`"
+
+#   SPECIAL REQUEST
+#   translate forward to reverse path
+if [ ".$opt_r" = .yes ]; then
+    if [ "x$namelist" = "x." ]; then
+        rp='.'
+    else
+        rp=''
+        for pe in `IFS="$IFS/"; echo $namelist`; do
+            rp="../$rp"
+        done
+    fi
+    echo $rp | sed -e 's:/$::'
+    shtool_exit 0
+fi
+
+#   SPECIAL REQUEST
+#   strip out directory or base name
+if [ ".$opt_d" = .yes ]; then
+    echo "$namelist" |\
+    sed -e 's;[^/]*$;;' -e 's;\(.\)/$;\1;'
+    shtool_exit 0
+fi
+if [ ".$opt_b" = .yes ]; then
+    echo "$namelist" |\
+    sed -e 's;.*/\([^/]*\)$;\1;'
+    shtool_exit 0
+fi
+
+#   MAGIC SITUATION
+#   Perl Interpreter (perl)
+if [ ".$opt_m" = .yes ] && [ ".$namelist" = .perl ]; then
+    rm -f $tmpfile >/dev/null 2>&1
+    touch $tmpfile
+    found=0
+    pc=99
+    for dir in $paths; do
+        dir=`echo $dir | sed -e 's;/*$;;'`
+        nc=99
+        for name in perl perl5 miniperl; do
+             if [ $minusx "$dir/$name" ] && [ ! -d "$dir/$name" ]; then
+                 perl="$dir/$name"
+                 pv=`$perl -e 'printf("%.3f", $]);'`
+                 echo "$pv:$pc:$nc:$perl" >>$tmpfile
+                 found=1
+             fi
+             nc=`expr $nc - 1`
+        done
+        pc=`expr $pc - 1`
+    done
+    if [ $found = 1 ]; then
+        perl="`cat $tmpfile | sort -r -u | sed -e 'q' | cut -d: -f4`"
+        rm -f $tmpfile >/dev/null 2>&1
+        echo "$perl"
+        shtool_exit 0
+    fi
+    rm -f $tmpfile >/dev/null 2>&1
+    shtool_exit 1
+fi
+
+#   MAGIC SITUATION
+#   C pre-processor (cpp)
+if [ ".$opt_m" = .yes ] && [ ".$namelist" = .cpp ]; then
+    echo >$tmpfile.c "#include <assert.h>"
+    echo >>$tmpfile.c "Syntax Error"
+    #   1. try the standard cc -E approach
+    cpp="${CC-cc} -E"
+    (eval "$cpp $tmpfile.c >/dev/null") 2>$tmpfile.out
+    my_error=`grep -v '^ *+' $tmpfile.out`
+    if [ ".$my_error" != . ]; then
+        #   2. try the cc -E approach and GCC's -traditional-ccp option
+        cpp="${CC-cc} -E -traditional-cpp"
+        (eval "$cpp $tmpfile.c >/dev/null") 2>$tmpfile.out
+        my_error=`grep -v '^ *+' $tmpfile.out`
+        if [ ".$my_error" != . ]; then
+            #   3. try a standalone cpp command in path and lib dirs
+            for path in $paths /lib /usr/lib /usr/local/lib; do
+                path=`echo $path | sed -e 's;/*$;;'`
+                if [ $minusx "$path/cpp" ] && [ ! -d "$path/cpp" ]; then
+                    cpp="$path/cpp"
+                    break
+                fi
+            done
+            if [ ".$cpp" != . ]; then
+                (eval "$cpp $tmpfile.c >/dev/null") 2>$tmpfile.out
+                my_error=`grep -v '^ *+' $tmpfile.out`
+                if [ ".$my_error" != . ]; then
+                    #   ok, we gave up...
+                    cpp=''
+                fi
+            fi
+        fi
+    fi
+    rm -f $tmpfile >/dev/null 2>&1
+    rm -f $tmpfile.c $tmpfile.out >/dev/null 2>&1
+    if [ ".$cpp" != . ]; then
+        echo "$cpp"
+        shtool_exit 0
+    fi
+    shtool_exit 1
+fi
+
+#   STANDARD SITUATION
+#   iterate over names
+for name in $namelist; do
+    #   iterate over paths
+    for path in $paths; do
+        path=`echo $path | sed -e 's;/*$;;'`
+        if [ $minusx "$path/$name" ] && [ ! -d "$path/$name" ]; then
+            if [ ".$opt_s" != .yes ]; then
+                echo "$path/$name"
+            fi
+            shtool_exit 0
+        fi
+    done
+done
+
+shtool_exit 1
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool path> - B<GNU shtool> command dealing with shell path variables
+
+=head1 SYNOPSIS
+
+B<shtool path>
+[B<-s>|B<--suppress>]
+[B<-r>|B<--reverse>]
+[B<-d>|B<--dirname>]
+[B<-b>|B<--basename>]
+[B<-m>|B<--magic>]
+[B<-p>|B<--path> I<path>]
+I<str> [I<str> ...]
+
+=head1 DESCRIPTION
+
+This command deals with shell C<$PATH> variables. It can find a program
+through one or more filenames given by one or more I<str> arguments.
+It prints the absolute filesystem path to the program displayed on
+C<stdout> plus an exit code of 0 if it was really found.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-s>, B<--suppress>
+
+Supress output. Useful to only test whether a program exists with the
+help of the return code.
+
+=item B<-r>, B<--reverse>
+
+Transform a forward path to a subdirectory into a reverse path.
+
+=item B<-d>, B<--dirname>
+
+Output the directory name of I<str>.
+
+=item B<-b>, B<--basename>
+
+Output the base name of I<str>.
+
+=item B<-m>, B<--magic>
+
+Enable advanced magic search for "C<perl>" and "C<cpp>".
+
+=item B<-p>, B<--path> I<path>
+
+Search in I<path>. Default is to search in $PATH.
+
+=back
+
+=head1 EXAMPLE
+
+ #   shell script
+ awk=`shtool path -p "${PATH}:." gawk nawk awk`
+ perl=`shtool path -m perl`
+ cpp=`shtool path -m cpp`
+ revpath=`shtool path -r path/to/subdir`
+
+=head1 HISTORY
+
+The B<GNU shtool> B<path> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1998 for B<Apache>. It was
+later taken over into B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1), which(1).
+
+=cut
+

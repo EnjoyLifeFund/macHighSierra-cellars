@@ -1,0 +1,240 @@
+##
+##  mdate -- Pretty-print modification time of a file or dir
+##  Copyright (c) 1995-1997 Free Software Foundation, Inc.
+##  Copyright (c) 1998-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="mdate"
+str_usage="[-n|--newline] [-z|--zero] [-s|--shorten] [-d|--digits] [-f|--field-sep <str>] [-o|--order <spec>] <path>"
+arg_spec="1="
+opt_spec="n.z.s.d.f:o:"
+opt_alias="n:newline,z:zero,s:shorten,d:digits,f:field-sep,o:order"
+opt_n=no
+opt_z=no
+opt_s=no
+opt_d=no
+opt_f=" "
+opt_o="dmy"
+
+. ./sh.common
+
+fod="$1"
+case "$opt_o" in
+    [dmy][dmy][dmy] )
+        ;;
+    * ) echo "$msgprefix:Error: invalid argument to option \`-o': $opt_o" 1>&2
+        shtool_exit 1
+        ;;
+esac
+if [ ! -r "$fod" ]; then
+    echo "$msgprefix:Error: file or directory not found: $fod" 1>&2
+    shtool_exit 1
+fi
+
+#   GNU ls changes its time format in response to the TIME_STYLE
+#   variable. Since we cannot assume "unset" works, revert this
+#   variable to its documented default.
+if [ ".$TIME_STYLE" != . ]; then
+    TIME_STYLE=posix-long-iso
+    export TIME_STYLE
+fi
+
+#   get the extended ls output of the file or directory.
+if /bin/ls -L /dev/null >/dev/null 2>&1; then
+    set - x`/bin/ls -L -l -d $fod`
+else
+    set - x`/bin/ls -l -d $fod`
+fi
+
+#   The month is at least the fourth argument
+#   (3 shifts here, the next inside the loop).
+shift; shift; shift
+
+#   Find the month. Next argument is day, followed by the year or time.
+month=""
+while [ ".$month" = . ]; do
+    shift
+    case $1 in
+        Jan) month=January;   nummonth=1  ;;
+        Feb) month=February;  nummonth=2  ;;
+        Mar) month=March;     nummonth=3  ;;
+        Apr) month=April;     nummonth=4  ;;
+        May) month=May;       nummonth=5  ;;
+        Jun) month=June;      nummonth=6  ;;
+        Jul) month=July;      nummonth=7  ;;
+        Aug) month=August;    nummonth=8  ;;
+        Sep) month=September; nummonth=9  ;;
+        Oct) month=October;   nummonth=10 ;;
+        Nov) month=November;  nummonth=11 ;;
+        Dec) month=December;  nummonth=12 ;;
+    esac
+done
+day="$2"
+year="$3"
+
+#   We finally have to deal with the problem that the "ls" output
+#   gives either the time of the day or the year.
+case $year in
+    *:*)
+        this_year=`date '+%Y' 2>/dev/null`
+        if [ ".$this_year" = . ]; then
+            this_year=`date '+%y'`
+            case $this_year in
+                [5-9][0-9]) this_year="19$this_year" ;;
+                [0-4][0-9]) this_year="20$this_year" ;;
+            esac
+        fi
+        #   for the following months of the last year the time notation
+        #   is usually also used for files modified in the last year.
+        this_month=`date '+%m'`
+        if (expr $nummonth \> $this_month) >/dev/null; then
+            this_year=`expr $this_year - 1`
+        fi
+        year="$this_year"
+        ;;
+esac
+
+#   Optionally fill day and month with leeding zeros
+if [ ".$opt_z" = .yes ]; then
+    case $day in
+        [0-9][0-9] ) ;;
+             [0-9] ) day="0$day" ;;
+    esac
+    case $nummonth in
+        [0-9][0-9] ) ;;
+             [0-9] ) nummonth="0$nummonth" ;;
+    esac
+fi
+
+#   Optionally use digits for month
+if [ ".$opt_d" = .yes ]; then
+    month="$nummonth"
+fi
+
+#   Optionally shorten the month name to three characters
+if [ ".$opt_s" = .yes ]; then
+    month=`echo $month | cut -c1-3`
+fi
+
+#   Output the resulting date string
+echo dummy | awk '{
+    for (i = 0; i < 3; i++) {
+        now = substr(order, 1, 1);
+        order = substr(order, 2);
+        if (now == "d")
+            out = day;
+        else if (now == "m")
+            out = month;
+        else if (now == "y")
+            out = year;
+        if (i < 2)
+            printf("%s%s", out, field);
+        else
+            printf("%s", out);
+    }
+    if (newline != "yes")
+        printf("\n");
+}' "day=$day" "month=$month" "year=$year" \
+   "field=$opt_f" "order=$opt_o" "newline=$opt_n"
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool mdate> - B<GNU shtool> pretty-print last modification time
+
+=head1 SYNOPSIS
+
+B<shtool mdate>
+[B<-n>|B<--newline>]
+[B<-z>|B<--zero>]
+[B<-s>|B<--shorten>]
+[B<-d>|B<--digits>]
+[B<-f>|B<--field-sep> I<str>]
+[B<-o>|B<--order> I<spec>]
+I<path>
+
+=head1 DESCRIPTION
+
+This command pretty-prints the last modification time of a given file or
+directory I<path>, while still allowing one to specify the format of the
+date to display.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-n>, B<--newline>
+
+By default, output is written to F<stdout> followed by a "newline"
+(ASCII character 0x0a). If option B<-n> is used, this newline character
+is omitted.
+
+=item B<-z>, B<--zero>
+
+Pads numeric day and numeric month with a leading zero. Default is to
+have variable width.
+
+=item B<-s>, B<--shorten>
+
+Shortens the name of the month to a english three character
+abbreviation. Default is full english name. This option is silently
+ignored when combined with B<-d>.
+
+=item B<-d>, B<--digits>
+
+Use digits for month. Default is to use a english name.
+
+=item B<-f>, B<--field-sep> I<str>
+
+Field separator string between the day month year tripple. Default is a
+single space character.
+
+=item B<-o>, B<--order> I<spec>
+
+Specifies order of the day month year elements within the tripple. Each
+element represented as a single character out of ``C<d>'', ``C<m>'' and
+``C<y>''. The default for I<spec> is ``C<dmy>''.
+
+=head1 EXAMPLE
+
+ #   shell script
+ shtool mdate -n /
+ shtool mdate -f '/' -z -d -o ymd foo.txt
+ shtool mdate -f '-' -s foo.txt
+
+=head1 HISTORY
+
+The B<GNU shtool> B<mdate> command was originally written by
+Ulrich Drepper in 1995 and revised by Ralf S. Engelschall
+E<lt>rse@engelschall.comE<gt> in 1998 for inclusion into B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1), date(1), ls(1).
+
+=cut
+

@@ -1,0 +1,245 @@
+##
+##  mkln -- Make link with calculation of relative paths
+##  Copyright (c) 1998-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="mkln"
+str_usage="[-t|--trace] [-f|--force] [-s|--symbolic] <src-path> [<src-path> ...] <dst-path>"
+arg_spec="2+"
+opt_spec="t.f.s."
+opt_alias="t:trace,f:force,s:symbolic"
+opt_t=no
+opt_f=no
+opt_s=no
+
+. ./sh.common
+
+#   determine source(s) and destination
+args=$#
+srcs=""
+while [ $# -gt 1 ]; do
+    srcs="$srcs $1"
+    shift
+done
+dst="$1"
+if [ ! -d $dst ]; then
+    if [ $args -gt 2 ]; then
+        echo "$msgprefix:Error: multiple sources not allowed when target isn't a directory" 1>&2
+        shtool_exit 1
+    fi
+fi
+
+#   determine link options
+lnopt=""
+if [ ".$opt_f" = .yes ]; then
+    lnopt="$lnopt -f"
+fi
+if [ ".$opt_s" = .yes ]; then
+    lnopt="$lnopt -s"
+fi
+
+#   iterate over sources
+for src in $srcs; do
+    #   determine if one of the paths is an absolute path,
+    #   because then we _have_ to use an absolute symlink
+    oneisabs=0
+    srcisabs=0
+    dstisabs=0
+    case $src in
+        /* ) oneisabs=1; srcisabs=1 ;;
+    esac
+    case $dst in
+        /* ) oneisabs=1; dstisabs=1 ;;
+    esac
+
+    #   split source and destination into dir and base name
+    if [ -d $src ]; then
+        srcdir=`echo $src | sed -e 's;/*$;;'`
+        srcbase=""
+    else
+        srcdir=`echo  $src | sed -e 's;^[^/]*$;;' -e 's;^\(.*/\)[^/]*$;\1;' -e 's;\(.\)/$;\1;'`
+        srcbase=`echo $src | sed -e 's;.*/\([^/]*\)$;\1;'`
+    fi
+    if [ -d $dst ]; then
+        dstdir=`echo $dst | sed -e 's;/*$;;'`
+        dstbase=""
+    else
+        dstdir=`echo  $dst | sed -e 's;^[^/]*$;;' -e 's;^\(.*/\)[^/]*$;\1;' -e 's;\(.\)/$;\1;'`
+        dstbase=`echo $dst | sed -e 's;.*/\([^/]*\)$;\1;'`
+    fi
+
+    #   consistency check
+    if [ ".$dstdir" != . ]; then
+        if [ ! -d $dstdir ]; then
+            echo "$msgprefix:Error: destination directory not found: $dstdir" 1>&2
+            shtool_exit 1
+        fi
+    fi
+
+    #   make sure the source is reachable from the destination
+    if [ $dstisabs = 1 ]; then
+        if [ $srcisabs = 0 ]; then
+            if [ ".$srcdir" = . ]; then
+                srcdir="`pwd | sed -e 's;/*$;;'`"
+                srcisabs=1
+                oneisabs=1
+            elif [ -d $srcdir ]; then
+                srcdir="`cd $srcdir; pwd | sed -e 's;/*$;;'`"
+                srcisabs=1
+                oneisabs=1
+            fi
+        fi
+    fi
+
+    #   split away a common prefix
+    prefix=""
+    if [ ".$srcdir" = ".$dstdir" ] && [ ".$srcdir" != . ]; then
+        prefix="$srcdir/"
+        srcdir=""
+        dstdir=""
+    else
+        while [ ".$srcdir" != . ] && [ ".$dstdir" != . ]; do
+            presrc=`echo $srcdir | sed -e 's;^\([^/]*\)/.*;\1;'`
+            predst=`echo $dstdir | sed -e 's;^\([^/]*\)/.*;\1;'`
+            if [ ".$presrc" != ".$predst" ]; then
+                break
+            fi
+            prefix="$prefix$presrc/"
+            srcdir=`echo $srcdir | sed -e 's;^[^/]*/*;;'`
+            dstdir=`echo $dstdir | sed -e 's;^[^/]*/*;;'`
+        done
+    fi
+
+    #   destination prefix is just the common prefix
+    dstpre="$prefix"
+
+    #   determine source prefix which is the reverse directory
+    #   step-up corresponding to the destination directory
+    srcpre=""
+    allow_relative_srcpre=no
+    if [ ".$prefix" != . ] && [ ".$prefix" != ./ ]; then
+        allow_relative_srcpre=yes
+    fi
+    if [ $oneisabs = 0 ]; then
+        allow_relative_srcpre=yes
+    fi
+    if [ ".$opt_s" != .yes ]; then
+        allow_relative_srcpre=no
+    fi
+    if [ ".$allow_relative_srcpre" = .yes ]; then
+        pl="$dstdir/"
+        OIFS="$IFS"; IFS='/'
+        for pe in $pl; do
+            [ ".$pe" = .  ] && continue
+            [ ".$pe" = .. ] && continue
+            srcpre="../$srcpre"
+        done
+        IFS="$OIFS"
+    else
+        if [ $srcisabs = 1 ]; then
+            srcpre="$prefix"
+        fi
+    fi
+
+    #   determine destination symlink name
+    if [ ".$dstbase" = . ]; then
+        if [ ".$srcbase" != . ]; then
+            dstbase="$srcbase"
+        else
+            dstbase=`echo "$prefix$srcdir" | sed -e 's;/*$;;' -e 's;.*/\([^/]*\)$;\1;'`
+        fi
+    fi
+
+    #   now finalize source and destination directory paths
+    srcdir=`echo $srcdir | sed -e 's;\([^/]\)$;\1/;'`
+    dstdir=`echo $dstdir | sed -e 's;\([^/]\)$;\1/;'`
+
+    #   run the final link command
+    if [ ".$opt_t" = .yes ]; then
+        echo "ln$lnopt $srcpre$srcdir$srcbase $dstpre$dstdir$dstbase"
+    fi
+    eval ln$lnopt $srcpre$srcdir$srcbase $dstpre$dstdir$dstbase
+done
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool mkln> - B<GNU shtool> enhanced ln(1) replacement
+
+=head1 SYNOPSIS
+
+B<shtool mkln>
+[B<-t>|B<--trace>]
+[B<-f>|B<--force>]
+[B<-s>|B<--symbolic>]
+I<src-path> [I<src-path> ...]
+I<dst-path>
+
+=head1 DESCRIPTION
+
+This is a ln(1) style command. It is enhanced to provide automatic
+calculation and usage of relative links with the shortest possible path,
+if possible. Usually if I<src-path> and I<dst-path> are not absolute
+paths or at least they share a common prefix except the root directory
+(``C</>''). When more than one I<src-path> is specified, all of them are
+linked into I<dst-path>.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-t>, B<--trace>
+
+Enable the output of the essential shell commands which are executed.
+
+=item B<-f>, B<--force>
+
+Force the creation of the link even if it exists. Default is to fail
+with error.
+
+=item B<-s>, B<--symbolic>
+
+Create a symbolic link instead of a hard-link.
+
+=back
+
+=head1 EXAMPLE
+
+ #   shell script
+ shtool mkln -s foo/bar baz/quux
+
+=head1 HISTORY
+
+The B<GNU shtool> B<fixperm> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1998 for I<ePerl>.
+
+=head1 SEE ALSO
+
+shtool(1), ln(1).
+
+=cut
+

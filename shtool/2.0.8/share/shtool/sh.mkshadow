@@ -1,0 +1,207 @@
+##
+##  mkshadow -- Make a shadow tree through symbolic links
+##  Copyright (c) 1998-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="mkshadow"
+str_usage="[-v|--verbose] [-t|--trace] [-a|--all] <src-dir> <dst-dir>"
+arg_spec="2="
+opt_spec="v.t.a."
+opt_alias="v:verbose,t:trace,a:all"
+opt_v=no
+opt_t=no
+opt_a=no
+
+. ./sh.common
+
+#   source and destination directory
+src=`echo "$1" | sed -e 's:/$::' -e 's:^\./\(.\):\1:'`
+dst=`echo "$2" | sed -e 's:/$::' -e 's:^\./\(.\):\1:'`
+
+#   check whether source exists
+if [ ! -d $src ]; then
+    echo "$msgprefix:Error: source directory not found: \`$src'" 1>&2
+    shtool_exit 1
+fi
+
+#   determine if one of the paths is an absolute path,
+#   because then we have to use an absolute symlink
+oneisabs=0
+case $src in
+    /* ) oneisabs=1 ;;
+esac
+case $dst in
+    /* ) oneisabs=1 ;;
+esac
+
+#   determine reverse directory for destination directory
+dstrevdir=''
+if [ $oneisabs = 0 ]; then
+    #   derive reverse path from forward path
+    pwd=`pwd`
+    OIFS="$IFS"; IFS='/'
+    for pe in $dst; do
+        if [ "x$pe" = "x.." ]; then
+            OIFS2="$IFS"; IFS="$DIFS"
+            eval `echo "$pwd" |\
+                  sed -e 's:\([^/]*\)$:; dir="\1":' \
+                      -e 's:^\(.*\)/[^/]*;:pwd="\1";:'\
+                      -e 's:^;:pwd="";:'`
+            dstrevdir="$dir/$dstrevdir"
+            IFS="$OIFS2"
+        else
+            dstrevdir="../$dstrevdir"
+        fi
+    done
+    IFS="$OIFS"
+else
+    src="`cd $src; pwd`";
+fi
+
+#   create directory tree at destination
+if [ ! -d $dst ]; then
+    if [ ".$opt_t" = .yes ]; then
+        echo "mkdir $dst" 1>&2
+    fi
+    mkdir $dst
+fi
+if [ ".$opt_a" = .yes ]; then
+    DIRS=`cd $src; find . -type d -print |\
+          sed -e '/^\.$/d' -e 's:^\./::'`
+else
+    DIRS=`cd $src; find . -type d -print |\
+          sed -e '/\/CVS/d' -e '/^\.$/d' -e 's:^\./::'`
+fi
+for dir in $DIRS; do
+    if [ ".$opt_t" = .yes ]; then
+        echo "mkdir $dst/$dir" 1>&2
+    fi
+    mkdir $dst/$dir
+done
+
+#   fill directory tree with symlinks to files
+if [ ".$opt_a" = .yes ]; then
+    FILES="`cd $src; find . -depth -print |\
+            sed -e 's/^\.\///'`"
+else
+    FILES="`cd $src; find . -depth -print |\
+            sed -e '/\.o$/d' -e '/\.a$/d' -e '/\.so$/d' \
+                -e '/\.cvsignore$/d' -e '/\/CVS/d' \
+                -e '/\/\.#/d' -e '/\.orig$/d' \
+                -e 's/^\.\///'`"
+fi
+for file in $FILES; do
+     #  don't use `-type f' above for find because of symlinks
+     if [ -d "$src/$file" ]; then
+         continue
+     fi
+     basename=`echo $file | sed -e 's:^.*/::'`
+     dir=`echo $file | sed -e 's:[^/]*$::' -e 's:/$::' -e 's:$:/:' -e 's:^/$::'`
+     from=`echo "$src/$file" | sed -e 's/^\.\///'`
+     to="$dst/$dir$basename"
+     if [ $oneisabs = 0 ]; then
+         if [ ".$dir" != . ]; then
+             subdir=`echo $dir | sed -e 's:/$::'`
+             #   derive reverse path from forward path
+             revdir=''
+             OIFS="$IFS"; IFS='/'
+             for pe in $subdir; do
+                 revdir="../$revdir"
+             done
+             IFS="$OIFS"
+             #   finalize from
+             from="$revdir$from"
+         fi
+         from="$dstrevdir$from"
+     fi
+     if [ ".$opt_v" = .yes ]; then
+         echo "    $to" 1>&2
+     fi
+     if [ ".$opt_t" = .yes ]; then
+         echo "ln -s $from $to" 1>&2
+     fi
+     ln -s $from $to
+done
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool mkshadow> - B<GNU shtool> create shadow tree using symlinks
+
+=head1 SYNOPSIS
+
+B<shtool mkshadow>
+[B<-v>|B<--verbose>]
+[B<-t>|B<--trace>]
+[B<-a>|B<--all>]
+I<src-dir>
+I<dst-dir>
+
+=head1 DESCRIPTION
+
+This command creates a shadow tree of I<src-dir> under I<dst-dir> by
+recreating the directory hierarchy of I<src-dir> under I<dst-dir> and by
+creating the files of I<src-dir> by linking them into the corresponding
+directories under I<dst-dir> via symbolic links. When I<src-dir> can
+be reached via relative paths from I<dst-dir>, relative symbolic links
+are used, too. This high-level functionality is originally designed for
+developers to create copies of source trees.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-v>, B<--verbose>
+
+Display some processing information.
+
+=item B<-t>, B<--trace>
+
+Enable the output of the essential shell commands which are executed.
+
+=item B<-a>, B<--all>
+
+Really shadow all files and directories in I<src-dir>. Default is to
+skip CVS related files and directories, backup files, object files, etc.
+
+=head1 EXAMPLE
+
+ #   shell script
+ shtool mkshadow -v -a . /tmp/shadow
+
+=head1 HISTORY
+
+The B<GNU shtool> B<mkshadow> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1998 for B<Apache>. It was
+later revised and taken over into B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1), ln(1).
+
+=cut
+

@@ -1,0 +1,130 @@
+.TH "Builtin_attributes" 3 source: 2017-07-30 OCamldoc "OCaml library"
+.SH NAME
+Builtin_attributes \- no description
+.SH Module
+Module   Builtin_attributes
+.SH Documentation
+.sp
+Module
+.BI "Builtin_attributes"
+ : 
+.B sig  end
+
+.sp
+
+.sp
+
+.sp
+.sp
+
+.I val check_deprecated 
+: 
+.B Location.t -> Parsetree.attributes -> string -> unit
+.sp
+
+.sp
+
+.I val deprecated_of_attrs 
+: 
+.B Parsetree.attributes -> string option
+.sp
+
+.sp
+
+.I val deprecated_of_sig 
+: 
+.B Parsetree.signature -> string option
+.sp
+
+.sp
+
+.I val deprecated_of_str 
+: 
+.B Parsetree.structure -> string option
+.sp
+
+.sp
+
+.I val check_deprecated_mutable 
+: 
+.B Location.t -> Parsetree.attributes -> string -> unit
+.sp
+
+.sp
+
+.I val error_of_extension 
+: 
+.B Parsetree.extension -> Location.error
+.sp
+
+.sp
+
+.I val warning_enter_scope 
+: 
+.B unit -> unit
+.sp
+
+.sp
+
+.I val warning_leave_scope 
+: 
+.B unit -> unit
+.sp
+
+.sp
+
+.I val warning_attribute 
+: 
+.B Parsetree.attributes -> unit
+.sp
+
+.sp
+
+.I val with_warning_attribute 
+: 
+.B Parsetree.attributes -> (unit -> 'a) -> 'a
+.sp
+
+.sp
+
+.I val emit_external_warnings 
+: 
+.B Ast_iterator.iterator
+.sp
+
+.sp
+
+.I val warn_on_literal_pattern 
+: 
+.B Parsetree.attributes -> bool
+.sp
+
+.sp
+
+.I val explicit_arity 
+: 
+.B Parsetree.attributes -> bool
+.sp
+
+.sp
+
+.I val immediate 
+: 
+.B Parsetree.attributes -> bool
+.sp
+
+.sp
+
+.I val has_unboxed 
+: 
+.B Parsetree.attributes -> bool
+.sp
+
+.sp
+
+.I val has_boxed 
+: 
+.B Parsetree.attributes -> bool
+.sp
+
+.sp

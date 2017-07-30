@@ -1,0 +1,6 @@
+README.rst
+python2/typing.py
+python2/typing.egg-info/PKG-INFO
+python2/typing.egg-info/SOURCES.txt
+python2/typing.egg-info/dependency_links.txt
+python2/typing.egg-info/top_level.txt

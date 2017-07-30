@@ -1,0 +1,12 @@
+prefix=/usr/local/Cellar/qt/5.9.0
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+
+Name: Qt5 WebView
+Description: Qt WebView module
+Version: 5.9.0
+Libs: -F${libdir} -framework QtWebView 
+Cflags: -I${includedir}/QtWebView -I${includedir}
+

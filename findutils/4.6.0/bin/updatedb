@@ -1,0 +1,3 @@
+#!/bin/sh
+export LC_ALL='C'
+exec "/usr/local/Cellar/findutils/4.6.0/libexec/bin/updatedb" "$@"

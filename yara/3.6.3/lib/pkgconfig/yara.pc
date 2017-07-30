@@ -1,0 +1,11 @@
+prefix=/usr/local/Cellar/yara/3.6.3
+exec_prefix=/usr/local/Cellar/yara/3.6.3
+includedir=/usr/local/Cellar/yara/3.6.3/include
+libdir=/usr/local/Cellar/yara/3.6.3/lib
+
+Name: yara
+Description: YARA library
+URL: http://plusvic.github.io/yara/
+Version: 3.6.3
+Cflags: -I${includedir}
+Libs: -L${libdir} -lyara

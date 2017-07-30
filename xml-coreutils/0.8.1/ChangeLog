@@ -1,0 +1,44 @@
+xml-coreutils 0.8.1:
+	* fix bug in leafparse.h: some defined flags had same value
+	* fix bug in xml-printf assign_file_collectors() incorrect reset
+xml-coreutils 0.8c:
+	* coded entities in write_start_tag_tempcollect() (thanks Edwin Watkeys)
+	* change xml-grep exit code to indicate match (0/1) or error 2
+	* perform xml-find -exec variable substitution of {} in all arguments
+	* fix bug in exec_cmdline(): waitpid() return status
+xml-coreutils 0.8b:
+	* fix initialization bug in leafparse()
+	* memory overwrite in write_escape_cstring()
+xml-coreutils 0.8a:
+	* shell scripting portability changes
+	* replace strndup calls in rcm.c by dup_string from mem.c
+	* portability changes (thanks Douglas Held)
+xml-coreutils 0.8:
+	* new filelist object to process command line args uniformly.
+	* man pages for all the commands (rudimentary)
+	* redesign xml-less user interface to be more like less.
+	* clean tempfile framework.
+	* signal processing.
+	* test harness for all the commands.
+	* new command xml-sed
+	* new command xml-unecho
+	* new command xml-mv
+	* new command xml-cp
+	* new command xml-rm
+	* new command xml-head
+	* new command xml-cut
+	* new command xml-wc
+	* new command xml-fmt
+	* new command xml-grep
+	* XPATH matching now accepts simple wildcards * and //,
+	  also attributes and simple predicates
+	* changes for building on bsd/mac (thanks Joseph A Holsten)
+xml-coreutils 0.7:
+	* fix bug in create_block_blockmanager.
+	* fix buffer overflow in squeeze_stdout.
+	* tempcollect now flushes to disk when full.
+	* rudimentary test scripts for make check.
+	* new commands xml-strings, xml-ls, xml-find.
+	* changed mem.h api to fix C99 style type-punning warnings.
+xml-coreutils 0.4:
+        * initial release.

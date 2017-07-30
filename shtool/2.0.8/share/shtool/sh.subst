@@ -1,0 +1,301 @@
+##
+##  subst -- Apply sed(1) substitution operations
+##  Copyright (c) 2001-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="subst"
+str_usage="[-v|--verbose] [-t|--trace] [-n|--nop] [-w|--warning] [-q|--quiet] [-s|--stealth] [-i|--interactive] [-b|--backup <ext>] [-e|--exec <cmd>] [-f|--file <cmd-file>] [<file>] [...]"
+gen_tmpfile=yes
+arg_spec="0+"
+opt_spec="v.t.n.w.q.s.i.b:e+f:"
+opt_alias="v:verbose,t:trace,n:nop,w:warning,q:quiet,s:stealth,i:interactive,b:backup,e:exec,f:file"
+opt_v=no
+opt_t=no
+opt_n=no
+opt_w=no
+opt_q=no
+opt_s=no
+opt_i=no
+opt_b=""
+opt_e=""
+opt_f=""
+
+. ./sh.common
+
+#   remember optional list of file(s)
+files="$*"
+files_num="$#"
+
+#   parameter consistency check
+if [ $# -eq 0 ] && [ ".$opt_b" != . ]; then
+    echo "$msgprefix:Error: option -b cannot be applied to stdin" 1>&2
+    shtool_exit 1
+fi
+if [ $# -eq 0 ] && [ ".$opt_s" = .yes ]; then
+    echo "$msgprefix:Error: option -s cannot be applied to stdin" 1>&2
+    shtool_exit 1
+fi
+
+#   build underlying sed(1) command
+sedcmd='sed'
+if [ ".$opt_e" != . ]; then
+    OIFS="$IFS"; IFS="$ASC_NL"; set -- $opt_e; IFS="$OIFS"
+    for e
+    do
+        sedcmd="$sedcmd -e '$e'"
+    done
+elif [ ".$opt_f" != . ]; then
+    if [ ! -f $opt_f ]; then
+        echo "$msgprefix:Error: command file \`$opt_f' not found or not a regular file" 1>&2
+        shtool_exit 1
+    fi
+    sedcmd="$sedcmd -f '$opt_f'"
+else
+    echo "$msgprefix:Error: either -e option(s) or -f option required" 1>&2
+    shtool_exit 1
+fi
+
+#   determine extension for original file
+orig=".orig"
+if [ ".$opt_b" != . ]; then
+    orig="$opt_b"
+fi
+
+#   apply sed(1) operation(s)
+if [ ".$files" != . ]; then
+    #   apply operation(s) to files
+    substdone=no
+    for file in $files; do
+        test ".$file" = . && continue
+        if [ ! -f $file ]; then
+            echo "$msgprefix:Warning: file \`$file' not found or not a regular file" 1>&2
+            continue
+        fi
+
+        #   handle interactive mode
+        if [ ".$opt_i" = .yes ]; then
+            eval "$sedcmd <$file >$file.new"
+            skip=no
+            if cmp $file $file.new >/dev/null 2>&1; then
+                rm -f $file.new
+                skip=yes
+            else
+                (diff -U1 $file $file.new >$tmpfile) 2>/dev/null
+                if [ ".`cat $tmpfile`" = . ]; then
+                    (diff -C1 $file $file.new >$tmpfile) 2>/dev/null
+                    if [ ".`cat $tmpfile`" = . ]; then
+                        echo "$msgprefix:Warning: unable to show difference for file \`$file'" 1>&2
+                        cp /dev/null $tmpfile
+                    fi
+                fi
+                rm -f $file.new
+                cat $tmpfile
+                echo dummy | awk '{ printf("%s", TEXT); }' TEXT=">>> Apply [Y/n]: "
+                read input
+                if [ ".$input" != .Y ] &&\
+                   [ ".$input" != .y ] &&\
+                   [ ".$input" != . ]; then
+                   skip=yes
+                fi
+            fi
+            if [ ".$skip" = .yes ]; then
+                if [ ".$opt_v" = .yes ]; then
+                    echo "file \`$file' -- skipped" 1>&2
+                fi
+                continue
+            fi
+        fi
+
+        #   apply sed(1) operation(s)
+        if [ ".$opt_v" = .yes ]; then
+            echo "patching \`$file'" 1>&2
+        fi
+        if [ ".$opt_t" = .yes ]; then
+            echo "\$ cp -p $file $file$orig"
+            echo "\$ chmod u+w $file"
+            echo "\$ $sedcmd <$file$orig >$file"
+        fi
+        if [ ".$opt_n" = .no ]; then
+            cp -p $file $file$orig
+            chmod u+w $file >/dev/null 2>&1 || true
+            eval "$sedcmd <$file$orig >$file"
+        fi
+
+        #   optionally fix timestamp
+        if [ ".$opt_s" = .yes ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "\$ touch -r $file$orig $file"
+            fi
+            if [ ".$opt_n" = .no ]; then
+                touch -r $file$orig $file
+            fi
+        fi
+
+        #   optionally check whether any content change actually occurred
+        if [ ".$opt_q" = .no ]; then
+            if cmp $file$orig $file >/dev/null 2>&1; then
+                if [ ".$opt_w" = .yes ]; then
+                    echo "$msgprefix:Warning: substitution resulted in no content change on file \"$file\"" 1>&2
+                fi
+            else
+                substdone=yes
+            fi
+        fi
+
+        #   optionally remove preserved original file
+        if [ ".$opt_b" = . ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "\$ rm -f $file$orig"
+            fi
+            if [ ".$opt_n" = .no ]; then
+                rm -f $file$orig
+            fi
+        fi
+    done
+    if [ ".$opt_q" = .no ] && [ ".$opt_w" = .no ]; then
+        if [ ".$substdone" = .no ]; then
+            if [ ".$files_num" = .1 ]; then
+                echo "$msgprefix:Warning: substitution resulted in no content change on file \"$file\"" 1>&2
+            else
+                echo "$msgprefix:Warning: substitution resulted in no content change on any file" 1>&2
+            fi
+        fi
+    fi
+else
+    #   apply operation(s) to stdin/stdout
+    if [ ".$opt_v" = .yes ]; then
+        echo "patching <stdin>" 1>&2
+    fi
+    if [ ".$opt_t" = .yes ]; then
+        echo "\$ $sedcmd"
+    fi
+    if [ ".$opt_n" = .no ]; then
+        eval "$sedcmd"
+    fi
+fi
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool subst> - B<GNU shtool> sed(1) substitution operations
+
+=head1 SYNOPSIS
+
+B<shtool subst>
+[B<-v>|B<--verbose>]
+[B<-t>|B<--trace>]
+[B<-n>|B<--nop>]
+[B<-w>|B<--warning>]
+[B<-q>|B<--quiet>]
+[B<-s>|B<--stealth>]
+[B<-i>|B<--interactive>]
+[B<-b>|B<--backup> I<ext>]
+[B<-e>|B<--exec> I<cmd>]
+[B<-f>|B<--file> I<cmd-file>]
+[I<file>] [I<file> ...]
+
+=head1 DESCRIPTION
+
+This command applies one or more sed(1) substitution operations to
+F<stdin> or any number of files.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-v>, B<--verbose>
+
+Display some processing information.
+
+=item B<-t>, B<--trace>
+
+Enable the output of the essential shell commands which are executed.
+
+=item B<-n>, B<--nop>
+
+No operation mode. Actual execution of the essential shell commands
+which would be executed is suppressed.
+
+=item B<-w>, B<--warning>
+
+Show warning on substitution operation resulting in no content change
+on I<every> file. The default is to show a warning on substitution
+operations resulted in no content change on I<all> files.
+
+=item B<-q>, B<--quiet>
+
+Suppress warning on substitution operation resulting in no content change.
+
+=item B<-s>, B<--stealth>
+
+Stealth operation. Preserve timestamp on I<file>.
+
+=item B<-i>, B<--interactive>
+
+Enter interactive mode where the user has to approve each operation.
+
+=item B<-b>, B<--backup> I<ext>
+
+Preserve backup of original file using file name extension I<ext>.
+Default is to overwrite the original file.
+
+=item B<-e>, B<--exec> I<cmd>
+
+Specify sed(1) command directly.
+
+=item B<-f>, B<--file> I<cmd-file>
+
+Read sed(1) command from I<file>.
+
+=back
+
+=head1 EXAMPLE
+
+ #   shell script
+ shtool subst -i -e 's;(c) \([0-9]*\)-2000;(c) \1-2001;' *.[ch]
+
+ #    RPM spec-file
+ %install
+     shtool subst -v -n \
+         -e 's;^\(prefix=\).*;\1 $RPM_BUILD_ROOT%{_prefix};g' \
+         -e 's;^\(sysconfdir=\).*;\1 $RPM_BUILD_ROOT%{_prefix}/etc;g' \
+         `find . -name Makefile -print`
+     make install
+
+=head1 HISTORY
+
+The B<GNU shtool> B<subst> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 2001 for B<GNU shtool>.
+It was prompted by the need to have a uniform and convenient patching
+frontend to sed(1) operations in the B<OpenPKG> package specifications.
+
+=head1 SEE ALSO
+
+shtool(1), sed(1).
+
+=cut
+

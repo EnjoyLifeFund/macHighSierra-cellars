@@ -1,0 +1,424 @@
+##
+##  version -- Maintain a version information file
+##  Copyright (c) 1994-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="version"
+str_usage="[-l|--language <lang>] [-n|--name <name>] [-p|--prefix <prefix>] [-s|--set <version>] [-e|--edit] [-i|--increase <knob>] [-d|--display <type>] <file>"
+arg_spec="1="
+opt_spec="l:n:p:s:i:e.d:"
+opt_alias="l:language,n:name,p:prefix,s:set,e:edit,i:increase,d:display"
+opt_l="txt"
+opt_n="unknown"
+opt_p=""
+opt_s=""
+opt_e="no"
+opt_i=""
+opt_d="short"
+
+. ./sh.common
+
+file="$1"
+
+#   determine prefix and name
+name="$opt_n"
+prefix="$opt_p"
+
+#   determine current version
+triple="$opt_s"
+if [ ".$triple" != . ]; then
+    #   use given triple
+    if [ ".`echo $triple | grep '[0-9]*.[0-9]*[sabp.][0-9]*'`" = . ]; then
+        echo "$msgprefix:Error: invalid argument to option \`-s': \`$opt_s'" 1>&2
+        shtool_exit 1
+    fi
+    eval `echo $triple |\
+          sed -e 's%\([0-9]*\)\.\([0-9]*\)\([sabp.]\)\([0-9]*\).*%\
+          ver="\1";rev="\2";typ="\3";lev="\4"%'`
+    tim=calc
+elif [ -r $file ]; then
+    #   determine triple from given file
+    eval `grep 'Version [0-9]*.[0-9]*[sabp.][0-9]* ([0-9]*-[a-zA-Z]*-[0-9]*)' $file |\
+          sed -e 's%.*Version \([0-9]*\)\.\([0-9]*\)\([sabp.]\)\([0-9]*\) (\([0-9]*-[a-zA-Z]*-[0-9]*\)).*%\
+          ver="\1";rev="\2";typ="\3";lev="\4";tim="\5"%' -e 'q'`
+else
+    #   intialise to first version
+    ver=0
+    rev=1
+    typ=.
+    lev=0
+    tim=calc
+fi
+
+#   determine new version in batch
+if [ ".$opt_i" != . ]; then
+    case $opt_i in
+        v ) ver=`expr $ver + 1`
+            rev=0
+            lev=0
+            ;;
+        r ) rev=`expr $rev + 1`
+            lev=0
+            ;;
+        l ) lev=`expr $lev + 1`
+            ;;
+        * ) echo "$msgprefix:Error: invalid argument to option \`-i': \`$opt_i'" 1>&2
+            shtool_exit 1
+            ;;
+    esac
+    tim=calc
+fi
+
+#   determine new version interactively
+if [ ".$opt_e" = .yes ]; then
+    echo "old version: ${ver}.${rev}${typ}${lev}"
+    while [ 1 ]; do
+        echo dummy | awk '{ printf("new version: "); }'
+        read triple
+        case $triple in
+            [0-9]*.[0-9]*[sabp.][0-9]* )
+                ;;
+            * ) echo "$msgprefix:Error: invalid version string entered: \`$triple'" 1>&2
+                continue
+                ;;
+        esac
+        break
+    done
+    eval `echo $triple |\
+          sed -e 's%^\([0-9]*\)\.\([0-9]*\)\([sabp.]\)\([0-9]*\)$%\
+          ver="\1";rev="\2";typ="\3";lev="\4"%'`
+    tim=calc
+fi
+
+#   determine hexadecimal and libtool value of version
+case $typ in
+    a     ) typnum=0;  levnum=$lev ;;
+    b     ) typnum=1;  levnum=$lev ;;
+    p | . ) typnum=2;  levnum=$lev ;;
+    s     ) typnum=15; levnum=255  ;; # snapshots are special
+esac
+hex=`echo "$ver:$rev:$typnum:$levnum" |\
+     awk -F: '{ printf("0x%x%02x%1x%02x", $1, $2, $3, $4); }' |\
+     tr 'abcdef' 'ABCDEF'`
+ltv=`echo "$ver:$rev:$typnum:$levnum" |\
+     awk -F: '{ printf("%d:%d", $1*10 + $2, $3*10 + $4); }'`
+
+#   determine date
+if [ ".$tim" = .calc ]; then
+    day=`date '+%d'`
+    month=`date '+%m'`
+    year=`date '+%Y' 2>/dev/null`
+    if [ ".$time_year" = . ]; then
+        year=`date '+%y'`
+        case $year in
+            [5-9][0-9]) year="19$year" ;;
+            [0-4][0-9]) year="20$year" ;;
+        esac
+    fi
+    case $month in
+        1|01) month='Jan' ;;
+        2|02) month='Feb' ;;
+        3|03) month='Mar' ;;
+        4|04) month='Apr' ;;
+        5|05) month='May' ;;
+        6|06) month='Jun' ;;
+        7|07) month='Jul' ;;
+        8|08) month='Aug' ;;
+        9|09) month='Sep' ;;
+          10) month='Oct' ;;
+          11) month='Nov' ;;
+          12) month='Dec' ;;
+    esac
+    tim="${day}-${month}-${year}"
+fi
+
+#   perform result actions
+mode=show
+if [ ".$opt_i" != . ]; then
+    mode=edit
+elif [ ".$opt_e" = .yes ]; then
+    mode=edit
+elif [ ".$opt_s" != . ]; then
+    mode=edit
+fi
+if [ ".$mode" = .show ]; then
+    #   just display the current version
+    case $opt_d in
+        short )
+            echo "${ver}.${rev}${typ}${lev}"
+            ;;
+        long )
+            echo "${ver}.${rev}${typ}${lev} ($tim)"
+            ;;
+        libtool )
+            echo "${ltv}"
+            ;;
+        hex )
+            echo "${hex}"
+            ;;
+        * ) echo "$msgprefix:Error: invalid argument to option \`-d': \`$opt_d'" 1>&2
+            shtool_exit 1
+            ;;
+    esac
+else
+    #   update the version file
+
+    #   pre-generate various strings
+    triple="${ver}.${rev}${typ}${lev}"
+    vHex="$hex"
+    vShort="${triple}"
+    vLong="${triple} (${tim})"
+    vTeX="This is ${name}, Version ${triple} (${tim})"
+    vGNU="${name} ${triple} (${tim})"
+    vWeb="${name}/${triple}"
+    vSCCS="@(#)${name} ${triple} (${tim})"
+    vRCS="\$Id: ${name} ${triple} (${tim}) \$"
+
+    #   determine string out of filename
+    #   (do NOT try to optimize this in any way because of portability)
+    filestr=`util_upper "$file" | tr './%+' '____' | sed -e 's/-/_/g'`
+
+    #   generate uppercase prefix
+    prefixupper=`util_upper "$prefix"`
+
+    #   create the version file according the the selected language
+    echo "new version: ${vLong}"
+
+    cp /dev/null $file
+    case $opt_l in
+        txt )
+            echo >>$file ""
+            echo >>$file "  ${file} -- Version Information for ${name} (syntax: Text)"
+            echo >>$file "  [automatically generated and maintained by GNU shtool]"
+            echo >>$file ""
+            echo >>$file "  $vTeX"
+            echo >>$file ""
+            ;;
+        c )
+            echo >>$file "/*"
+            echo >>$file "**  ${file} -- Version Information for ${name} (syntax: C/C++)"
+            echo >>$file "**  [automatically generated and maintained by GNU shtool]"
+            echo >>$file "*/"
+            echo >>$file ""
+            echo >>$file "#ifdef _${filestr}_AS_HEADER_"
+            echo >>$file ""
+            echo >>$file "#ifndef _${filestr}_"
+            echo >>$file "#define _${filestr}_"
+            echo >>$file ""
+            echo >>$file "#define ${prefixupper}VERSION ${vHex}"
+            echo >>$file ""
+            echo >>$file "typedef struct {"
+            echo >>$file "    const int   v_hex;"
+            echo >>$file "    const char *v_short;"
+            echo >>$file "    const char *v_long;"
+            echo >>$file "    const char *v_tex;"
+            echo >>$file "    const char *v_gnu;"
+            echo >>$file "    const char *v_web;"
+            echo >>$file "    const char *v_sccs;"
+            echo >>$file "    const char *v_rcs;"
+            echo >>$file "} ${prefix}version_t;"
+            echo >>$file ""
+            echo >>$file "extern ${prefix}version_t ${prefix}version;"
+            echo >>$file ""
+            echo >>$file "#endif /* _${filestr}_ */"
+            echo >>$file ""
+            echo >>$file "#else /* _${filestr}_AS_HEADER_ */"
+            echo >>$file ""
+            echo >>$file "#define _${filestr}_AS_HEADER_"
+            echo >>$file "#include \"${file}\""
+            echo >>$file "#undef  _${filestr}_AS_HEADER_"
+            echo >>$file ""
+            echo >>$file "${prefix}version_t ${prefix}version = {"
+            echo >>$file "    ${vHex},"
+            echo >>$file "    \"${vShort}\","
+            echo >>$file "    \"${vLong}\","
+            echo >>$file "    \"${vTeX}\","
+            echo >>$file "    \"${vGNU}\","
+            echo >>$file "    \"${vWeb}\","
+            echo >>$file "    \"${vSCCS}\","
+            echo >>$file "    \"${vRCS}\""
+            echo >>$file "};"
+            echo >>$file ""
+            echo >>$file "#endif /* _${filestr}_AS_HEADER_ */"
+            echo >>$file ""
+            ;;
+        m4 )
+            echo >>$file "##"
+            echo >>$file "##  ${file} -- Version Information for ${name} (syntax: M4)"
+            echo >>$file "##  [automatically generated and maintained by GNU shtool]"
+            echo >>$file "##"
+            echo >>$file ""
+            echo >>$file "m4_define([v_hex],   [${vHex}])"
+            echo >>$file "m4_define([v_short], [${vShort}])"
+            echo >>$file "m4_define([v_long],  [${vLong}])"
+            echo >>$file "m4_define([v_tex],   [${vTeX}])"
+            echo >>$file "m4_define([v_gnu],   [${vGNU}])"
+            echo >>$file "m4_define([v_web],   [${vWeb}])"
+            echo >>$file "m4_define([v_sccs],  [${vSCCS}])"
+            echo >>$file "m4_define([v_rcs],   [${vRCS}])"
+            echo >>$file ""
+            ;;
+        perl )
+            echo >>$file "##"
+            echo >>$file "##  ${file} -- Version Information for ${name} (syntax: Perl)"
+            echo >>$file "##  [automatically generated and maintained by GNU shtool]"
+            echo >>$file "##"
+            echo >>$file ""
+            echo >>$file "our \$${prefix}version = {"
+            echo >>$file "    'v_hex'   => ${vHex},"
+            echo >>$file "    'v_short' => \"${vShort}\","
+            echo >>$file "    'v_long'  => \"${vLong}\","
+            echo >>$file "    'v_tex'   => \"${vTeX}\","
+            echo >>$file "    'v_gnu'   => \"${vGNU}\","
+            echo >>$file "    'v_web'   => \"${vWeb}\","
+            echo >>$file "    'v_sccs'  => \"${vSCCS}\","
+            echo >>$file "    'v_rcs'   => \"\\${vRCS}/\""
+            echo >>$file "};"
+            echo >>$file ""
+            echo >>$file "1;"
+            echo >>$file ""
+            ;;
+        python )
+            echo >>$file "##"
+            echo >>$file "##  ${file} -- Version Information for ${name} (syntax: Python)"
+            echo >>$file "##  [automatically generated and maintained by GNU shtool]"
+            echo >>$file "##"
+            echo >>$file ""
+            echo >>$file "class ${prefix}version:"
+            echo >>$file "    v_hex       = ${vHex}"
+            echo >>$file "    v_short     = \"${vShort}\""
+            echo >>$file "    v_long      = \"${vLong}\""
+            echo >>$file "    v_tex       = \"${vTeX}\""
+            echo >>$file "    v_gnu       = \"${vGNU}\""
+            echo >>$file "    v_web       = \"${vWeb}\""
+            echo >>$file "    v_sccs      = \"${vSCCS}\""
+            echo >>$file "    v_rcs       = \"${vRCS}\""
+            echo >>$file ""
+            ;;
+        * ) echo "$msgprefix:Error: invalid argument to option \`-l': \`$opt_l'" 1>&2
+            shtool_exit 1
+            ;;
+    esac
+fi
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool version> - B<GNU shtool> maintain version information file
+
+=head1 SYNOPSIS
+
+B<shtool version>
+[B<-l>|B<--language> I<lang>]
+[B<-n>|B<--name> I<name>]
+[B<-p>|B<--prefix> I<prefix>]
+[B<-s>|B<--set> I<version>]
+[B<-e>|B<--edit>]
+[B<-i>|B<--increase> I<knob>]
+[B<-d>|B<--display> I<type>]
+I<file>
+
+=head1 DESCRIPTION
+
+This command displays and maintains version information in I<file>.
+
+The version is always described with a triple
+E<lt>I<version>,I<revision>,I<level>E<gt> and is represented
+by a string which always matches the regular expression
+"C<[0-9]+\.[0-9]+[sabp.][0-9]+>".
+
+The hexadecimal format for a version C<v.rtl> is C<VVRRTLL> where C<VV>
+and C<RR> directly correspond to C<v> and C<r>, C<T> encodes the level
+type as C<9>, C<2>, C<1>, C<0> (representing C<s>, C<p>/C<.>, C<b>, C<a>
+in this order) and C<LL> is either directly corresponding to C<l> or set
+to C<99> if level type is C<s>.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-v>, B<--verbose>
+
+Print verbose information during processing.
+
+=item B<-l>, B<--language> I<lang>
+
+Choose format of version file I<file>. I<lang>="C<txt>", ANSI C
+(I<lang>="c"), M4 (I<lang>="m4"), Perl (I<lang>="perl") or Python
+(I<lang>="python"). Default is C<txt>.
+
+=item B<-n>, B<--name> I<name>
+
+Name the program the version is maintained for. Default is C<unknown>.
+
+=item B<-p>, B<--prefix> I<prefix>
+=item B<-s>, B<--set> I<version>
+
+Set the version to I<version>.
+
+=item B<-e>, B<--edit>
+
+Interactively enter a new version.
+
+=item B<-i>, B<--increase> I<knob>
+
+When option ``B<-i>'' is used, the current version in I<file> is updated
+by increasing one element of the version where I<knob> can be one of
+the following: ``C<v>'' for increasing the version by 1 (and resetting
+revision and level to 0), ``C<r>'' for increasing the revision by 1 (and
+resetting level to 0) or ``C<l>'' for increasing the level by 1.
+
+=item B<-d>, B<--display> I<type>
+
+Control the display type: "C<short>" for a short version display,
+"C<long>" for a longer version display, "C<hex>" for a hexadecimal
+display of the version and "C<libtool>" for a format suitable for use
+with GNU libtool.
+
+=back
+
+=head1 EXAMPLE
+
+ #   shell script
+ shtool version -l c -n FooBar -p foobar -s 1.2b3 version.c
+
+ #   configure.in
+ V=`shtool version -l c -d long version.c`
+ echo "Configuring FooBar, Version $V"
+
+=head1 HISTORY
+
+The B<GNU shtool> B<version> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1994 for B<OSSP eperl>. It
+was later rewritten from scratch for inclusion into B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1).
+
+=cut
+

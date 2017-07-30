@@ -1,0 +1,13 @@
+prefix=/usr/local/Cellar/qt/5.9.0
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+
+Name: Qt5 Gamepad
+Description: Qt Gamepad module
+Version: 5.9.0
+Libs: -F${libdir} -framework QtGamepad 
+Cflags: -I${includedir}/QtGamepad -I${includedir}
+Requires: Qt5Core Qt5Gui
+

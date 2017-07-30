@@ -1,0 +1,913 @@
+##
+##  platform -- Platform Identification Utility
+##  Copyright (c) 2003-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="platform"
+str_usage="[-F|--format <format>] [-S|--sep <string>] [-C|--conc <string>] [-L|--lower] [-U|--upper] [-v|--verbose] [-c|--concise] [-n|--no-newline] [-t|--type <type>] [-V|--version] [-h|--help]"
+arg_spec="0="
+opt_spec="F:S:C:L.U.v.c.n.t:d.V.h."
+opt_alias="F:format,S:sep,C:conc,L:lower,U:upper,v:verbose,c:consise,t:type,n:no-newline,V:version,h:help"
+opt_F="%{sp} (%{ap})"
+opt_S=" "
+opt_C="/"
+opt_L=no
+opt_U=no
+opt_t=""
+opt_v=no
+opt_c=no
+opt_n=no
+opt_V=no
+opt_h=no
+
+. ./sh.common
+
+#   option post-processing
+if [ ".$opt_t" != . ]; then
+    case "$opt_t" in
+        binary )
+            #   binary package id (OpenPKG RPM)
+            opt_F="%<ap>-%<sp>"
+            opt_L=yes
+            opt_S=""
+            opt_C="+"
+            ;;
+        build )
+            #   build time checking (OpenPKG RPM)
+            opt_F="%<at>-%<st>"
+            opt_L=yes
+            opt_S=""
+            opt_C="+"
+            ;;
+        gnu )
+            #   GNU config.guess style <arch>-<vendor>-<os><osversion>
+            opt_F="%<at>-unknown-%<st>"
+            opt_L=yes
+            opt_S=""
+            opt_C="+"
+            ;;
+        web )
+            #   non-whitespace HTTP Server-header id
+            opt_F="%<sp>-%<ap>"
+            opt_S="/"
+            opt_C="+"
+            ;;
+        summary)
+            #   human readable verbose summary information
+            opt_F="Class:      %[sc] (%[ac])\\nProduct:    %[sp] (%[ap])\\nTechnology: %[st] (%[at])"
+            opt_S=" "
+            opt_C="/"
+            ;;
+        all-in-one )
+            #   full-table all-in-one information
+            opt_F=""
+            opt_F="${opt_F}concise architecture class:      %<ac>\\n"
+            opt_F="${opt_F}regular architecture class:      %{ac}\\n"
+            opt_F="${opt_F}verbose architecture class:      %[ac]\\n"
+            opt_F="${opt_F}concise architecture product:    %<ap>\\n"
+            opt_F="${opt_F}regular architecture product:    %{ap}\\n"
+            opt_F="${opt_F}verbose architecture product:    %[ap]\\n"
+            opt_F="${opt_F}concise architecture technology: %<at>\\n"
+            opt_F="${opt_F}regular architecture technology: %{at}\\n"
+            opt_F="${opt_F}verbose architecture technology: %[at]\\n"
+            opt_F="${opt_F}concise system class:            %<sc>\\n"
+            opt_F="${opt_F}regular system class:            %{sc}\\n"
+            opt_F="${opt_F}verbose system class:            %[sc]\\n"
+            opt_F="${opt_F}concise system product:          %<sp>\\n"
+            opt_F="${opt_F}regular system product:          %{sp}\\n"
+            opt_F="${opt_F}verbose system product:          %[sp]\\n"
+            opt_F="${opt_F}concise system technology:       %<st>\\n"
+            opt_F="${opt_F}regular system technology:       %{st}\\n"
+            opt_F="${opt_F}verbose system technology:       %[st]"
+            ;;
+        * )
+            echo "$msgprefix:Error: invalid type \`$opt_t'" 1>&2
+            exit 1
+            ;;
+    esac
+fi
+
+#   assemble initial platform information
+UNAME_MACHINE=`(uname -m) 2>/dev/null` ||\
+UNAME_MACHINE=`(uname -p) 2>/dev/null` ||\
+UNAME_MACHINE='unknown'
+UNAME_SYSTEM=`(uname -s) 2>/dev/null`  ||\
+UNAME_SYSTEM='unknown'
+UNAME_RELEASE=`(uname -r) 2>/dev/null` ||\
+UNAME_RELEASE=`(uname -v) 2>/dev/null` ||\
+UNAME_RELEASE='unknown'
+
+UNAME="${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}"
+
+AC=""; AP=""; AT=""
+SC=""; SP=""; ST=""
+
+#    dispatch into platform specific sections
+case "${UNAME}" in
+
+    #   FreeBSD
+    *:FreeBSD:* )
+        #   determine architecture
+        AC="${UNAME_MACHINE}"
+        case "${AC}" in
+            i386 ) AC="iX86" ;;
+        esac
+        AP="${AC}"
+        AT="${AP}"
+        if [ ".${AT}" = ".iX86" ]; then
+            case "`(/sbin/sysctl -n hw.model) 2>&1`" in
+                *"Xeon"* | *"Pentium Pro"* | *"Cyrix 6x86MX"* | *"Pentium II"* | *"Pentium III"* | *"Pentium 4"* | *"Celeron"* ) AT="i686" ;;
+                *"Pentium"* ) AT="i586" ;; *"i486[SD]X"* | *"Cyrix 486"* | *"Cyrix [56]x86"* | *"Blue Lightning" | *"Cyrix 486S/DX" ) AT="i486" ;;
+                *"i386[SD]X"* | *"NexGen 586"* ) AT="i386" ;;
+            esac
+        fi
+        #   determine system
+        r=`echo "${UNAME_RELEASE}" |\
+           sed -e 's;[()];;' -e 's/\(-.*\)$/[\1]/'`
+        ST="FreeBSD ${r}"
+        SP="${ST}"
+        case "${r}" in
+            1.* ) SC="4.3BSD" ;;
+            *   ) SC="4.4BSD" ;;
+        esac
+        ;;
+
+    #   NetBSD
+    *:NetBSD:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        AP="${AT}"
+        case "${AP}" in
+            i[3-6]86 ) AP="iX86" ;;
+        esac
+        AC="${AP}"
+        #   determine system
+        r=`echo "${UNAME_RELEASE}" | sed -e 's/\([-_].*\)$/[\1]/'`
+        ST="NetBSD ${r}"
+        SP="${ST}"
+        case "${r}" in
+            0.* ) SC="4.3BSD" ;;
+            *   ) SC="4.4BSD" ;;
+        esac
+        ;;
+
+    #   OpenBSD
+    *:OpenBSD:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        AP="${AT}"
+        case "${AP}" in
+            i[3-6]86 ) AP="iX86" ;;
+        esac
+        AC="${AP}"
+        #   determine system
+        r=`echo "${UNAME_RELEASE}" | sed -e 's/\([-_].*\)$/[\1]/'`
+        ST="OpenBSD ${r}"
+        SP="${ST}"
+        SC="4.4BSD"
+        ;;
+
+    #   DragonFly BSD
+    *:DragonFly:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        AP="${AT}"
+        case "${AP}" in
+            i[3-6]86 ) AP="iX86" ;;
+        esac
+        AC="${AP}"
+        #   determine system
+        r=`echo "${UNAME_RELEASE}" | sed -e 's/\([-_].*\)$/[\1]/'`
+        ST="DragonFly ${r}"
+        SP="${ST}"
+        SC="4.4BSD"
+        ;;
+
+    #   GNU/Linux
+    *:Linux:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        case "${AT}" in
+           ia64     ) AT="IA64"   ;;
+           x86_64   ) AT='AMD64'  ;;
+           parisc   ) AT="HPPA32" ;;
+           parisc64 ) AT="HPPA64" ;;
+        esac
+        AP="${AT}"
+        case "${AP}" in
+           i[3-6]86 ) AP='iX86' ;;
+        esac
+        AC="${AP}"
+        #   determine system
+        v_kern=`echo "${UNAME_RELEASE}" |\
+            sed -e 's/^\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/'`
+        v_libc=`(strings /lib/libc.so.* | grep '^GLIBC_' | sed -e 's/^GLIBC_//' |\
+            env -i sort -n | sed -n -e '$p' | sed -e 's/^\([0-9][0-9]*\.[0-9][0-9]*\).*/\1/') 2>/dev/null`
+        ST="GNU/<Linux >${v_libc}/<${v_kern}>"
+        if [ -f /etc/lsb-release ]; then
+            eval `( . /etc/lsb-release
+                echo "SC=\"LSB${LSB_VERSION}\""
+                if [ ".${DISTRIB_ID}" != . -a ".${DISTRIB_RELEASE}" != . ]; then
+                    echo "SP=\"${DISTRIB_ID} ${DISTRIB_RELEASE}\""
+                fi
+            ) 2>/dev/null`
+        fi
+        if [ ".$SP" = . ]; then
+            for tagfile in x \
+                `cd /etc && \
+                /bin/ls *[_-]release *[_-]version 2>/dev/null | env -i sort | \
+                sed -e '/^redhat-release$/d' -e '/^lsb-release$/d'; \
+                echo redhat-release lsb-release`
+            do
+                [ ".${tagfile}" = .x ] && continue
+                [ ! -f "/etc/${tagfile}" ] && continue
+                n=`echo ${tagfile} | sed -e 's/[_-]release$//' -e 's/[_-]version$//'`
+                v=`(grep VERSION /etc/${tagfile}; cat /etc/${tagfile}) | grep '[0-9]' | sed -e 'q' |\
+                   sed -e 's/^/#/' \
+                       -e 's/^#[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\).*$/\1/' \
+                       -e 's/^#[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*$/\1/' \
+                       -e 's/^#[^0-9]*\([0-9][0-9]*\).*$/\1/' \
+                       -e 's/^#.*$//'`
+                case "`util_lower ${n}`" in
+                    redhat )
+                        if [ ".`egrep '(Red Hat Enterprise Linux|CentOS)' /etc/${tagfile}`" != . ]; then
+                            n="<R>ed <H>at <E>nterprise <L>inux"
+                        else
+                            n="<R>ed <H>at <L>inux"
+                        fi
+                        ;;
+                    debian             ) n="Debian[ GNU/Linux]"        ;;
+                    ubuntu             ) n="Ubuntu[ GNU/Linux]"        ;;
+                    fedora             ) n="<Fedora> Core[ GNU/Linux]" ;;
+                    suse               ) n="[Novell ]SUSE[ Linux]"     ;;
+                    mandrake*|mandriva ) n="Mandriva[ Linux]"          ;;
+                    gentoo             ) n="Gentoo[ GNU/Linux]"        ;;
+                    slackware          ) n="Slackware[ Linux]"         ;;
+                    turbolinux         ) n="TurboLinux"                ;;
+                    unitedlinux        ) n="UnitedLinux"               ;;
+                    *                  ) n="${n}[ GNU/Linux]"          ;;
+                esac
+                case "$n" in
+                    *"<"*">"* ) SP="$n <$v>" ;;
+                    *         ) SP="$n $v"   ;;
+                esac
+                break
+            done
+        fi
+        [ ".$SP" = . ] && SP="${ST}"
+        [ ".$SC" = . ] && SC="LSB"
+        ;;
+
+    #   Sun Solaris
+    *:SunOS:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        case "${AT}" in
+            i86pc )
+                AT="iX86"
+                case "`(/bin/isainfo -k) 2>&1`" in
+                    amd64 ) AT="AMD64" ;;
+                esac
+                ;;
+        esac
+        AP="${AT}"
+        case "${AP}" in
+            sun4[cdm] ) AP="SPARC32" ;;
+            sun4[uv]  ) AP="SPARC64" ;;
+            sun4*     ) AP="SPARC"   ;;
+        esac
+        AC="${AP}"
+        case "${AC}" in
+            SPARC* ) AC="SPARC" ;;
+        esac
+        #   determine system
+        ST="[Sun ]SunOS ${UNAME_RELEASE}"
+        v=`echo "${UNAME_RELEASE}" |\
+           sed -e 's;^4\.;1.;' \
+               -e 's;^5\.\([0-6]\)[^0-9]*$;2.\1;' \
+               -e 's;^5\.\([0-9][0-9]*\).*;\1;'`
+        SP="[Sun ]Solaris $v"
+        case "${UNAME_RELEASE}" in
+            4.* ) SC="4.3BSD" ;;
+            5.* ) SC="SVR4"   ;;
+        esac
+        ;;
+
+    #   SCO UnixWare
+    *:UnixWare:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        case "${AT}" in
+            i[3-6]86 | ix86at ) AT="iX86" ;;
+        esac
+        AP="${AT}"
+        #   determine system
+        v=`/sbin/uname -v`
+        ST="[SCO ]UnixWare ${v}"
+        SP="${ST}"
+        SC="SVR${UNAME_RELEASE}"
+        ;;
+
+    #   QNX
+    *:QNX:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        case "${AT}" in
+            x86pc ) AT="iX86" ;;
+        esac
+        AP="${AT}"
+        #   determine system
+        v="${UNAME_RELEASE}"
+        ST="QNX[ Neutrino RTOS] ${v}"
+        v=`echo "${v}" | sed -e 's;^\([0-9][0-9]*\.[0-9][0-9]*\).*$;\1;'`
+        SP="QNX[ Neutrino RTOS] ${v}"
+        SC="QNX"
+        ;;
+
+    #   SGI IRIX
+    *:IRIX*:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        AP="${AT}"
+        case "${AP}:${UNAME_SYSTEM}" in
+            IP*:IRIX64 ) AP="MIPS64" ;;
+            IP*:*      ) AP="MIPS"   ;;
+        esac
+        AC="${AP}"
+        #   determine system
+        v=`(/bin/uname -R || /bin/uname -r) 2>/dev/null | sed -e 's;[0-9.]* ;;'`
+        ST="[SGI ]IRIX ${v}"
+        v="${UNAME_RELEASE}"
+        SP="[SGI ]IRIX ${v}"
+        SC="4.2BSD/SVR3"
+        ;;
+
+    #   HP HP-UX
+    *:HP-UX:* )
+        #   determine architecture
+        AT="${UNAME_MACHINE}"
+        case "${AT}" in
+            ia64 ) AT="IA64" ;;
+            9000/[34]?? ) AT=M68K ;;
+            9000/[678][0-9][0-9])
+                sc_cpu_version=`/usr/bin/getconf SC_CPU_VERSION 2>/dev/null`
+                sc_kernel_bits=`/usr/bin/getconf SC_KERNEL_BITS 2>/dev/null`
+                case "${sc_cpu_version}" in
+                    523 ) AT="HPPA1.0" ;;
+                    528 ) AT="HPPA1.1" ;;
+                    532 ) AT="HPPA2.0"
+                        case "${sc_kernel_bits}" in
+                            32 ) AT="${AT}n" ;;
+                            64 ) AT="${AT}w" ;;
+                        esac
+                        ;;
+                esac
+                ;;
+        esac
+        AP="${AT}"
+        case "${AP}" in
+            HPPA* ) AP="HPPA" ;;
+        esac
+        AC="${AP}"
+        #   determine system
+        v=`echo "${UNAME_RELEASE}" | sed -e 's;^[^0-9]*;;'`
+        ST="[HP ]<HP>-<UX ${v}>"
+        SP="${ST}"
+        case "${v}" in
+            10.*   ) SC="SVR4.2" ;;
+            [7-9]* ) SC="SVR4"   ;;
+        esac
+        ;;
+
+    #   HP Tru64 (OSF1)
+    *:OSF1:* )
+        #   determine architecture
+        AP="${UNAME_MACHINE}"
+        case "${AP}" in
+            alpha ) AP="Alpha" ;;
+        esac
+        alpha_type=`(/usr/sbin/psrinfo -v) 2>/dev/null |\
+            sed -n -e 's/^.*The alpha \([^ ][^ ]*\).*processor.*$/\1/p' | sed -e 'q'`
+        AT="${AP}${alpha_type}"
+        AC="${AP}"
+        #   determine system
+        v=`echo "${UNAME_RELEASE}" | sed -e 's;^[VTX];;'`
+        ST="[HP ]Tru64 ${v}"
+        SP="${ST}"
+        SC="OSF1"
+        ;;
+
+    #   IBM AIX
+    *:AIX:* )
+        #   determine architecture
+        cpu_arch=RS6000
+        if [ -x /usr/sbin/lsdev -a -x /usr/sbin/lsattr ]; then
+            cpu_id=`/usr/sbin/lsdev -C -c processor -S available | sed 1q | awk '{ print $1 }'`
+            if [ ".`/usr/sbin/lsattr -El ${cpu_id} | grep -i powerpc`" != . ]; then
+                cpu_arch=PPC
+            fi
+        elif [ -d /QOpenSys ]; then
+            #   IBM i5/OS (aka OS/400) with PASE (Portable Application Solutions Environment)
+            cpu_arch=PPC
+        fi
+        if [ -x /usr/bin/oslevel ]; then
+            os_level=`/usr/bin/oslevel`
+        else
+            os_level="`uname -v`.`uname -r`"
+        fi
+        os_level=`echo "${os_level}" |\
+                  sed -e 's;^\([0-9][0-9]*\.[0-9][0-9]*\)\(\.[0-9][0-9]*\)\(.*\)$;<\1>\2[\3];' \
+                      -e 's;^\([0-9][0-9]*\.[0-9][0-9]*\)\(.*\)$;<\1>\2;'`
+        AT="${cpu_arch}"
+        AP="${AT}"
+        AC="${AP}"
+        #   determine system
+        ST="[IBM ]<AIX >${os_level}"
+        SP="${ST}"
+        case "${os_level}" in
+            [12]* ) SC="SVR2" ;;
+            *     ) SC="SVR4" ;;
+        esac
+        ;;
+
+    #   Apple Mac OS X (Darwin)
+    *:Darwin:* )
+        #   determine architecture
+        AT="`uname -p`"
+        case "${AT}" in
+            powerpc ) AT="PPC" ;;
+        esac
+        AP="${AT}"
+        case "${AP}" in
+            i?86 ) AP="iX86" ;;
+        esac
+        AC="${AP}"
+        #   determine system
+        unset v1; unset v2; unset v3
+        eval `echo "${UNAME_RELEASE}" |\
+              sed -e 's/^/#/' \
+                  -e 's/^#\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\).*$/v1="\1"; v2="\2"; v3="\3"/' \
+                  -e 's/^#\([0-9][0-9]*\)\.\([0-9][0-9]*\).*$/v1="\1"; v2="\2"/' \
+                  -e 's/^#\([0-9][0-9]*\).*$/v1="\1"/' \
+                  -e 's/^#.*$/v1="0"/'`
+        ST="[Apple ]<${UNAME_SYSTEM} ${v1}>${v2+.$v2}${v3+[.$v3]}"
+        SP="$ST"
+        v="`(sw_vers) 2>/dev/null | grep 'ProductVersion:' | sed -e 's/^ProductVersion:[^0-9]*\([0-9][0-9.]*\).*$/\1/'`"
+        if [ ".$v" = . ]; then
+            for name in System Server; do
+                if [ -f /System/Library/CoreServices/${name}Version.plist ]; then
+                    v=`(defaults read "/System/Library/CoreServices/${name}Version" "ProductVersion") 2>/dev/null`
+                    [ ".$v" != . ] && break
+                fi
+            done
+        fi
+        if [ ".$v" != . ]; then
+            unset v1; unset v2; unset v3
+            eval `echo "${v}" |\
+                  sed -e 's/^/#/' \
+                      -e 's/^#\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\).*$/v1="\1"; v2="\2"; v3="\3"/' \
+                      -e 's/^#\([0-9][0-9]*\)\.\([0-9][0-9]*\).*$/v1="\1"; v2="\2"/' \
+                      -e 's/^#\([0-9][0-9]*\).*$/v1="\1"/' \
+                      -e 's/^#.*$/v1="0"/'`
+            SP="[Apple ]Mac OS X ${v1}${v2+.$v2}${v3+[.$v3]}"
+        fi
+        SC="4.4BSD/Mach3.0"
+        ;;
+
+    #   Windows/Cygwin
+    *:CYGWIN*:* )
+        #   determine architecture
+        AT="`uname -m`"
+        AP="${AT}"
+        case "${AP}" in
+            i?86 ) AP="iX86" ;;
+        esac
+        AC="${AP}"
+        #   determine system
+        unset v1; unset v2; unset v3
+        eval `echo "${UNAME_RELEASE}" |\
+              sed -e 's/^/#/' \
+                  -e 's/^#\([0-9][0-9]*\)\.\([0-9][0-9]*\)\.\([0-9][0-9]*\).*$/v1="\1"; v2="\2"; v3="\3"/' \
+                  -e 's/^#\([0-9][0-9]*\)\.\([0-9][0-9]*\).*$/v1="\1"; v2="\2"/' \
+                  -e 's/^#\([0-9][0-9]*\).*$/v1="\1"/' \
+                  -e 's/^#.*$/v1="0"/'`
+        ST="Cygwin ${v1}${v2+.$v2}${v3+[.$v3]}"
+        SP="$ST"
+        SC="Windows"
+        v=`echo "${UNAME_SYSTEM}" | sed -e 's/^CYGWIN_NT-//' |\
+           sed -e 's/^/#/' -e 's/^#\([0-9][0-9]*\.[0-9][0-9]*\).*$/\1/' -e 's/^#.*$//'`
+        case "$v" in
+            4.0 ) SC="$SC[ NT]"    ;;
+            5.0 ) SC="$SC[ 2000]"  ;;
+            5.1 ) SC="$SC[ XP]"    ;;
+            6.0 ) SC="$SC[ Vista]" ;;
+        esac
+        ;;
+
+    #   TODO ...ADD YOUR NEW PLATFORM CHECK HERE... TODO
+    # *:XXX:* )
+    #   ...
+    #   ;;
+
+    #   ...A STILL UNKNOWN PLATFORM...
+    * )
+        AT=`echo "${UNAME_MACHINE}" | sed -e "s; ;${opt_C};g"`
+        AP="${AT}"
+        AC="${AP}"
+        v=`echo "${UNAME_RELEASE}" |\
+           sed -e 's/^/#/' \
+               -e 's/^#[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\).*$/\1/' \
+               -e 's/^#[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\).*$/\1/' \
+               -e 's/^#[^0-9]*\([0-9][0-9]*\).*$/\1/' \
+               -e 's/^#.*$/?/'`
+        ST="${UNAME_SYSTEM} ${v}"
+        SP="${ST}"
+        SC="${SP}"
+        ;;
+
+esac
+
+#   provide fallback values
+[ ".$AT" = . ] && AT="${AP:-${AC}}"
+[ ".$AP" = . ] && AP="${AT:-${AC}}"
+[ ".$AC" = . ] && AC="${AP:-${AT}}"
+[ ".$ST" = . ] && ST="${SP:-${SC}}"
+[ ".$SP" = . ] && SP="${ST:-${SC}}"
+[ ".$SC" = . ] && SC="${SP:-${ST}}"
+
+#   support explicit enforced verbose/concise output
+if [ ".$opt_v" = .yes ]; then
+    opt_F=`echo ":$opt_F" | sed -e 's/^://' -e 's/%\([as][cpt]\)/%[\1]/g'`
+elif [ ".$opt_c" = .yes ]; then
+    opt_F=`echo ":$opt_F" | sed -e 's/^://' -e 's/%\([as][cpt]\)/%<\1>/g'`
+fi
+
+#   provide verbose and concise variants
+AC_V=""; AC_N=""; AC_C=""
+AP_V=""; AP_N=""; AP_C=""
+AT_V=""; AT_N=""; AT_C=""
+SC_V=""; SC_N=""; SC_C=""
+SP_V=""; SP_N=""; SP_C=""
+ST_V=""; ST_N=""; ST_C=""
+for var_lc in at ap ac st sp sc; do
+    case "$opt_F" in
+        *"%[${val_lc}]"* | *"%{${val_lc}}"* | *"%${val_lc}"* | *"%<${val_lc}>"* )
+        var_uc=`util_upper "$var_lc"`
+        eval "val=\"\$${var_uc}\""
+        val_V=""; val_N=""; val_C=""
+        case "$opt_F" in
+            *"%[${var_lc}]"* )
+                val_V=`echo ":$val" | \
+                       sed -e 's/^://' \
+                           -e 's;\[\([^]]*\)\];\1;g' \
+                           -e 's;<\([^>]*\)>;\1;g' \
+                           -e "s; ;§§;g" \
+                           -e "s;/;%%;g" \
+                           -e "s;§§;${opt_S};g" \
+                           -e "s;%%;${opt_C};g"`
+                eval "${var_uc}_V=\"\${val_V}\""
+                ;;
+        esac
+        case "$opt_F" in
+            *"%{${var_lc}}"* | *"%${var_lc}"* )
+                val_N=`echo ":$val" | \
+                       sed -e 's/^://' \
+                           -e 's;\[\([^]]*\)\];;g' \
+                           -e 's;<\([^>]*\)>;\1;g' \
+                           -e "s; ;§§;g" \
+                           -e "s;/;%%;g" \
+                           -e "s;§§;${opt_S};g" \
+                           -e "s;%%;${opt_C};g"`
+                eval "${var_uc}_N=\"\${val_N}\""
+                ;;
+        esac
+        case "$opt_F" in
+            *"%<${var_lc}>"* )
+                val_C=`echo ":$val" | \
+                       sed -e 's/^://' \
+                           -e 's;\[\([^]]*\)\];;g' \
+                           -e 's;[^<]*<\([^>]*\)>[^<]*;\1;g' \
+                           -e "s; ;§§;g" \
+                           -e "s;/;%%;g" \
+                           -e "s;§§;${opt_S};g" \
+                           -e "s;%%;${opt_C};g"`
+                eval "${var_uc}_C=\"\${val_C}\""
+                ;;
+        esac
+        ;;
+    esac
+done
+
+#   create output string
+output=`echo ":$opt_F" |\
+        sed -e "s/^://" \
+            -e "s;%\\[ac\\];${AC_V};g" \
+            -e "s;%{ac};${AC_N};g" \
+            -e "s;%ac;${AC_N};g" \
+            -e "s;%<ac>;${AC_C};g" \
+            -e "s;%\\[ap\\];${AP_V};g" \
+            -e "s;%{ap};${AP_N};g" \
+            -e "s;%ap;${AP_N};g" \
+            -e "s;%<ap>;${AP_C};g" \
+            -e "s;%\\[at\\];${AT_V};g" \
+            -e "s;%{at};${AT_N};g" \
+            -e "s;%at;${AT_N};g" \
+            -e "s;%<at>;${AT_C};g" \
+            -e "s;%\\[sc\\];${SC_V};g" \
+            -e "s;%{sc};${SC_N};g" \
+            -e "s;%sc;${SC_N};g" \
+            -e "s;%<sc>;${SC_C};g" \
+            -e "s;%\\[sp\\];${SP_V};g" \
+            -e "s;%{sp};${SP_N};g" \
+            -e "s;%sp;${SP_N};g" \
+            -e "s;%<sp>;${SP_C};g" \
+            -e "s;%\\[st\\];${ST_V};g" \
+            -e "s;%{st};${ST_N};g" \
+            -e "s;%st;${ST_N};g" \
+            -e "s;%<st>;${ST_C};g" \
+            -e 's/\\\\n/^/g' |\
+         tr '^' '\012'`
+
+#   support lower/upper-case mapping
+if [ ".$opt_L" = .yes ]; then
+    output=`util_lower "$output"`
+elif [ ".$opt_U" = .yes ]; then
+    output=`util_upper "$output"`
+fi
+
+#   display output string
+if [ ".$opt_n" = .yes ]; then
+    echo . | awk '{ printf("%s", output); }' output="$output"
+else
+    echo "$output"
+fi
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool platform> - B<GNU shtool> Unix platform identification
+
+=head1 SYNOPSIS
+
+B<shtool platform>
+[B<-F>|B<--format> I<format>]
+[B<-S>|B<--sep> I<string>]
+[B<-C>|B<--conc> I<string>]
+[B<-L>|B<--lower>]
+[B<-U>|B<--upper>]
+[B<-v>|B<--verbose>]
+[B<-c>|B<--concise>]
+[B<-n>|B<--newline>]
+[B<-d>|B<--debug>]
+[B<-t>|B<--type> I<type>]
+[B<-n>|B<--newline>]
+[B<-d>|B<--debug>]
+
+=head1 DESCRIPTION
+
+B<shtool platform> is a flexible Unix platform identification program.
+It distinguishes a platform according to its I<hardware architecture>
+and I<operating system>. For both there is a I<class>, I<product> and
+I<technology> identification. For each of those six identifications,
+there is a I<verbose>, I<regular> and I<concise> version.
+
+This leads to eighteen (2x3x3) available identification strings for each
+platform, from which usually 2 are chosen in a particular situation.
+This is done by assembling the platform identification string using a
+I<format> string containing one or more identification constructs of the
+forms "C<%[xx]>" (verbose), "C<%{xx}>" (regular) and "C<%E<lt>xxE<gt>>"
+(concise).
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-F>, B<--format> I<format>
+
+This option controls the output formatting of this program. It is a
+plain-text string with the "C<%>I<xx>" constructs which expand to the
+various platform information strings. "C<%{>I<xx>C<}>" is the canonical
+regular version of the information. "C<%[>I<xx>C<]>" is the verbose
+version of the information. "C<%E<lt>>I<xx>C<E<gt>>" is the concise
+version of the information. In total, the following constructs
+are available for expansion:
+
+ %[ac]    verbose hardware architecture class
+ %{ac}    regular hardware architecture class
+ %<ac>    concise hardware architecture class
+
+ %[ap]    verbose hardware architecture product
+ %{ap}    regular hardware architecture product
+ %<ap>    concise hardware architecture product
+
+ %[at]    verbose hardware architecture technology
+ %{at}    regular hardware architecture technology
+ %<at>    concise hardware architecture technology
+
+ %[sc]    verbose operating system class
+ %{sc}    regular operating system class
+ %<sc>    concise operating system class
+
+ %[sp]    verbose operating system product
+ %{sp}    regular operating system product
+ %<sp>    concise operating system product
+
+ %[st]    verbose operating system technology
+ %{st}    regular operating system technology
+ %<st>    concise operating system technology
+
+The default I<format> string is "C<%{sp} (%{ap})>", providing the
+regular operating system and hardware architecture product information.
+
+=item B<-S>, B<--sep> I<string>
+
+This option sets the word I<separation> string for the platform
+information strings. By default it is "C< >" (whitespace). It is
+especially used for separating the operating system name and
+the operating system version.
+
+=item B<-C>, B<--conc> I<string>
+
+This option sets the word I<concatenation> string for the platform
+information strings. By default it is "C</>". It is especially used to
+concatenate multiple parts in operating system name and version parts.
+
+=item B<-L>, B<--lower>
+
+This options enforces conversion of the output to all I<lower> case.
+
+=item B<-U>, B<--upper>
+
+This options enforces conversion of the output to all I<upper> case.
+
+=item B<-v>, B<--verbose>
+
+This option enforces verbose versions of all expansion constructs
+in I<format> string of option B<-F>. It is equal to specifying all
+expansion constructs as "C<%[>I<xx>C<]>".
+
+=item B<-c>, B<--concise>
+
+This option enforces concise versions of all expansion constructs
+in I<format> string of option B<-F>. It is equal to specifying all
+expansion constructs as "C<%E<lt>>I<xx>C<E<gt>>".
+
+=item B<-n>, B<--no-newline>
+
+This option omits the usual trailing newline character in the output.
+
+=item B<-t>, B<--type> I<type>
+
+This option is a meta option which internally sets options B<-F>, B<-S>,
+B<-C>, B<-L>, B<-U>, B<-v> or B<-c> according to I<TYPE>. It can be used
+to easily specify various commonly known outputs. The following I<TYPE>s
+are available:
+
+=over 4
+
+=item B<binary>
+
+Binary Package Id (OpenPKG RPM).
+This is equal to "C<-F '%<ap>-%<sp>' -L -S '' -C '+'>"
+and results in outputs like "C<ix86-freebsd4.9>" and "C<ix86-debian3.0>".
+
+=item B<build>
+
+Build-Time Checking (OpenPKG RPM).
+This is equal to "C<-F '%<at>-%<st>' -L -S '' -C '+'>"
+and results in outputs like "C<i686-freebsd4.9>" and "C<i586-linux2.4>".
+
+=item B<gnu>
+
+GNU F<config.guess> Style Id.
+This is similar to B<build> and is equal to "C<-F '"%<at>-unknown-%<st>' -L -S '' -C '+'>"
+and results in outputs like "C<i686-unknown-freebsd4.9>" and "C<i586-unknown-linux2.4>".
+
+=item B<web>
+
+HTTP Server Header Id.
+This is equal to "C<-F '"%<sp>-%<ac>' -S '/' -C '+'>"
+and results in outputs like "C<FreeBSD/4.9-iX86>" and "C<Debian/3.0-iX86>".
+
+=item B<summary>
+
+Human Readable Verbose Summary Information. This is equal to "C<-F
+'Class: %[sc] (%[ac])\nProduct: %[sp] (%[ap])\nTechnology: %[st]
+(%[at])' -S ' ' -C '/'>" and results in outputs like:
+
+ Class:      4.4BSD (iX86)
+ Product:    FreeBSD 4.9-RC (iX86)
+ Technology: FreeBSD 4.9-RC (i686)
+
+and
+
+ Class:      LSB (iX86)
+ Product:    Debian GNU/Linux 3.0 (iX86)
+ Technology: GNU/Linux 2.2/2.4 (i686)
+
+=item B<all-in-one>
+
+All-In-One Full-Table Information. This just outputs really
+all 2x2x3 identification strings as a table.
+
+=back
+
+=item B<-d>, B<--debug>
+
+This option enables some internal debugging messages.
+
+=item B<-V>, B<--version>
+
+This option outputs the version information of B<shtool platform> only.
+
+=item B<-h>, B<--help>
+
+This option outputs the usage information of B<shtool platform> only.
+
+=back
+
+=head1 EXAMPLE
+
+The following real-life use cases are known:
+
+=over 4
+
+=item B<OpenPKG> build-time decisions
+
+ $ platform -c -L -S "" -C "+" -F "%at-%st"
+ $ platform -c -L -S "" -C "+" -F "%ac-%sc"
+
+=item B<OpenPKG> binary RPM packages
+
+ $ platform -c -L -S "" -C "+" -F "%ap-%sp"
+
+=item F<README> files
+
+ $ platform -v -F "%sp (%ap)"
+ $ platform -v -F "%sc (%ac)"
+
+=item Debugging
+
+ $ platform --type=all-in-one
+
+=back
+
+=head1 SUPPORT
+
+B<shtool platform> currently knows the following particular Unix platforms
+in detail: FreeBSD, NetBSD, OpenBSD, Linux, Sun Solaris, SCO UnixWare,
+QNX Neutrino, SGI IRIX, HP HP-UX, HP Tru64, IBM AIX and Apple Mac OS X
+Darwin.
+
+All other Unix platforms are recognized through generic uname(1)
+information and so usually can be identified sufficiently, although the
+identification might be not as precise as possible.
+
+=head1 HISTORY
+
+B<shtool platform> was implemented in September 2003 by I<Ralf S.
+Engelschall> for use in the B<OSSP> and B<OpenPKG> projects. It was
+prompted by the need in B<OpenPKG> to have both product (for RPM
+filenames) and technology (for build-time decisions) identifiers for the
+Unix platforms, OpenPKG packages are maintained for. It was inspired by
+the B<GNU> F<config.guess> and the old B<GNU shtool> F<guessos> command.
+
+The major difference to B<GNU> F<config.guess> is that B<shtool platform>
+does not use a I<vendor> identification (cannot be determined most of
+the time and is not used at all in all projects I've ever seen) and
+is a lot more flexible (class, product and technology identifications
+combined with verbose, regular and concise outputs). The drawback of
+B<shtool platform> is that it (still) knows less particular platforms,
+although the generic platform identification is sufficient enough most
+of the time.
+
+=head1 SEE ALSO
+
+uname(3), GNU F<config.guess>.
+
+=cut
+

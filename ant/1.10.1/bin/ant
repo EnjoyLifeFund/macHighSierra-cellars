@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/local/Cellar/ant/1.10.1/libexec/bin/ant -lib /usr/local/share/ant "$@"

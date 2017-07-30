@@ -1,0 +1,16 @@
+QT.scripttools.VERSION = 5.9.0
+QT.scripttools.name = QtScriptTools
+QT.scripttools.module = QtScriptTools
+QT.scripttools.libs = $$QT_MODULE_LIB_BASE
+QT.scripttools.includes = $$QT_MODULE_LIB_BASE/QtScriptTools.framework/Headers
+QT.scripttools.frameworks = $$QT_MODULE_LIB_BASE
+QT.scripttools.bins = $$QT_MODULE_BIN_BASE
+QT.scripttools.depends = core
+QT.scripttools.run_depends = gui widgets_private script
+QT.scripttools.uses =
+QT.scripttools.module_config = v2 lib_bundle
+QT.scripttools.DEFINES = QT_SCRIPTTOOLS_LIB
+QT.scripttools.enabled_features =
+QT.scripttools.disabled_features =
+QT_CONFIG +=
+QT_MODULES += scripttools

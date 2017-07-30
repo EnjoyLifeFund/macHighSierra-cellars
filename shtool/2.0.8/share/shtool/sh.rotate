@@ -1,0 +1,590 @@
+##
+##  rotate -- Logfile rotation
+##  Copyright (c) 2001-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="rotate"
+str_usage="[-v|--verbose] [-t|--trace] [-f|--force] [-n|--num-files <count>] [-s|--size <size>] [-c|--copy] [-r|--remove] [-a|--archive-dir <dir>] [-z|--compress [<tool>:]<level>] [-b|--background] [-d|--delay] [-p|--pad <len>] [-m|--mode <mode>] [-o|--owner <owner>] [-g|--group <group>] [-M|--migrate <cmd>] [-P|--prolog <cmd>] [-E|--epilog <cmd>] <file> [...]"
+arg_spec="1+"
+opt_spec="v.t.f.n:s:c.r.a:z:b.d.p:o:g:m:M:P:E:"
+opt_alias="v:verbose,t:trace,f:force,n:num-files,s:size,c:copy,r:remove,a:archive-dir,z:compress,b:background,d:delay,p:pad,o:owner,g:group,m:mode,M:migrate,P:prolog,E:epilog"
+opt_v=no
+opt_t=no
+opt_f=no
+opt_n=10
+opt_s=""
+opt_c=no
+opt_r=no
+opt_a=""
+opt_z=""
+opt_b=no
+opt_d=no
+opt_p=1
+opt_o=""
+opt_g=""
+opt_m=""
+opt_M=""
+opt_P=""
+opt_E=""
+
+. ./sh.common
+
+#   make sure we have at least one file to rotate
+if [ ".$opt_n" = .0 ]; then
+    echo "$msgprefix:Error: invalid argument \`$opt_n' to option -n." 1>&2
+    shtool_exit 1
+fi
+
+#   canonicalize -s option argument
+if [ ".$opt_s" != . ]; then
+    if [ ".`expr $opt_s : '[0-9]*$'`" != .0 ]; then
+        :
+    elif [ ".`expr $opt_s : '[0-9]*[Kk]$'`" != .0 ]; then
+        opt_s=`expr $opt_s : '\([0-9]*\)[Kk]$'`
+        opt_s=`expr $opt_s \* 1024`
+    elif [ ".`expr $opt_s : '[0-9]*[Mm]$'`" != .0 ]; then
+        opt_s=`expr $opt_s : '\([0-9]*\)[Mm]$'`
+        opt_s=`expr $opt_s \* 1048576` # 1024*1024
+    elif [ ".`expr $opt_s : '[0-9]*[Gg]$'`" != .0 ]; then
+        opt_s=`expr $opt_s : '\([0-9]*\)[Gg]$'`
+        opt_s=`expr $opt_s \* 1073741824` # 1024*1024*1024
+    else
+        echo "$msgprefix:Error: invalid argument \`$opt_s' to option -s." 1>&2
+        shtool_exit 1
+    fi
+fi
+
+#   option -d/-z consistency
+if [ ".$opt_d" = .yes ] && [ ".$opt_z" = . ]; then
+    echo "$msgprefix:Error: option -d requires option -z." 1>&2
+    shtool_exit 1
+fi
+
+#   make sure target directory exists
+if [ ".$opt_a" != . ]; then
+    if [ ! -d $opt_a ]; then
+        if [ ".$opt_f" = .no ]; then
+            echo "$msgprefix:Error: archive directory \`$opt_a' does not exist." 1>&2
+            shtool_exit 1
+        fi
+        mkdir $opt_a || shtool_exit $?
+        chmod 755 $opt_a
+    fi
+    if [ ! -w $opt_a ]; then
+        echo "$msgprefix:Error: archive directory \`$opt_a' not writable." 1>&2
+        shtool_exit 1
+    fi
+fi
+
+#   determine compression approach
+if [ ".$opt_z" != . ]; then
+    comp_lvl="$opt_z"
+    comp_prg=""
+    case $comp_lvl in
+        *:* ) eval `echo $comp_lvl |\
+                    sed -e 's%^\(.*\):\(.*\)$%comp_prg="\1"; comp_lvl="\2"%'` ;;
+    esac
+
+    #   compression level consistency
+    case $comp_lvl in
+        [0-9] )
+            ;;
+        * ) echo "$msgprefix:Error: invalid compression level \`$comp_lvl'" 1>&2
+            shtool_exit 1
+            ;;
+    esac
+
+    #   determine a suitable compression tool
+    if [ ".$comp_prg" = . ]; then
+        #   check whether the test command supports the -x option
+        if [ -x /bin/sh ] 2>/dev/null; then
+            minusx="-x"
+        else
+            minusx="-r"
+        fi
+        #   search for tools in $PATH
+        paths="`echo $PATH |\
+                sed -e 's%/*:%:%g' -e 's%/*$%%' \
+                    -e 's/^:/.:/' -e 's/::/:.:/g' -e 's/:$/:./' \
+                    -e 's/:/ /g'`"
+        for prg in bzip2 gzip compress; do
+            for path in $paths; do
+                if [ $minusx "$path/$prg" ] && [ ! -d "$path/$prg" ]; then
+                    comp_prg="$prg"
+                    break
+                fi
+            done
+            if [ ".$comp_prg" != . ]; then
+                break
+            fi
+        done
+        if [ ".$comp_prg" = . ]; then
+            echo "$msgprefix:Error: no suitable compression tool found in \$PATH" 1>&2
+            shtool_exit 1
+        fi
+    fi
+
+    #   determine standard compression extension
+    #   and make sure it is a known tool
+    case $comp_prg in
+        */bzip2    | bzip2    ) comp_ext="bz2" comp_lvl="-$comp_lvl" ;;
+        */gzip     | gzip     ) comp_ext="gz"  comp_lvl="-$comp_lvl" ;;
+        */compress | compress ) comp_ext="Z";  comp_lvl=""           ;;
+        * ) echo "$msgprefix:Error: tool \`$comp_prg' is not a known compression tool" 1>&2
+            shtool_exit 1
+            ;;
+    esac
+    comp_suf=".$comp_ext"
+fi
+
+#   iterate over all given logfile arguments
+for file in $*; do
+    #   make sure the logfile exists
+    if [ ! -f $file ]; then
+        if [ ".$opt_f" = .yes ]; then
+            continue
+        fi
+        echo "$msgprefix:Error: logfile \`$file' not found" 1>&2
+        shtool_exit 1
+    fi
+
+    #   determine log directory (where original logfile is placed)
+    ldir="."
+    case $file in
+        */* ) eval `echo $file | sed -e 's%^\(.*\)/\([^/]*\)$%ldir="\1"; file="\2";%'` ;;
+    esac
+
+    #   determine archive directory (where rotated logfiles are placed)
+    adir="$ldir"
+    if [ ".$opt_a" != . ]; then
+        case "$opt_a" in
+            /* | ./* ) adir="$opt_a" ;;
+            * ) adir="$ldir/$opt_a"  ;;
+        esac
+    fi
+
+    #   optionally take logfile size into account
+    if [ ".$opt_s" != . ]; then
+        #   determine size of logfile
+        set -- `env -i /bin/ls -l "$ldir/$file" | sed -e "s;$ldir/$file;;" |\
+                sed -e 's; -> .*$;;' -e 's;[ 	][ 	]*; ;g'`
+        n=`expr $# - 3`
+        eval "size=\`echo \${$n}\`"
+
+        #   skip logfile if size is still too small
+        if [ $size -lt $opt_s ]; then
+            if [ ".$opt_v" = .yes ]; then
+                echo "$ldir/$file: still too small in size -- skipping"
+            fi
+            continue
+        fi
+    fi
+
+    #   verbosity
+    if [ ".$opt_v" = .yes ]; then
+        echo "rotating $ldir/$file"
+    fi
+
+    #   execute prolog
+    if [ ".$opt_P" != . ]; then
+        if [ ".$opt_t" = .yes ]; then
+            echo "$opt_P"
+        fi
+        eval $opt_P
+        [ $? -ne 0 ] && shtool_exit $?
+    fi
+
+    #   kick away out-rotated logfile
+    n=`expr $opt_n - 1`
+    n=`echo dummy | awk "{ printf(\"%0${opt_p}d\", n); }" n=$n`
+    if [ -f "${adir}/${file}.${n}${comp_suf}" ]; then
+        #   optionally migrate away the out-rotated logfile
+        if [ ".$opt_M" != . ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "$opt_M ${adir}/${file}.${n}${comp_suf}"
+            fi
+            eval "$opt_M ${adir}/${file}.${n}${comp_suf}"
+            [ $? -ne 0 ] && shtool_exit $?
+        fi
+        #   finally get rid of the out-rotated logfile
+        if [ ".$opt_t" = .yes ]; then
+            echo "rm -f ${adir}/${file}.${n}${comp_suf}"
+        fi
+        rm -f ${adir}/${file}.${n}${comp_suf} || shtool_exit $?
+    fi
+
+    #   rotate already archived logfiles
+    while [ $n -gt 0 ]; do
+        m=$n
+        n=`expr $n - 1`
+        n=`echo dummy | awk "{ printf(\"%0${opt_p}d\", n); }" n=$n`
+        if [ $n -eq 0 ] && [ ".$opt_d" = .yes ]; then
+            #   special case: first rotation file under delayed compression situation
+            if [ ! -f "${adir}/${file}.${n}" ]; then
+                continue
+            fi
+
+            #   compress file (delayed)
+            if [ ".$opt_b" = .yes ]; then
+                if [ ".$opt_t" = .yes ]; then
+                    echo "mv ${adir}/${file}.${n} ${adir}/${file}.${m}"
+                fi
+                mv ${adir}/${file}.${n} ${adir}/${file}.${m} || shtool_exit $?
+                if [ ".$opt_t" = .yes ]; then
+                    echo "(${comp_prg} ${comp_lvl} <${adir}/${file}.${m} >${adir}/${file}.${m}${comp_suf}; rm -f ${adir}/${file}.${m}) &"
+                fi
+                ( ${comp_prg} ${comp_lvl} \
+                      <${adir}/${file}.${m} \
+                      >${adir}/${file}.${m}${comp_suf} || shtool_exit $?
+                  rm -f ${adir}/${file}.${m} || shtool_exit $?
+                ) </dev/null >/dev/null 2>&1 &
+            else
+                if [ ".$opt_t" = .yes ]; then
+                    echo "${comp_prg} ${comp_lvl} <${adir}/${file}.${n} >${adir}/${file}.${m}${comp_suf}"
+                fi
+                ${comp_prg} ${comp_lvl} \
+                    <${adir}/${file}.${n} \
+                    >${adir}/${file}.${m}${comp_suf} || shtool_exit $?
+                if [ ".$opt_t" = .yes ]; then
+                    echo "rm -f ${adir}/${file}.${n}"
+                fi
+                rm -f ${adir}/${file}.${n} || shtool_exit $?
+            fi
+
+            #   fix file attributes
+            if [ ".$opt_o" != . ]; then
+                if [ ".$opt_t" = .yes ]; then
+                    echo "chown $opt_o ${adir}/${file}.${m}${comp_suf}"
+                fi
+                chown $opt_o ${adir}/${file}.${m}${comp_suf} || shtool_exit $?
+            fi
+            if [ ".$opt_g" != . ]; then
+                if [ ".$opt_t" = .yes ]; then
+                    echo "chgrp $opt_g ${adir}/${file}.${m}${comp_suf}"
+                fi
+                chgrp $opt_g ${adir}/${file}.${m}${comp_suf} || shtool_exit $?
+            fi
+            if [ ".$opt_m" != . ]; then
+                if [ ".$opt_t" = .yes ]; then
+                    echo "chmod $opt_m ${adir}/${file}.${m}${comp_suf}"
+                fi
+                chmod $opt_m ${adir}/${file}.${m}${comp_suf} || shtool_exit $?
+            fi
+        else
+            #   standard case: second and following rotation file
+            if [ ! -f "${adir}/${file}.${n}${comp_suf}" ]; then
+                continue
+            fi
+            if [ ".$opt_t" = .yes ]; then
+                echo "mv ${adir}/${file}.${n}${comp_suf} ${adir}/${file}.${m}${comp_suf}"
+            fi
+            mv ${adir}/${file}.${n}${comp_suf} ${adir}/${file}.${m}${comp_suf} || shtool_exit $?
+        fi
+    done
+
+    #   move away current logfile
+    if [ ".$opt_c" = .yes ]; then
+        #   approach: copy[+truncate]
+        if [ ".$opt_t" = .yes ]; then
+            echo "cp -p ${ldir}/${file} ${adir}/${file}.${n}"
+        fi
+        cp -p ${ldir}/${file} ${adir}/${file}.${n} || shtool_exit $?
+        if [ ".$opt_r" = .no ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "cp /dev/null ${ldir}/${file}"
+            fi
+            cp /dev/null ${ldir}/${file} || shtool_exit $?
+        fi
+    else
+        #   approach: move[+touch]
+        if [ ".$opt_t" = .yes ]; then
+            echo "mv ${ldir}/${file} ${adir}/${file}.${n}"
+        fi
+        mv ${ldir}/${file} ${adir}/${file}.${n} || shtool_exit $?
+        if [ ".$opt_r" = .no ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "touch ${ldir}/${file}"
+            fi
+            touch ${ldir}/${file} || shtool_exit $?
+            #   fix file attributes
+            if [ ".$opt_o" != . ]; then
+                if [ ".$opt_t" = .yes ]; then
+                    echo "chown $opt_o ${ldir}/${file}"
+                fi
+                chown $opt_o ${ldir}/${file} || shtool_exit $?
+            fi
+            if [ ".$opt_g" != . ]; then
+                if [ ".$opt_t" = .yes ]; then
+                    echo "chgrp $opt_g ${ldir}/${file}"
+                fi
+                chgrp $opt_g ${ldir}/${file} || shtool_exit $?
+            fi
+            if [ ".$opt_m" != . ]; then
+                if [ ".$opt_t" = .yes ]; then
+                    echo "chmod $opt_m ${ldir}/${file}"
+                fi
+                chmod $opt_m ${ldir}/${file} || shtool_exit $?
+            fi
+        fi
+    fi
+
+    #   regular compression step
+    if [ ".$opt_z" != . ] && [ ".$opt_d" = .no ]; then
+        #   compress file
+        if [ ".$opt_b" = .yes ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "(${comp_prg} ${comp_lvl} <${adir}/${file}.${n} >${adir}/${file}.${n}${comp_suf}; rm -f ${adir}/${file}.${n}) &"
+            fi
+            ( ${comp_prg} ${comp_lvl} \
+                  <${adir}/${file}.${n} \
+                  >${adir}/${file}.${n}${comp_suf} || shtool_exit $?
+              rm -f ${adir}/${file}.${n} || shtool_exit $?
+            ) </dev/null >/dev/null 2>&1 &
+        else
+            if [ ".$opt_t" = .yes ]; then
+                echo "${comp_prg} ${comp_lvl} <${adir}/${file}.${n} >${adir}/${file}.${n}${comp_suf}"
+            fi
+            ${comp_prg} ${comp_lvl} \
+                <${adir}/${file}.${n} \
+                >${adir}/${file}.${n}${comp_suf} || shtool_exit $?
+            if [ ".$opt_t" = .yes ]; then
+                echo "rm -f ${opt_a}${file}.${n}"
+            fi
+            rm -f ${adir}/${file}.${n} || shtool_exit $?
+        fi
+
+        #   fix file attributes
+        if [ ".$opt_o" != . ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "chown $opt_o ${adir}/${file}.${n}${comp_suf}"
+            fi
+            chown $opt_o ${adir}/${file}.${n}${comp_suf} || shtool_exit $?
+        fi
+        if [ ".$opt_g" != . ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "chgrp $opt_g ${adir}/${file}.${n}${comp_suf}"
+            fi
+            chgrp $opt_g ${adir}/${file}.${n}${comp_suf} || shtool_exit $?
+        fi
+        if [ ".$opt_m" != . ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "chmod $opt_m ${adir}/${file}.${n}${comp_suf}"
+            fi
+            chmod $opt_m ${adir}/${file}.${n}${comp_suf} || shtool_exit $?
+        fi
+    fi
+
+    #   execute epilog
+    if [ ".$opt_E" != . ]; then
+        if [ ".$opt_t" = .yes ]; then
+            echo "$opt_E"
+        fi
+        eval $opt_E
+        [ $? -ne 0 ] && shtool_exit $?
+    fi
+done
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool rotate> - B<GNU shtool> log file rotation
+
+=head1 SYNOPSIS
+
+B<shtool rotate>
+[B<-v>|B<--verbose>]
+[B<-t>|B<--trace>]
+[B<-f>|B<--force>]
+[B<-n>|B<--num-files> I<count>]
+[B<-s>|B<--size> I<size>]
+[B<-c>|B<--copy>]
+[B<-r>|B<--remove>]
+[B<-a>|B<--archive-dir> I<dir>]
+[B<-z>|B<--compress> [I<tool>:]I<level>]
+[B<-b>|B<--background>]
+[B<-d>|B<--delay>]
+[B<-p>|B<--pad> I<len>]
+[B<-m>|B<--mode> I<mode>]
+[B<-o>|B<--owner> I<owner>]
+[B<-g>|B<--group> I<group>]
+[B<-M>|B<--migrate> I<cmd>]
+[B<-P>|B<--prolog> I<cmd>]
+[B<-E>|B<--epilog> I<cmd>]
+I<file> [I<file> ...]
+
+=head1 DESCRIPTION
+
+This command rotates a logfile I<file> by subsequently creating up to
+I<count> (optionally compressed) archive files of it. Archive files are
+named "I<file>.I<number>[I<compress-suffix]>" where I<number> is the
+version number, 0 being the newest and "I<count>-1" the oldest.
+
+A rotation step consists of the following steps
+
+1. remove last archive file
+2. shift archive file numbers
+3. create archive file 0 from I<file>
+4. truncate/recreate I<file>
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-v>, B<--verbose>
+
+Display some processing information.
+
+=item B<-t>, B<--trace>
+
+Enable the output of the essential shell commands which are executed.
+
+=item B<-f>, B<--force>
+
+Force silent creation of archive directory if it does not exists. Also
+skip missing intermediate logfiles in the rotation step. Default is to
+exit with error in both cases. FIXME
+
+=item B<-n>, B<--num-files> I<count>
+
+Create I<count> archive files. Default is 10.
+
+=item B<-s>, B<--size> I<size>
+
+Only rotate if logfile exceeds I<size>. The argument I<size> can be
+specified also with the trailing units C<K> (kilo), C<M> (mega) or C<G>
+(giga). The "prolog" and "epilog" are only executed if rotation actually
+takes place.
+
+=item B<-c>, B<--copy>
+
+Copy I<file> to archive then truncate original. The default is to move
+I<file> to archive.
+
+Unless an application reopens its logfile it will continue to write
+to the same file. In the default move case the application will write
+to the archive which it had previously opened as I<file>. In the copy
+case the application will write to the original I<file>. The drawback
+of the copy approach is that logfile entries are lost when they are
+written to I<file> between the execution of the copy and the truncation
+operation. The drawback of the move approach is that the application
+needs to detect the move or must be triggered to reopen its log (i.e.
+through epilog).
+
+=item B<-r>, B<--remove>
+
+Removes I<file> after rotation instead of providing a new empty file.
+
+=item B<-a>, B<--archive-dir> I<dir>
+
+Specify the archive directory. Default is to create archives in the same
+directory as I<file> is located.
+
+=item B<-z>, B<--compress> [I<tool>:]I<level>
+
+Enables compression of archive files with compression level I<level> By
+default, the tools bzip2(1), gzip(1) and compress(1) are searched for in
+C<$PATH>, but one also can override this by prefixing the compression
+level with one of the three particular tool names.
+
+=item B<-b>, B<--background>
+
+Enable background compression.
+
+=item B<-d>, B<--delay>
+
+Delays the compression of archive file number 0. This is useful if
+``B<-c>'' is not used, because an application might continue to write to
+archive file 0 through an already open file handle.
+
+=item B<-p>, B<--pad> I<len>
+
+Enables padding with leading zeros in the I<number> part of the filename
+"I<file>.I<number>I<compress-suffix>". The default padding I<len> is 1.
+This is interesting if more than 10 archive files are used, because it
+leads to still sorted directory listings.
+
+=item B<-m>, B<--mode> I<mode>
+
+The file mode applied to the created files, see chmod(1). Setting mode to
+C<-> skips this step and leaves the operating system default which is
+usually based on umask(1). Some file modes require superuser privileges
+to be set. Default is 0755.
+
+=item B<-o>, B<--owner> I<owner>
+
+The file owner name or id applied to the created files, see chown(1). This
+option requires superuser privileges to execute. Default is to skip this
+step and leave the operating system default which is usually based on
+the executing uid or the parent setuid directory.
+
+=item B<-g>, B<--group> I<group>
+
+The file group name or id applied to the created files, see chgrp(1). This
+option requires superuser privileges to execute to the fullest extend,
+otherwise the choice of I<group> is limited on most operating systems.
+Default is to skip this step and leave the operating system default
+which is usually based on the executing gid or the parent setgid
+directory.
+
+=item B<-M>, B<--migrate> I<cmd>
+
+Execute a "migration" command just before the archive file number
+I<count>-1 is removed from the filesystem. The specified I<cmd> receives
+the archive filename as command line argument.
+
+=item B<-P>, B<--prolog> I<cmd>
+
+Execute a "prolog" command before the rotation step. Useful in
+conjunction with B<-s>.
+
+=item B<-E>, B<--epilog> I<cmd>
+
+Execute a "epilog" command after the rotation step. Useful in
+conjunction with B<-s>.
+
+=back
+
+=head1 EXAMPLE
+
+ #   shell script
+ shtool rotate -n10 -s1M -zbzip2:9 -d -r /var/log/ap.access.log
+ shtool rotate -n5 -s128K -zbzip2:9 -d -r /var/log/ap.error.log
+ apachectl graceful
+
+=head1 HISTORY
+
+The B<GNU shtool> B<rotate> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 2001 for B<GNU shtool>.
+Its development was prompted by the need to have a flexible
+logfile rotation facility in the B<OpenPKG> project.
+
+=head1 SEE ALSO
+
+shtool(1), BSD newsyslog(8).
+
+=cut
+

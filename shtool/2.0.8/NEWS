@@ -1,0 +1,41 @@
+       _     _              _
+   ___| |__ | |_ ___   ___ | |
+  / __| '_ \| __/ _ \ / _ \| |
+  \__ \ | | | || (_) | (_) | |
+  |___/_| |_|\__\___/ \___/|_|
+
+  GNU shtool -- The GNU Portable Shell Tool
+
+  This is a list of user-visible and/or major changes to GNU shtool.
+  For more details please have a look at the ChangeLog file.
+
+  Changes between 1.6 and 2.0 (02-Nov-2002 to 02-Jul-2004)
+
+   *) Added substitution warnings to `shtool subst'
+   *) Replaced old `shtool guessos' with a new `shtool platform' command
+   *) Even more POSIX 1003.1-2001 compliancy and portability.
+   *) Many workarounds and fixed for permission related problems
+   *) Fixed error exit in all commands by introducing an "shtool_exit"
+   *) Split shtool(1) into multiple manual pages and extended content.
+   *) Upgraded build environment to GNU Autoconf 2.59
+
+  Changes between 1.5 and 1.6 (14-Jun-2001 to 02-Nov-2002)
+
+   *) Added `shtool install -d' variant.
+   *) Added `shtool mkdir [-o] [-g]' variant.
+   *) Added new `shtool subst' command.
+   *) Added new `shtool rotate' command.
+   *) Added GNU long-option support (`--xxxx').
+
+  Changes between 1.4 and 1.5 (16-Apr-2000 to 14-Jun-2001)
+
+   *) Added %g/%G to `shtool echo -e'
+   *) Added `-e <sed-cmd>' option to `shtool install'
+   *) Removed `-e <ext>' option from `shtool install'
+   *) DESTDIR support for `make install'
+   *) Added Python support to `shtool version'
+   *) Added global -r/--recreate option for regeneration
+   *) Completely rewritten `shtool version'
+   *) Rewritten `shtool path -m perl' handling
+   *) Numerous bugfixes and cleanups
+

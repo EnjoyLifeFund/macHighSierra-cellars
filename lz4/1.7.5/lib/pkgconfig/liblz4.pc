@@ -1,0 +1,14 @@
+#   LZ4 - Fast LZ compression algorithm
+#   Copyright (C) 2011-2014, Yann Collet.
+#   BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+
+prefix=/usr/local/Cellar/lz4/1.7.5
+libdir=/usr/local/Cellar/lz4/1.7.5/lib
+includedir=/usr/local/Cellar/lz4/1.7.5/include
+
+Name: lz4
+Description: extremely fast lossless compression algorithm library
+URL: http://www.lz4.org/
+Version: 1.7.5
+Libs: -L/usr/local/Cellar/lz4/1.7.5/lib -llz4
+Cflags: -I/usr/local/Cellar/lz4/1.7.5/include

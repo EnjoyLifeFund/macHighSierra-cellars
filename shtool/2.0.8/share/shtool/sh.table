@@ -1,0 +1,153 @@
+##
+##  table -- Pretty-print a field-separated list as a table
+##  Copyright (c) 1998-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="table"
+str_usage="[-F|--field-sep <sep>] [-w|--width <width>] [-c|--columns <cols>] [-s|--strip <strip>] <str><sep><str>..."
+arg_spec="1+"
+opt_spec="F:w:c:s:"
+opt_alias="F:field-sep,w:width,c:columns,s:strip"
+opt_F=":"
+opt_w=15
+opt_c=3
+opt_s=79
+
+. ./sh.common
+
+if [ $opt_c -gt 4 ]; then
+    echo "$msgprefix:Error: Invalid number of colums (1..4 allowed only)" 1>&2
+    shtool_exit 1
+fi
+case "x$opt_F" in
+    x? ) ;;
+    *  ) echo "$msgprefix:Error: Invalid separator (one char allowed only)" 1>&2; shtool_exit 1 ;;
+esac
+
+#   split the list into a table
+list=`
+    IFS="$opt_F"
+    for entry in $*; do
+        if [ ".$entry" != . ]; then
+            echo "$entry"
+        fi
+    done |\
+    awk "
+        BEGIN { list = \"\"; n = 0; }
+        {
+            list = list \\$1;
+            n = n + 1;
+            if (n < $opt_c) {
+                list = list \":\";
+            }
+            if (n == $opt_c) {
+                list = list \"\\n\";
+                n = 0;
+            }
+        }
+        END { print list; }
+     "
+`
+
+#   format table cells and make sure table
+#   doesn't exceed maximum width
+OIFS="$IFS"
+IFS='
+'
+for entry in $list; do
+    case $opt_c in
+        1 ) eval "echo \"\${entry}\" | awk -F: '{ printf(\"%-${opt_w}s\\n\", \$1); }'" ;;
+        2 ) eval "echo \"\${entry}\" | awk -F: '{ printf(\"%-${opt_w}s %-${opt_w}s\\n\", \$1, \$2); }'" ;;
+        3 ) eval "echo \"\${entry}\" | awk -F: '{ printf(\"%-${opt_w}s %-${opt_w}s %-${opt_w}s\\n\", \$1, \$2, \$3); }'" ;;
+        4 ) eval "echo \"\${entry}\" | awk -F: '{ printf(\"%-${opt_w}s %-${opt_w}s %-${opt_w}s %-${opt_w}s\\n\", \$1, \$2, \$3, \$4); }'" ;;
+    esac
+done |\
+awk "{
+    if (length(\$0) > $opt_s) {
+        printf(\"%s\\n\", substr(\$0, 0, $opt_s-1));
+    } else {
+        print \$0;
+    }
+}"
+IFS="$OIFS"
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool table> - B<GNU shtool> pretty-print a field-separated list
+
+=head1 SYNOPSIS
+
+B<shtool table>
+[B<-F>|B<--field-sep> I<sep>]
+[B<-w>|B<--width> I<width>]
+[B<-c>|B<--columns> I<cols>]
+[B<-s>|B<--strip> I<strip>]
+I<str>B<sep>I<str>...
+
+=head1 DESCRIPTION
+
+This pretty-prints a list of strings as a table.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-F>, B<--field-sep> I<sep>
+
+Separate columns using I<sep>. Default is C<:>.
+
+=item B<-w>, B<--width> I<width>
+
+Width of each column. Default is 15 characters.
+
+=item B<-c>, B<--columns> I<cols>
+
+Number of columns. Default is C<3>.
+
+=item B<-s>, B<--strip> I<strip>
+
+Strip off any characters past I<strip>. Default is C<79>.
+
+=back
+
+=head1 EXAMPLE
+
+ #   shell script
+ shtool table -F , -w 5 -c 4 "1,2,3,4,5,6,7,8,9,10,11,12"
+
+=head1 HISTORY
+
+The B<GNU shtool> B<table> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1999 for B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1), tr(1), fmt(1), sh(1), awk(1), sed(1).
+
+=cut
+

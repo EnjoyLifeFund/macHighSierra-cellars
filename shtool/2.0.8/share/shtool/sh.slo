@@ -1,0 +1,264 @@
+##
+##  slo -- Separate linker options by library class
+##  Copyright (c) 1998-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="slo"
+str_usage="[-p|--prefix <str>] -- -L<dir> -l<lib> [-L<dir> -l<lib> ...]"
+arg_spec="1+"
+opt_spec="p:"
+opt_alias="p:prefix"
+opt_p="SLO_"
+
+. ./sh.common
+
+DIFS="$IFS"
+
+#   parse out -L and -l options from command line
+DIRS=''
+LIBS=''
+ARGV=''
+optprev=''
+for opt
+do
+    #   concatenate with previous option if exists
+    if [ ".$optprev" != . ]; then
+        opt="${optprev}${opt}";
+        optprev=''
+    fi
+    #   remember options for arg if used stand-alone
+    if [ ".$opt" = ".-L" ] || [ ".$opt" = ".-l" ]; then
+        optprev="$opt"
+        continue;
+    fi
+    #   split argument into option plus option argument
+    arg="`echo $opt | cut -c3-`"
+    opt="`echo $opt | cut -c1-2`"
+    #   store into containers
+    case $opt in
+        -L) DIRS="$DIRS:$arg" ;;
+        -l) LIBS="$LIBS:$arg" ;;
+         *) ARGV="$ARGV $opt" ;;
+    esac
+done
+
+#   set linker default directories
+DIRS_DEFAULT='/lib:/usr/lib'
+if [ ".$LD_LIBRARY_PATH" != . ]; then
+    DIRS_DEFAULT="$DIRS_DEFAULT:$LD_LIBRARY_PATH"
+fi
+
+#   sort options by class
+DIRS_OBJ=''
+LIBS_OBJ=''
+DIRS_PIC=''
+LIBS_PIC=''
+DIRS_DSO=''
+LIBS_DSO=''
+
+#    for each library...
+OIFS="$IFS"; IFS=':'
+for lib in $LIBS; do
+    [ ".$lib" = . ] && continue
+
+    found='no'
+    found_indefdir='no'
+    found_type=''
+    found_dir=''
+
+    #    for each directory...
+    OIFS2="$IFS"; IFS=":$DIFS"
+    for dir in ${DIRS} switch-to-defdirs ${DIRS_DEFAULT}; do
+        [ ".$dir" = . ] && continue
+        [ ".$dir" = .switch-to-defdirs ] && found_indefdir=yes
+        [ ! -d $dir ] && continue
+
+        #    search the file
+        OIFS3="$IFS"; IFS="$DIFS"
+        for file in '' `cd $dir && env -i /bin/ls lib${lib}.* 2>/dev/null`; do
+             [ ".$file" = . ] && continue
+             case $file in
+                 *.so|*.so.[0-9]*|*.sl|*.sl.[0-9]* )
+                      found=yes;
+                      found_type=DSO;
+                      break
+                      ;;
+                 *.lo|*.la )
+                      found=yes;
+                      found_type=PIC
+                      ;;
+                 *.a )
+                      if [ ".$found_type" = . ]; then
+                          found=yes
+                          found_type=OBJ
+                      fi
+                      ;;
+             esac
+        done
+        IFS="$OIFS3"
+        if [ ".$found" = .yes ]; then
+            found_dir="$dir"
+            break
+        fi
+    done
+    IFS="$OIFS2"
+
+    if [ ".$found" = .yes ]; then
+        if [ ".$found_indefdir" != .yes ]; then
+            eval "dirlist=\"\${DIRS_${found_type}}:\""
+            case "$dirlist" in
+                *:$found_dir:* ) ;;
+                * ) eval "DIRS_${found_type}=\"\$DIRS_${found_type}:${found_dir}\"" ;;
+            esac
+            eval "LIBS_${found_type}=\"\$LIBS_${found_type}:$lib\""
+        else
+            eval "LIBS_${found_type}=\"\$LIBS_${found_type}:$lib\""
+        fi
+    else
+        LIBS_OBJ="$LIBS_OBJ:$lib"
+        #dirlist="`echo $DIRS $DIRS_DEFAULT | sed -e 's/:/ /g'`"
+        #echo "slo:Warning: library \"$lib\" not found in any of the following dirs:" 2>&1
+        #echo "slo:Warning: $dirlist" 1>&1
+    fi
+done
+IFS="$OIFS"
+
+#   also pass-through unused dirs even if it's useless
+OIFS="$IFS"; IFS=':'
+for dir in $DIRS; do
+    dirlist="${DIRS_OBJ}:${DIRS_PIC}:${DIRS_DSO}:"
+    case "$dirlist" in
+        *:$dir:* ) ;;
+        * ) DIRS_OBJ="$DIRS_OBJ:$dir" ;;
+    esac
+done
+IFS="$OIFS"
+
+#   reassemble the options but separated by type
+for type in OBJ PIC DSO; do
+    OIFS="$IFS"; IFS=':'
+    eval "libs=\"\$LIBS_${type}\""
+    opts=''
+    for lib in $libs; do
+        [ ".$lib" = . ] && continue
+        opts="$opts -l$lib"
+    done
+    eval "LIBS_${type}=\"$opts\""
+
+    eval "dirs=\"\$DIRS_${type}\""
+    opts=''
+    for dir in $dirs; do
+        [ ".$dir" = . ] && continue
+        opts="$opts -L$dir"
+    done
+    eval "DIRS_${type}=\"$opts\""
+    IFS="$OIFS"
+done
+
+#   give back results
+for var in ARGV DIRS_OBJ LIBS_OBJ DIRS_PIC LIBS_PIC DIRS_DSO LIBS_DSO; do
+    eval "val=\"\$${var}\""
+    val="`echo $val | sed -e 's/^ *//'`"
+    echo "${opt_p}${var}=\"${val}\""
+done
+
+shtool_exit 0
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool slo> - B<GNU shtool> separate linker options by library class
+
+=head1 SYNOPSIS
+
+B<shtool slo>
+[B<-p>|B<--prefix> I<str>]
+--
+B<-L>I<dir>
+B<-l>I<lib>
+[B<-L>I<dir> B<-l>I<lib> ...]
+
+=head1 DESCRIPTION
+
+This command separates the linker options ``B<-L>'' and ``B<-l>'' by library
+class. It's argument line can actually be an arbitrary command line where those
+options are contained. B<slo> parses these two options only and ignores the
+remaining contents. The result is a trivial shell script on C<stdout> which
+defines six variables containing the ``B<-L>'' and ``B<-l>'' options sorted by
+class:
+
+``C<SLO_DIRS_OBJ>'' and ``C<SLO_LIBS_OBJ>'' contains the ``B<-L>'' and
+``B<-l>'' options of static libraries,  ``C<SLO_DIRS_PIC>'' and
+``C<SLO_LIBS_PIC>'' contains the ``B<-L>'' and ``B<-l>'' options of static
+libraries containing PIC ("Position Independent Code") and
+``C<SLO_DIRS_DSO>'' and ``C<SLO_LIBS_DSO>'' contains the ``B<-L>'' and
+``B<-l>'' options of shared libraries. The B<-p> option can be used to
+change the default variable prefix from "C<SLO_>" to I<str>.
+
+The intent of this separation is to provide a way between static and shared
+libraries which is important if one wants to link custom DSOs against
+libraries, because not all platforms all one to link these DSOs against shared
+libraries. So one first has to separate out the shared libraries and link the
+DSO only against the static libraries.  One can use this command also to just
+sort the options.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-p>, B<--prefix> I<str>
+
+    FIXME
+
+=item B<-L>I<dir>
+
+Directory where libraries are searched in.
+
+=item B<-l>I<lib>
+
+Library to search for.
+
+=back
+
+=head1 EXAMPLE
+
+ #   configure.in
+ LINK_STD="$LDFLAGS $LIBS"
+ eval `shtool slo $LINK_STD`
+ LINK_DSO="$SLO_DIRS_OBJ $SLO_LIBS_OBJ $SLO_DIRS_PIC $SLO_LIBS_PIC"
+   :
+
+=head1 HISTORY
+
+The B<GNU shtool> B<slo> command was originally written by Ralf S.
+Engelschall E<lt>rse@engelschall.comE<gt> in 1998 for B<Apache>.
+It was later taken over into B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1), ld(1).
+
+=cut
+

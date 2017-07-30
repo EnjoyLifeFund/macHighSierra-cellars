@@ -1,0 +1,205 @@
+##
+##  mkdir -- Make one or more directories
+##  Copyright (c) 1996-2008 Ralf S. Engelschall <rse@engelschall.com>
+##
+##  This file is part of shtool and free software; you can redistribute
+##  it and/or modify it under the terms of the GNU General Public
+##  License as published by the Free Software Foundation; either version
+##  2 of the License, or (at your option) any later version.
+##
+##  This file is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+##  General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+##  USA, or contact Ralf S. Engelschall <rse@engelschall.com>.
+##
+
+str_tool="mkdir"
+str_usage="[-t|--trace] [-f|--force] [-p|--parents] [-m|--mode <mode>] [-o|--owner <owner>] [-g|--group <group>] <dir> [<dir> ...]"
+arg_spec="1+"
+opt_spec="t.f.p.m:o:g:"
+opt_alias="t:trace,f:force,p:parents,m:mode,o:owner,g:group"
+opt_t=no
+opt_f=no
+opt_p=no
+opt_m=""
+opt_o=""
+opt_g=""
+
+. ./sh.common
+
+errstatus=0
+for p in ${1+"$@"}; do
+    #   if the directory already exists...
+    if [ -d "$p" ]; then
+        if [ ".$opt_f" = .no ] && [ ".$opt_p" = .no ]; then
+            echo "$msgprefix:Error: directory already exists: $p" 1>&2
+            errstatus=1
+            break
+        else
+            continue
+        fi
+    fi
+    #   if the directory has to be created...
+    if [ ".$opt_p" = .no ]; then
+        if [ ".$opt_t" = .yes ]; then
+            echo "mkdir $p" 1>&2
+        fi
+        mkdir $p || errstatus=$?
+        if [ ".$opt_o" != . ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "chown $opt_o $p" 1>&2
+            fi
+            chown $opt_o $p || errstatus=$?
+        fi
+        if [ ".$opt_g" != . ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "chgrp $opt_g $p" 1>&2
+            fi
+            chgrp $opt_g $p || errstatus=$?
+        fi
+        if [ ".$opt_m" != . ]; then
+            if [ ".$opt_t" = .yes ]; then
+                echo "chmod $opt_m $p" 1>&2
+            fi
+            chmod $opt_m $p || errstatus=$?
+        fi
+    else
+        #   the smart situation
+        set fnord `echo ":$p" |\
+                   sed -e 's/^:\//%/' \
+                       -e 's/^://' \
+                       -e 's/\// /g' \
+                       -e 's/^%/\//'`
+        shift
+        pathcomp=''
+        for d in ${1+"$@"}; do
+            pathcomp="$pathcomp$d"
+            case "$pathcomp" in
+                -* ) pathcomp="./$pathcomp" ;;
+            esac
+            if [ ! -d "$pathcomp" ]; then
+                if [ ".$opt_t" = .yes ]; then
+                    echo "mkdir $pathcomp" 1>&2
+                fi
+                mkdir $pathcomp || errstatus=$?
+                if [ ".$opt_o" != . ]; then
+                    if [ ".$opt_t" = .yes ]; then
+                        echo "chown $opt_o $pathcomp" 1>&2
+                    fi
+                    chown $opt_o $pathcomp || errstatus=$?
+                fi
+                if [ ".$opt_g" != . ]; then
+                    if [ ".$opt_t" = .yes ]; then
+                        echo "chgrp $opt_g $pathcomp" 1>&2
+                    fi
+                    chgrp $opt_g $pathcomp || errstatus=$?
+                fi
+                if [ ".$opt_m" != . ]; then
+                    if [ ".$opt_t" = .yes ]; then
+                        echo "chmod $opt_m $pathcomp" 1>&2
+                    fi
+                    chmod $opt_m $pathcomp || errstatus=$?
+                fi
+            fi
+            pathcomp="$pathcomp/"
+        done
+    fi
+done
+
+shtool_exit $errstatus
+
+##
+##  manual page
+##
+
+=pod
+
+=head1 NAME
+
+B<shtool mkdir> - B<GNU shtool> mkdir(1) style command
+
+=head1 SYNOPSIS
+
+B<shtool mkdir>
+[B<-t>|B<--trace>]
+[B<-f>|B<--force>]
+[B<-p>|B<--parents>]
+[B<-m>|B<--mode> I<mode>]
+[B<-o>|B<--owner> I<owner>]
+[B<-g>|B<--group> I<group>]
+I<dir> [I<dir> ...]
+
+=head1 DESCRIPTION
+
+This is a mkdir(1) style command with additional options and the ability
+to be smart if the directory already exists which is important for
+installation procedures.
+
+=head1 OPTIONS
+
+The following command line options are available.
+
+=over 4
+
+=item B<-t>, B<--trace>
+
+Shows the actually involved shell commands.
+
+=item B<-f>, B<--force>
+
+Forced continuation and no complaints if directory already exists.
+Default is to terminate with error.
+
+=item B<-p>, B<--parents>
+
+Automatic parent directory creation. Default is to only create the last
+directory in the path and fail if parents are missing.
+
+=item B<-m>, B<--mode> I<mode>
+
+The directory mode applied to the directory, see chmod(1). Omitting mode
+skips this step and leaves the operating system default which is usually
+based on umask(1). Some directory modes require superuser privileges to
+be set. Default is to stick with operating system defaults.
+
+=item B<-o>, B<--owner> I<owner>
+
+The directory owner name or id applied to the directory, see chown(1).
+This option requires superuser privileges to execute. Default is to skip
+this step and leave the operating system default which is usually based
+on the executing uid or the parent setuid directory.
+
+=item B<-g>, B<--group> I<group>
+
+The directory group name or id applied to the directory, see chgrp(1). This
+option requires superuser privileges to execute to the fullest extend,
+otherwise the choice of I<group> is limited on most operating systems.
+Default is to skip this step and leave the operating system default
+which is usually based on the executing gid or the parent setgid
+directory.
+
+=head1 EXAMPLE
+
+ #   Makefile
+ install:
+     shtool mkdir -f -p -m 755 $(bindir)
+     shtool mkdir -f -p -m 755 $(mandir)/man1
+      :
+
+=head1 HISTORY
+
+The B<GNU shtool> B<mkdir> command was originally written for Public
+Domain by Noah Friedman and later revised by Ralf S. Engelschall
+E<lt>rse@engelschall.comE<gt> in 1999 for inclusion into B<GNU shtool>.
+
+=head1 SEE ALSO
+
+shtool(1), mkdir(1).
+
+=cut
+
