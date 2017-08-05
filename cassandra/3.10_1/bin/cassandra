@@ -1,0 +1,2 @@
+#!/bin/bash
+exec "/usr/local/Cellar/cassandra/3.10_1/libexec/bin/cassandra" "$@"

@@ -1,0 +1,2 @@
+#!/bin/bash
+PYTHONPATH="/usr/local/Cellar/cassandra/3.10_1/libexec/vendor/lib/python2.7/site-packages" exec "/usr/local/Cellar/cassandra/3.10_1/libexec/bin/cqlsh.py" "$@"

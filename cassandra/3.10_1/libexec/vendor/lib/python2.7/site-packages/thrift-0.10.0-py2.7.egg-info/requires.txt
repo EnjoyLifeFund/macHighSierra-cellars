@@ -1,0 +1,17 @@
+six>=1.7.2
+
+[all]
+ipaddress
+backports.ssl_match_hostname>=3.5
+tornado>=4.0
+twisted
+
+[ssl]
+ipaddress
+backports.ssl_match_hostname>=3.5
+
+[tornado]
+tornado>=4.0
+
+[twisted]
+twisted
