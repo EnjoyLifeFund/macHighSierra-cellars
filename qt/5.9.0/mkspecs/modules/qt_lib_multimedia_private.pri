@@ -1,8 +1,8 @@
-QT.multimedia_private.VERSION = 5.9.0
+QT.multimedia_private.VERSION = 5.9.1
 QT.multimedia_private.name = QtMultimedia
 QT.multimedia_private.module =
 QT.multimedia_private.libs = $$QT_MODULE_LIB_BASE
-QT.multimedia_private.includes = $$QT_MODULE_LIB_BASE/QtMultimedia.framework/Headers/5.9.0 $$QT_MODULE_LIB_BASE/QtMultimedia.framework/Headers/5.9.0/QtMultimedia
+QT.multimedia_private.includes = $$QT_MODULE_LIB_BASE/QtMultimedia.framework/Headers/5.9.1 $$QT_MODULE_LIB_BASE/QtMultimedia.framework/Headers/5.9.1/QtMultimedia
 QT.multimedia_private.frameworks =
 QT.multimedia_private.depends = core_private gui_private multimedia
 QT.multimedia_private.uses =

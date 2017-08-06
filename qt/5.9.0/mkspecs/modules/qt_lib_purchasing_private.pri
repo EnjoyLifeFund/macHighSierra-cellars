@@ -1,8 +1,8 @@
-QT.purchasing_private.VERSION = 5.9.0
+QT.purchasing_private.VERSION = 5.9.1
 QT.purchasing_private.name = QtPurchasing
 QT.purchasing_private.module =
 QT.purchasing_private.libs = $$QT_MODULE_LIB_BASE
-QT.purchasing_private.includes = $$QT_MODULE_LIB_BASE/QtPurchasing.framework/Headers/5.9.0 $$QT_MODULE_LIB_BASE/QtPurchasing.framework/Headers/5.9.0/QtPurchasing
+QT.purchasing_private.includes = $$QT_MODULE_LIB_BASE/QtPurchasing.framework/Headers/5.9.1 $$QT_MODULE_LIB_BASE/QtPurchasing.framework/Headers/5.9.1/QtPurchasing
 QT.purchasing_private.frameworks =
 QT.purchasing_private.depends = purchasing
 QT.purchasing_private.uses =

@@ -1,8 +1,8 @@
-QT.quick_private.VERSION = 5.9.0
+QT.quick_private.VERSION = 5.9.1
 QT.quick_private.name = QtQuick
 QT.quick_private.module =
 QT.quick_private.libs = $$QT_MODULE_LIB_BASE
-QT.quick_private.includes = $$QT_MODULE_LIB_BASE/QtQuick.framework/Headers/5.9.0 $$QT_MODULE_LIB_BASE/QtQuick.framework/Headers/5.9.0/QtQuick
+QT.quick_private.includes = $$QT_MODULE_LIB_BASE/QtQuick.framework/Headers/5.9.1 $$QT_MODULE_LIB_BASE/QtQuick.framework/Headers/5.9.1/QtQuick
 QT.quick_private.frameworks =
 QT.quick_private.depends = core_private gui_private qml_private gui_private core_private qml_private core_private gui_private qml_private quick
 QT.quick_private.uses =

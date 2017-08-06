@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 Multimedia
 Description: Qt Multimedia module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtMultimedia 
 Cflags: -I${includedir}/QtMultimedia -I${includedir}
 Requires: Qt5Core Qt5Network Qt5Gui

@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 RemoteObjects
 Description: Qt RemoteObjects module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtRemoteObjects 
 Cflags: -I${includedir}/QtRemoteObjects -I${includedir}
 Requires: Qt5Core Qt5Network

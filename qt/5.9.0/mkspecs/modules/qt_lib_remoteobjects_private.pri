@@ -1,8 +1,8 @@
-QT.remoteobjects_private.VERSION = 5.9.0
+QT.remoteobjects_private.VERSION = 5.9.1
 QT.remoteobjects_private.name = QtRemoteObjects
 QT.remoteobjects_private.module =
 QT.remoteobjects_private.libs = $$QT_MODULE_LIB_BASE
-QT.remoteobjects_private.includes = $$QT_MODULE_LIB_BASE/QtRemoteObjects.framework/Headers/5.9.0 $$QT_MODULE_LIB_BASE/QtRemoteObjects.framework/Headers/5.9.0/QtRemoteObjects
+QT.remoteobjects_private.includes = $$QT_MODULE_LIB_BASE/QtRemoteObjects.framework/Headers/5.9.1 $$QT_MODULE_LIB_BASE/QtRemoteObjects.framework/Headers/5.9.1/QtRemoteObjects
 QT.remoteobjects_private.frameworks =
 QT.remoteobjects_private.depends = core_private remoteobjects
 QT.remoteobjects_private.uses =

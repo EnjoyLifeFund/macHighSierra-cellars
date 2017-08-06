@@ -45,8 +45,8 @@ if (NOT TARGET Qt5::Purchasing)
       "${_qt5Purchasing_install_prefix}/lib/QtPurchasing.framework/Headers"
     )
     set(Qt5Purchasing_PRIVATE_INCLUDE_DIRS
-        "${_qt5Purchasing_install_prefix}/lib/QtPurchasing.framework/Versions/5/Headers/5.9.0/"
-        "${_qt5Purchasing_install_prefix}/lib/QtPurchasing.framework/Versions/5/Headers/5.9.0/QtPurchasing"
+        "${_qt5Purchasing_install_prefix}/lib/QtPurchasing.framework/Versions/5/Headers/5.9.1/"
+        "${_qt5Purchasing_install_prefix}/lib/QtPurchasing.framework/Versions/5/Headers/5.9.1/QtPurchasing"
     )
 
     foreach(_dir ${_Qt5Purchasing_OWN_INCLUDE_DIRS})
@@ -81,7 +81,7 @@ if (NOT TARGET Qt5::Purchasing)
     foreach(_module_dep ${_Qt5Purchasing_MODULE_DEPENDENCIES})
         if (NOT Qt5${_module_dep}_FOUND)
             find_package(Qt5${_module_dep}
-                5.9.0 ${_Qt5Purchasing_FIND_VERSION_EXACT}
+                5.9.1 ${_Qt5Purchasing_FIND_VERSION_EXACT}
                 ${_Qt5Purchasing_DEPENDENCIES_FIND_QUIET}
                 ${_Qt5Purchasing_FIND_DEPENDENCIES_REQUIRED}
                 PATHS "${CMAKE_CURRENT_LIST_DIR}/.." NO_DEFAULT_PATH

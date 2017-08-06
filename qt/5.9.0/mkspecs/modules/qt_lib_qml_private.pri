@@ -1,8 +1,8 @@
-QT.qml_private.VERSION = 5.9.0
+QT.qml_private.VERSION = 5.9.1
 QT.qml_private.name = QtQml
 QT.qml_private.module =
 QT.qml_private.libs = $$QT_MODULE_LIB_BASE
-QT.qml_private.includes = $$QT_MODULE_LIB_BASE/QtQml.framework/Headers/5.9.0 $$QT_MODULE_LIB_BASE/QtQml.framework/Headers/5.9.0/QtQml
+QT.qml_private.includes = $$QT_MODULE_LIB_BASE/QtQml.framework/Headers/5.9.1 $$QT_MODULE_LIB_BASE/QtQml.framework/Headers/5.9.1/QtQml
 QT.qml_private.frameworks =
 QT.qml_private.depends = core_private qml
 QT.qml_private.uses =

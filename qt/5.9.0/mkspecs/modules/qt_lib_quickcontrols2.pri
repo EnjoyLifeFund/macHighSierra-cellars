@@ -1,4 +1,4 @@
-QT.quickcontrols2.VERSION = 5.9.0
+QT.quickcontrols2.VERSION = 5.9.1
 QT.quickcontrols2.name = QtQuickControls2
 QT.quickcontrols2.module = QtQuickControls2
 QT.quickcontrols2.libs = $$QT_MODULE_LIB_BASE

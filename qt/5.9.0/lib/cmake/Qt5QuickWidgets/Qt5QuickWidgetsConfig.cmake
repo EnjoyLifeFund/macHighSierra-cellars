@@ -45,8 +45,8 @@ if (NOT TARGET Qt5::QuickWidgets)
       "${_qt5QuickWidgets_install_prefix}/lib/QtQuickWidgets.framework/Headers"
     )
     set(Qt5QuickWidgets_PRIVATE_INCLUDE_DIRS
-        "${_qt5QuickWidgets_install_prefix}/lib/QtQuickWidgets.framework/Versions/5/Headers/5.9.0/"
-        "${_qt5QuickWidgets_install_prefix}/lib/QtQuickWidgets.framework/Versions/5/Headers/5.9.0/QtQuickWidgets"
+        "${_qt5QuickWidgets_install_prefix}/lib/QtQuickWidgets.framework/Versions/5/Headers/5.9.1/"
+        "${_qt5QuickWidgets_install_prefix}/lib/QtQuickWidgets.framework/Versions/5/Headers/5.9.1/QtQuickWidgets"
     )
 
     foreach(_dir ${_Qt5QuickWidgets_OWN_INCLUDE_DIRS})
@@ -58,7 +58,7 @@ if (NOT TARGET Qt5::QuickWidgets)
 
     set(Qt5QuickWidgets_DEFINITIONS -DQT_QUICKWIDGETS_LIB)
     set(Qt5QuickWidgets_COMPILE_DEFINITIONS QT_QUICKWIDGETS_LIB)
-    set(_Qt5QuickWidgets_MODULE_DEPENDENCIES "Quick;Widgets;Gui;Qml;Core")
+    set(_Qt5QuickWidgets_MODULE_DEPENDENCIES "Quick;Qml;Widgets;Gui;Core")
 
 
     set(Qt5QuickWidgets_OWN_PRIVATE_INCLUDE_DIRS ${Qt5QuickWidgets_PRIVATE_INCLUDE_DIRS})
@@ -81,7 +81,7 @@ if (NOT TARGET Qt5::QuickWidgets)
     foreach(_module_dep ${_Qt5QuickWidgets_MODULE_DEPENDENCIES})
         if (NOT Qt5${_module_dep}_FOUND)
             find_package(Qt5${_module_dep}
-                5.9.0 ${_Qt5QuickWidgets_FIND_VERSION_EXACT}
+                5.9.1 ${_Qt5QuickWidgets_FIND_VERSION_EXACT}
                 ${_Qt5QuickWidgets_DEPENDENCIES_FIND_QUIET}
                 ${_Qt5QuickWidgets_FIND_DEPENDENCIES_REQUIRED}
                 PATHS "${CMAKE_CURRENT_LIST_DIR}/.." NO_DEFAULT_PATH
@@ -105,7 +105,7 @@ if (NOT TARGET Qt5::QuickWidgets)
     list(REMOVE_DUPLICATES Qt5QuickWidgets_COMPILE_DEFINITIONS)
     list(REMOVE_DUPLICATES Qt5QuickWidgets_EXECUTABLE_COMPILE_FLAGS)
 
-    set(_Qt5QuickWidgets_LIB_DEPENDENCIES "Qt5::Quick;Qt5::Widgets;Qt5::Gui;Qt5::Qml;Qt5::Core")
+    set(_Qt5QuickWidgets_LIB_DEPENDENCIES "Qt5::Quick;Qt5::Qml;Qt5::Widgets;Qt5::Gui;Qt5::Core")
 
 
     add_library(Qt5::QuickWidgets SHARED IMPORTED)

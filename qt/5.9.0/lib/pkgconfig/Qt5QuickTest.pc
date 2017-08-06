@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 QuickTest
 Description: Qt QuickTest module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtQuickTest 
 Cflags: -I${includedir}/QtQuickTest -I${includedir}
 Requires: Qt5Core Qt5Test Qt5Widgets

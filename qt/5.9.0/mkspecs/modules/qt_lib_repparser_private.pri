@@ -1,8 +1,8 @@
-QT.repparser_private.VERSION = 5.9.0
+QT.repparser_private.VERSION = 5.9.1
 QT.repparser_private.name = QtRepParser
 QT.repparser_private.module =
 QT.repparser_private.libs = $$QT_MODULE_LIB_BASE
-QT.repparser_private.includes = $$QT_MODULE_LIB_BASE/QtRepParser.framework/Headers/5.9.0 $$QT_MODULE_LIB_BASE/QtRepParser.framework/Headers/5.9.0/QtRepParser
+QT.repparser_private.includes = $$QT_MODULE_LIB_BASE/QtRepParser.framework/Headers/5.9.1 $$QT_MODULE_LIB_BASE/QtRepParser.framework/Headers/5.9.1/QtRepParser
 QT.repparser_private.frameworks =
 QT.repparser_private.depends = repparser
 QT.repparser_private.uses =

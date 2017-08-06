@@ -1,4 +1,4 @@
-QT.qmltest.VERSION = 5.9.0
+QT.qmltest.VERSION = 5.9.1
 QT.qmltest.name = QtQuickTest
 QT.qmltest.module = QtQuickTest
 QT.qmltest.libs = $$QT_MODULE_LIB_BASE

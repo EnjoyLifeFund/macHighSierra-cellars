@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 Purchasing
 Description: Qt Purchasing module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtPurchasing 
 Cflags: -I${includedir}/QtPurchasing -I${includedir}
 Requires: Qt5Core

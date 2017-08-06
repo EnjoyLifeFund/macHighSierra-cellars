@@ -1,4 +1,4 @@
-QT.scripttools.VERSION = 5.9.0
+QT.scripttools.VERSION = 5.9.1
 QT.scripttools.name = QtScriptTools
 QT.scripttools.module = QtScriptTools
 QT.scripttools.libs = $$QT_MODULE_LIB_BASE

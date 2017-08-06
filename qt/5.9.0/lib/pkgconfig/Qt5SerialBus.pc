@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 SerialBus
 Description: Qt SerialBus module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtSerialBus 
 Cflags: -I${includedir}/QtSerialBus -I${includedir}
 Requires: Qt5Core

@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 MultimediaWidgets
 Description: Qt MultimediaWidgets module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtMultimediaWidgets 
 Cflags: -I${includedir}/QtMultimediaWidgets -I${includedir}
 Requires: Qt5Core Qt5Gui Qt5Multimedia Qt5Widgets

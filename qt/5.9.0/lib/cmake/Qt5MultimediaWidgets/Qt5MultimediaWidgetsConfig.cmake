@@ -45,8 +45,8 @@ if (NOT TARGET Qt5::MultimediaWidgets)
       "${_qt5MultimediaWidgets_install_prefix}/lib/QtMultimediaWidgets.framework/Headers"
     )
     set(Qt5MultimediaWidgets_PRIVATE_INCLUDE_DIRS
-        "${_qt5MultimediaWidgets_install_prefix}/lib/QtMultimediaWidgets.framework/Versions/5/Headers/5.9.0/"
-        "${_qt5MultimediaWidgets_install_prefix}/lib/QtMultimediaWidgets.framework/Versions/5/Headers/5.9.0/QtMultimediaWidgets"
+        "${_qt5MultimediaWidgets_install_prefix}/lib/QtMultimediaWidgets.framework/Versions/5/Headers/5.9.1/"
+        "${_qt5MultimediaWidgets_install_prefix}/lib/QtMultimediaWidgets.framework/Versions/5/Headers/5.9.1/QtMultimediaWidgets"
     )
 
     foreach(_dir ${_Qt5MultimediaWidgets_OWN_INCLUDE_DIRS})
@@ -81,7 +81,7 @@ if (NOT TARGET Qt5::MultimediaWidgets)
     foreach(_module_dep ${_Qt5MultimediaWidgets_MODULE_DEPENDENCIES})
         if (NOT Qt5${_module_dep}_FOUND)
             find_package(Qt5${_module_dep}
-                5.9.0 ${_Qt5MultimediaWidgets_FIND_VERSION_EXACT}
+                5.9.1 ${_Qt5MultimediaWidgets_FIND_VERSION_EXACT}
                 ${_Qt5MultimediaWidgets_DEPENDENCIES_FIND_QUIET}
                 ${_Qt5MultimediaWidgets_FIND_DEPENDENCIES_REQUIRED}
                 PATHS "${CMAKE_CURRENT_LIST_DIR}/.." NO_DEFAULT_PATH

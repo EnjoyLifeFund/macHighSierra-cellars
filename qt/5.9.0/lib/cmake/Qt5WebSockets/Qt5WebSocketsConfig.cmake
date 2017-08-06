@@ -45,8 +45,8 @@ if (NOT TARGET Qt5::WebSockets)
       "${_qt5WebSockets_install_prefix}/lib/QtWebSockets.framework/Headers"
     )
     set(Qt5WebSockets_PRIVATE_INCLUDE_DIRS
-        "${_qt5WebSockets_install_prefix}/lib/QtWebSockets.framework/Versions/5/Headers/5.9.0/"
-        "${_qt5WebSockets_install_prefix}/lib/QtWebSockets.framework/Versions/5/Headers/5.9.0/QtWebSockets"
+        "${_qt5WebSockets_install_prefix}/lib/QtWebSockets.framework/Versions/5/Headers/5.9.1/"
+        "${_qt5WebSockets_install_prefix}/lib/QtWebSockets.framework/Versions/5/Headers/5.9.1/QtWebSockets"
     )
 
     foreach(_dir ${_Qt5WebSockets_OWN_INCLUDE_DIRS})
@@ -81,7 +81,7 @@ if (NOT TARGET Qt5::WebSockets)
     foreach(_module_dep ${_Qt5WebSockets_MODULE_DEPENDENCIES})
         if (NOT Qt5${_module_dep}_FOUND)
             find_package(Qt5${_module_dep}
-                5.9.0 ${_Qt5WebSockets_FIND_VERSION_EXACT}
+                5.9.1 ${_Qt5WebSockets_FIND_VERSION_EXACT}
                 ${_Qt5WebSockets_DEPENDENCIES_FIND_QUIET}
                 ${_Qt5WebSockets_FIND_DEPENDENCIES_REQUIRED}
                 PATHS "${CMAKE_CURRENT_LIST_DIR}/.." NO_DEFAULT_PATH

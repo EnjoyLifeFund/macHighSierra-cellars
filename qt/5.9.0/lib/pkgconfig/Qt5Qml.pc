@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 Qml
 Description: Qt Qml module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtQml 
 Cflags: -I${includedir}/QtQml -I${includedir}
 Requires: Qt5Core Qt5Network

@@ -1,4 +1,4 @@
-QT.websockets.VERSION = 5.9.0
+QT.websockets.VERSION = 5.9.1
 QT.websockets.name = QtWebSockets
 QT.websockets.module = QtWebSockets
 QT.websockets.libs = $$QT_MODULE_LIB_BASE

@@ -1,8 +1,8 @@
-QT.quickcontrols2_private.VERSION = 5.9.0
+QT.quickcontrols2_private.VERSION = 5.9.1
 QT.quickcontrols2_private.name = QtQuickControls2
 QT.quickcontrols2_private.module =
 QT.quickcontrols2_private.libs = $$QT_MODULE_LIB_BASE
-QT.quickcontrols2_private.includes = $$QT_MODULE_LIB_BASE/QtQuickControls2.framework/Headers/5.9.0 $$QT_MODULE_LIB_BASE/QtQuickControls2.framework/Headers/5.9.0/QtQuickControls2
+QT.quickcontrols2_private.includes = $$QT_MODULE_LIB_BASE/QtQuickControls2.framework/Headers/5.9.1 $$QT_MODULE_LIB_BASE/QtQuickControls2.framework/Headers/5.9.1/QtQuickControls2
 QT.quickcontrols2_private.frameworks =
 QT.quickcontrols2_private.depends = quickcontrols2
 QT.quickcontrols2_private.uses =

@@ -1,4 +1,4 @@
-QT.script.VERSION = 5.9.0
+QT.script.VERSION = 5.9.1
 QT.script.name = QtScript
 QT.script.module = QtScript
 QT.script.libs = $$QT_MODULE_LIB_BASE

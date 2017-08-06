@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 WebSockets
 Description: Qt WebSockets module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtWebSockets 
 Cflags: -I${includedir}/QtWebSockets -I${includedir}
 Requires: Qt5Core Qt5Network

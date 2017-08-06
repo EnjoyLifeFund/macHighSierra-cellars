@@ -6,7 +6,7 @@ includedir=${prefix}/include
 
 Name: Qt5 Script
 Description: Qt Script module
-Version: 5.9.0
+Version: 5.9.1
 Libs: -F${libdir} -framework QtScript 
 Cflags: -I${includedir}/QtScript -I${includedir}
 Requires: Qt5Core

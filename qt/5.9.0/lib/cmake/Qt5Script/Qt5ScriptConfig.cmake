@@ -45,8 +45,8 @@ if (NOT TARGET Qt5::Script)
       "${_qt5Script_install_prefix}/lib/QtScript.framework/Headers"
     )
     set(Qt5Script_PRIVATE_INCLUDE_DIRS
-        "${_qt5Script_install_prefix}/lib/QtScript.framework/Versions/5/Headers/5.9.0/"
-        "${_qt5Script_install_prefix}/lib/QtScript.framework/Versions/5/Headers/5.9.0/QtScript"
+        "${_qt5Script_install_prefix}/lib/QtScript.framework/Versions/5/Headers/5.9.1/"
+        "${_qt5Script_install_prefix}/lib/QtScript.framework/Versions/5/Headers/5.9.1/QtScript"
     )
 
     foreach(_dir ${_Qt5Script_OWN_INCLUDE_DIRS})
@@ -81,7 +81,7 @@ if (NOT TARGET Qt5::Script)
     foreach(_module_dep ${_Qt5Script_MODULE_DEPENDENCIES})
         if (NOT Qt5${_module_dep}_FOUND)
             find_package(Qt5${_module_dep}
-                5.9.0 ${_Qt5Script_FIND_VERSION_EXACT}
+                5.9.1 ${_Qt5Script_FIND_VERSION_EXACT}
                 ${_Qt5Script_DEPENDENCIES_FIND_QUIET}
                 ${_Qt5Script_FIND_DEPENDENCIES_REQUIRED}
                 PATHS "${CMAKE_CURRENT_LIST_DIR}/.." NO_DEFAULT_PATH

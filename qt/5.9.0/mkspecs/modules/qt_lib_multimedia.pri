@@ -1,4 +1,4 @@
-QT.multimedia.VERSION = 5.9.0
+QT.multimedia.VERSION = 5.9.1
 QT.multimedia.name = QtMultimedia
 QT.multimedia.module = QtMultimedia
 QT.multimedia.libs = $$QT_MODULE_LIB_BASE
