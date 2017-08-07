@@ -1,7 +1,0 @@
-Name: Netpbm
-Description: Graphics utilities
-Version: 10.73.13
-Requires: 
-Libs: -L/usr/local/Cellar/netpbm/10.73.13/lib -lnetpbm
-Libs.private: 
-Cflags: -I/usr/local/Cellar/netpbm/10.73.13/include
