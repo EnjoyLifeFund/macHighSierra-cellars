@@ -1,0 +1,9 @@
+libdir=/usr/local/Cellar/jasper/2.0.13_1/lib
+includedir=/usr/local/Cellar/jasper/2.0.13_1/include
+
+Name: JasPer
+Description: Image Processing/Coding Tool Kit with JPEG-2000 Support
+Version: 2.0.12
+
+Libs: -L${libdir} -ljasper
+Cflags: -I${includedir}/jasper
