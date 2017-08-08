@@ -1,0 +1,40 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-STATUS" "1" "August 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-status\fR \- Show the status of Git LFS files in the working tree
+.
+.SH "SYNOPSIS"
+\fBgit lfs status\fR [\fIoptions\fR]
+.
+.SH "DESCRIPTION"
+Display paths of Git LFS objects that
+.
+.IP "\(bu" 4
+have not been pushed to the Git LFS server\. These are large files that would be uploaded by \fBgit push\fR\.
+.
+.IP "\(bu" 4
+have differences between the index file and the current HEAD commit\. These are large files that would be committed by \fBgit commit\fR\.
+.
+.IP "\(bu" 4
+have differences between the working tree and the index file\. These are files that could be staged using \fBgit add\fR\.
+.
+.IP "" 0
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-\-porcelain\fR
+Give the output in an easy\-to\-parse format for scripts\.
+.
+.TP
+\fB\-\-json\fR
+Give the output in a stable json format for scripts\.
+.
+.SH "SEE ALSO"
+git\-lfs\-ls\-files(1)\.
+.
+.P
+Part of the git\-lfs(1) suite\.

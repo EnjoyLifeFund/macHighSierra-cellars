@@ -1,0 +1,116 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS" "1" "August 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\fR \- Work with large files in Git repositories
+.
+.SH "SYNOPSIS"
+\fBgit lfs\fR \fIcommand\fR [\fIargs\fR]
+.
+.SH "DESCRIPTION"
+Git LFS is a system for managing and versioning large files in association with a Git repository\. Instead of storing the large files within the Git repository as blobs, Git LFS stores special "pointer files" in the repository, while storing the actual file contents on a Git LFS server\. The contents of the large file are downloaded automatically when needed, for example when a Git branch containing the large file is checked out\.
+.
+.P
+Git LFS works by using a "smudge" filter to look up the large file contents based on the pointer file, and a "clean" filter to create a new version of the pointer file when the large file\'s contents change\. It also uses a \fBpre\-push\fR hook to upload the large file contents to the Git LFS server whenever a commit containing a new large file version is about to be pushed to the corresponding Git server\.
+.
+.SH "COMMANDS"
+Like Git, Git LFS commands are separated into high level ("porcelain") commands and low level ("plumbing") commands\.
+.
+.SS "High level commands (porcelain)"
+.
+.TP
+git\-lfs\-env(1)
+Display the Git LFS environment\.
+.
+.TP
+git\-lfs\-checkout(1)
+Populate working copy with real content from Git LFS files\.
+.
+.TP
+git lfs clone
+Efficiently clone a Git LFS\-enabled repository\.
+.
+.TP
+git\-lfs\-fetch(1)
+Download git LFS files from a remote\.
+.
+.TP
+git\-lfs\-fsck(1)
+Check GIT LFS files for consistency\.
+.
+.TP
+git\-lfs\-install(1)
+Install Git LFS configuration\.
+.
+.TP
+git\-lfs\-lock(1)
+Set a file as "locked" on the Git LFS server\.
+.
+.TP
+git\-lfs\-locks(1)
+List currently "locked" files from the Git LFS server\.
+.
+.TP
+git\-lfs\-logs(1)
+Show errors from the git\-lfs command\.
+.
+.TP
+git\-lfs\-ls\-files(1)
+Show information about Git LFS files in the index and working tree\.
+.
+.TP
+git\-lfs\-migrate(1)
+Migrate history to or from git\-lfs
+.
+.TP
+git\-lfs\-pull(1)
+Fetch LFS changes from the remote & checkout any required working tree files\.
+.
+.TP
+git\-lfs\-push(1)
+Push queued large files to the Git LFS endpoint\.
+.
+.TP
+git\-lfs\-status(1)
+Show the status of Git LFS files in the working tree\.
+.
+.TP
+git\-lfs\-track(1)
+View or add Git LFS paths to Git attributes\.
+.
+.TP
+git\-lfs\-unlock(1)
+Remove "locked" setting for a file on the Git LFS server\.
+.
+.TP
+git\-lfs\-untrack(1)
+Remove Git LFS paths from Git Attributes\.
+.
+.TP
+git\-lfs\-update(1)
+Update Git hooks for the current Git repository\.
+.
+.TP
+git lfs version
+Report the version number\.
+.
+.SS "Low level commands (plumbing)"
+.
+.TP
+git\-lfs\-clean(1)
+Git clean filter that converts large files to pointers\.
+.
+.TP
+git\-lfs\-pointer(1)
+Build and compare pointers\.
+.
+.TP
+git\-lfs\-pre\-push(1)
+Git pre\-push hook implementation\.
+.
+.TP
+git\-lfs\-smudge(1)
+Git smudge filter that converts pointer in blobs to the actual content\.
+

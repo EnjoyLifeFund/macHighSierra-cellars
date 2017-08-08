@@ -1,0 +1,32 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-FILTER\-PROCESS" "1" "August 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-filter\-process\fR \- Git filter process that converts between pointer and actual content
+.
+.SH "SYNOPSIS"
+\fBgit lfs filter\-process\fR \fBgit lfs filter\-process \-\-skip\fR
+.
+.SH "DESCRIPTION"
+Implement the Git process filter API, exchanging handshake messages and then accepting and responding to requests to either clean or smudge a file\.
+.
+.P
+filter\-process is always run by Git\'s filter process, and is configured by the repository\'s Git attributes\.
+.
+.P
+The filter process uses Git\'s pkt\-line protocol to communicate, and is documented in detail in gitattributes(5)\.
+.
+.SH "OPTIONS"
+Without any options, filter\-process accepts and responds to requests normally\.
+.
+.TP
+\fB\-\-skip\fR
+Skip automatic downloading of objects on clone or pull\.
+.
+.SH "SEE ALSO"
+git\-lfs\-clean(1), git\-lfs\-install(1), git\-lfs\-smudge(1), gitattributes(5)\.
+.
+.P
+Part of the git\-lfs(1) suite\.

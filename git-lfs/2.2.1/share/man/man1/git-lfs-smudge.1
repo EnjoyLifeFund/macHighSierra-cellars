@@ -1,0 +1,29 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-SMUDGE" "1" "August 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-smudge\fR \- Git smudge filter that converts pointer in blobs to the actual content
+.
+.SH "SYNOPSIS"
+\fBgit lfs smudge\fR [\fIpath\fR] \fBgit lfs smudge\fR \-\-skip [\fIpath\fR]
+.
+.SH "DESCRIPTION"
+Read a Git LFS pointer file from standard input and write the contents of the corresponding large file to standard output\. If needed, download the file\'s contents from the Git LFS endpoint\. The \fIpath\fR argument, if provided, is only used for a progress bar\.
+.
+.P
+Smudge is typically run by Git\'s smudge filter, configured by the repository\'s Git attributes\.
+.
+.SH "OPTIONS"
+Without any options, \fBgit lfs smudge\fR outputs the raw Git LFS content to standard output\.
+.
+.TP
+\fB\-\-skip\fR
+Skip automatic downloading of objects on clone or pull\.
+.
+.SH "SEE ALSO"
+git\-lfs\-install(1), gitattributes(5)\.
+.
+.P
+Part of the git\-lfs(1) suite\.
