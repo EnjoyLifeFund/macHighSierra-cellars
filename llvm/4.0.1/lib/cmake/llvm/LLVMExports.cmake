@@ -301,7 +301,7 @@ set_target_properties(LLVMExecutionEngine PROPERTIES
 add_library(LLVMInterpreter STATIC IMPORTED)
 
 set_target_properties(LLVMInterpreter PROPERTIES
-  INTERFACE_LINK_LIBRARIES "LLVMCodeGen;LLVMCore;LLVMExecutionEngine;LLVMSupport;/usr/local/opt/libffi/lib/libffi.dylib"
+  INTERFACE_LINK_LIBRARIES "LLVMCodeGen;LLVMCore;LLVMExecutionEngine;LLVMSupport;@@HOMEBREW_PREFIX@@/opt/libffi/lib/libffi.dylib"
 )
 
 # Create imported target LLVMMCJIT

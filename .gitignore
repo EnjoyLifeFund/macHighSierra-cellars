@@ -1,3 +1,5 @@
 bazel
 mesos
 mesos.zip
+*.pyc
+gcc/

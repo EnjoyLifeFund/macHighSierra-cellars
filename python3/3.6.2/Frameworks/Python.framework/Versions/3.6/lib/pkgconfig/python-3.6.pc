@@ -8,6 +8,6 @@ Name: Python
 Description: Python library
 Requires: 
 Version: 3.6
-Libs.private: -lintl -ldl  -framework CoreFoundation
+Libs.private: -ldl  -framework CoreFoundation
 Libs: -L${libdir} -lpython3.6m
 Cflags: -I${includedir}/python3.6m

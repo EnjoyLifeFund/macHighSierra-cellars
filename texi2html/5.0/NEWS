@@ -1,0 +1,802 @@
+This file records noteworthy changes.
+
+5.0 (2010-06-27)
+
+* NEW FEATURES
+  ------------
+
+* The program may be called as makeinfo, with a handling of options
+  and defaults matching makeinfo.
+  It may also be called as texi2any, with makeinfo defaults and all
+  the texi2html command-line arguments that are not obsolete.
+
+* new info and plaintext backends, ready for world domination!
+  Corresponding test results are added.
+
+* main program handles --xml, --docbook, --info, --html and --plaintext.
+
+* Handle @DH{}, @dh{}, @TH{}, @th{}, @headitemfont, @part and 
+  @allowcodebreaks false
+
+* Handle -o /dev/null (or NUL) like makeinfo.
+
+* Read TEXINFO_OUTPUT_FORMAT in env to determine the output format.
+
+* add 0x7F as a comment character.
+
+* When called as texi2html, output the title page at the beginning.
+
+* mediawiki backend completed.
+
+* Translations of error messages available.
+
+* BUG FIXES
+  ---------
+
+* Handling of @itemize and @table arguments are more in line with makeinfo.
+
+* ignore @setfilename in @include'd files, as told in the texinfo manual.
+
+* many warning messages added, especially for Info to match makeinfo.
+
+* Still provide the default output with --macro-expand.
+
+* Handle correctly @w in info and html.
+
+* COMPATIBILITY
+  -------------
+
+* complex format handling API changed. $complex_format_map is replaced by 
+  a real hash %complex_format_map and the begin and end are no more 
+  evaluated.
+
+* If file begins with /, ./ or ../ don't search in -I.
+
+* In the default case a gettext-like framework is now used for in document
+  string translations. The old framework is still available by setting 
+  $I18N_PERL_HASH.
+
+* Information that can be set by @-commands should now be accessed
+  through get_conf, and also some information about the document (the
+  information that can change for each manual being processed).
+
+* $format_list_item_texi should now modify directly the @item argument
+  and apply the @-command given as @table argument. Correspondingly, 
+  some arguments of $table_item have been removed.
+
+* Formatting of titlepage changed, and @title, @subtitle and @author
+  are now handled by $line_command.
+
+* @verbatiminclude is now a $raw command argument distinct from @verbatim.
+
+* @direntry is formatted like a menu and passed down to $menu_command.
+
+* $SEPARATED_FOOTNOTES has been replaced by $FOOTNOTESTYLE, that takes the 
+  same argument than @footnotestyle.
+
+* replace $LANG by $DOCUMENTLANGUAGE.
+
+* replace $DO_CONTENTS by $CONTENTS and $DO_SCONTENTS by $SHORTCONTENTS.
+
+* replace $TRANSLITERATE_NODE by $TRANSLITERATE_FILE_NAMES.
+
+* replace $SECTION_NAVIGATION by $HEADERS.
+
+* add $NODE_FILENAMES to use node names for files associated with nodes, 
+  such that $NODE_FILES only means creating redirection files.
+
+* Remove the user from footer, and the corresponding USER variable and
+  $Texi2HTML::THISDOC{user}.
+
+* Don't do anything special anymore when the top element is empty. Also
+  don't treat especially top element headings.
+
+* Don't skip top element heading if there was a @titlefont.
+
+* Don't treat _setfilename as a value set. It should be available through
+  get_conf. Same for all the other @-commands previously available as
+  values.
+
+* Changes in class attribute in html elements:
+  Change class "toc" for ul to class "no-bullet" ($NO_BULLET_LIST_ATTRIBUTE).
+  @top and @centerchap have now their command name as class.
+  @node heading class is now "node-heading", instead of "node".
+  The whole header is in an element with class "header" (was "node" when
+  !$HEADER_IN_TABLE).
+
+* print_element_header is obsoleted, things should be directly done in 
+  element_heading.
+
+* Add 'inline_attribute' for an XML attribute that should be closed at
+  paragraph end and reopened at paragraph begin. Consequently the closing
+  and opening of 'attribute' isn't done anymore in paragraph and 
+  preformatted.
+
+* USE_ISO now only determines if '', `` --- and -- are transformed
+  into entities. t2h_default_set_iso_symbols sets or unsets USE_ISO,
+  %things_map/%pre_map/%simple_format_simple_map_texi, 
+  $OPEN_QUOTE_SYMBOL and $CLOSE_QUOTE_SYMBOL.
+  %iso_symbols is unused now.
+
+* change in the normal_text function reference API, now there is an 
+  input variable true if in @math.
+
+* change the external_ref API, fourth argument is now the file name and
+  add the node as an extra argument.
+
+* only install init files from maintained_extra/, they are considered
+  to be interesting enough and maintained.
+
+* rename $Texi2HTML::THISDOC{css_lines} as $Texi2HTML::THISDOC{css_rule_lines}
+
+1.82 (2009-01-05)
+
+* NEW FEATURES
+  ------------
+
+* Add new hooks for user functions, for simple @-commands, and at the start and
+  end of special regions.
+
+* BUG FIXES
+  ---------
+
+* Tests are now more cross-platform and more tolerant of missing optional
+  dependencies.
+
+* Don't use unidecode on unicode characters that are known not to have a good
+  transliteration.  This corresponds with characters with an @-command that
+  don't have a transliteration, like @exclamdown...
+
+* Misc minor bug fixes.
+
+1.80 (2009-01-01)
+
+* NEW FEATURES
+  ------------
+
+* handle @alias, @quote*, @guillem*, @textdegree, @allowcodebreaks,
+  @fonttextsize, @hyphenation, @click, @clickstyle, @click, @arrow, 
+  @clicksequence, @geq, @leq, @*headingmarks, @*footingmarks, @smallquotation,
+  @ogonek.
+  Handle @columnfractions and row prototypes in @multitable better.
+
+* @documentlanguage is used to set the language each time it is seen (except
+  if the language was set on the command line).
+
+* new option --css-ref, generate reference to a CSS URL.
+
+* new option --transliterate-file-names, produce file names in ASCII 
+  transliteration (set in the default case).
+
+* use accesskey and rel attributes, use link element if set in the init file.
+
+* use node id as targets for sections.
+
+* COMPATIBILITY
+  -------------
+
+* the API for the formatting of menus completly changed. $simple_menu_link
+  is removed, everything should be done in $menu_link.
+
+* change handling of @detailmenu and menu comments, with (among other changes)
+  the menu function reference replaced by the menu_command function reference
+  also handling @detailmenu.
+
+* tex4ht.init now may use a different external program for @tex and for
+  @math, and therefore the configuration variables were doubled and
+  their name changed.
+
+* change in the interface, a new function reference print_element_header
+  has been added, that should print the heading navigation of an element.
+  Previously it was done in print_section.
+
+* change in the normal_text function reference API, now there is an 
+  input variable true if in simple text.
+
+* change in the menu_entry and simple_menu_entry function reference API,
+  the name is always passed, and a new argument tells if there was an
+  explicit name.
+
+* change in unknown function reference API, now there is a pass argument
+  to be able to handle unknown macros in other passes than the last.
+  Report from Reinhold Kainhofer.
+
+* in table_item the text is not formatted with the format command, 
+  the text_formatted argument is.
+
+* definition index entries are now formatted with $definition_index_entry,
+  not with $definition_category anymore.
+
+* $Texi2HTML::THISDOC{copying} is now $Texi2HTML::THISDOC{copying_comment}.
+
+* TOC_LIST_ATTRIBUTE is now called NO_BULLET_LIST_ATTRIBUTE.
+
+* TOC_LIST_STYLE is now called NO_BULLET_LIST_STYLE.
+
+* changes in command line switches to synchronize with makeinfo:
+  --number becomes --number-sections
+  --separated-footnotes becomes --footnote-style
+  --sec-nav becomes --header
+  --Verbose becomes --verbose
+  --lang becomes --document-language
+
+* everything before @setfilename is not outputted, like makeinfo. The previous
+  behaviour can be restored with $IGNORE_BEFORE_SETFILENAME = 0;
+
+* Now there is an argtype possibility for definition specification 
+  and the arg meaning changed. The whole definition parsing is now more
+  like makeinfo.
+
+* internal_ref and external_ref don't change inforef to xref anymore.
+
+* change in the heading API. THIS_HEADER is not used anymore.
+  New function reference, element_heading  to format a node or a section 
+  heading, including navigation and label. Accordingly, print_Top and 
+  one_section don't print the element header anymore. Also it is
+  reported if the element is a new element, is the main element and
+  more arguments, and top element heading is always done in heading.
+
+* print_element_header and print_navigation now return their result.
+	
+* new argument for print_misc and print_misc_header, the misc page name.
+
+* printindex is called if it appears, even if the index is not defined or
+  there are no index entries.
+
+* image API completly changed. The current behaviour is not stable, so
+  is not documented.
+
+* new argument (@@-command name) for quotation and quotation_prepend_text.
+
+* image file paths are not completed anymore in the default case. The previous
+  behaviour can be restored with $COMPLETE_IMAGE_PATHS set to true.
+
+* there is a new 'style' key in $complex_format_map, to be able to 
+  differentiate complex formats inheriting fonts and code_style (like 
+  @format, @display).
+
+* $EXTENSION should be undef if one doesn't want an extension to be added.
+
+* THISDOC{'title'} and similar are now for @title since only one @title
+  should appear in the document. @settitle is tried first to set fulltitle.
+
+* Configuration variables are not modified anymore, instead the variable
+  value is put in $Texi2HTML::THISDOC{'VAR'}. This is the case for
+  DO_CONTENTS, DO_SCONTENTS, CSS_LINES, BODYTEXT, DOCUMENT_DESCRIPTION,
+  DOCUMENT_ENCODING, IN_ENCODING, ENCODING_NAME, OUT_ENCODING.
+
+  For example, if $CSS_LINES is defined, the value is put in 
+  $Texi2HTML::THISDOC{'CSS_LINES'} which is used for formatting, and if
+  $CSS_LINES is not defined, $Texi2HTML::THISDOC{'CSS_LINES'} is 
+  autodetected.
+
+* When there is no section and $USE_NODES is not set don't split by node.
+  This behaviour and the previous aren't documented, so it could change
+  in the future.
+
+* BUG FIXES
+  ---------
+
+* --no-monolithic is reenabled.
+
+* @, followed by an argument without brace is now handled. Report from 
+  Jorge Barros de Abreu.
+
+* @, is kept with --macro-expand.
+
+* @math is more compatible with makeinfo/texi2dvi when no external program
+  is used. Using tex4ht for html generation should also lead to a correct
+  result.
+
+* Handle right @end block commands followed by something else than a 
+  spacing character.
+
+* Remove trailing end of line in @html block.
+
+* @itemize should produce bullets by default. Report from Reinhold Kainhofer.
+
+* handle frame files like other files. Report from Reinhold Kainhofer.
+
+1.78 (2007-06-05)
+
+* NEW FEATURES
+  ------------
+
+* Transliterate accented characters in file names. Use Text::Unidecode
+  if detected.
+
+* Handle @frenchspacing, @tie, @indent, @setcontentsaftertitlepage,
+  @setshortcontentsaftertitlepage and the obsolete @allow-recursion 
+  and @quote-arg.
+
+* With book style the Table of Contents is put where it is set.
+
+* Use more numeric entities, especially for accented letters.
+
+* The `examples' directory now contains an init file for Mediawiki output.
+  Mediawiki is the GPL'd wiki used by Wikipedia.
+
+* new init file tex4ht.init. With this init file, httex or htlatex from 
+  tex4ht is used to format @tex and @math.
+
+* Init files now have a chance to override all file names, rather than just
+  page names.
+
+* Put the images under a double licence by adding back their original GPL
+  licence.
+
+* If SIMPLE_MENU is true the menu is simply enclosed in a preformatted 
+  environment.
+
+* The user can bypass the texi2html functions and provide his own function
+  to do things similar that what is done for interfacing with LaTeX2HTML
+  or tex4ht.
+
+* LaTeX2HTML stuff is moved out of texi2html.pl, to T2h_l2h.pm.
+
+* Add $USER and $DATE variables to override the defaults detected for the
+  footer.
+
+* COMPATIBILITY
+  -------------
+
+* $TOP_FILE and $TOC_FILE are only set if set by the user. The elements
+  file names are in the hash reference $Texi2HTML::THISDOC{'filename'}
+  for use in init files.
+
+* The API for image, normal_text, paragraph and node_file_name has changed.
+
+* The $ENCODING variable is deprecated, replaced by $ENCODING_NAME
+  and $OUT_ENCODING.
+
+* utf8 is used as default out file encoding. This should allow for utf8
+  translations for languages which cannot use @-commands for non ascii
+  characters.
+
+* Use entities for ``, '', ---, -- and quotes used for some formatting
+  @-commands if $USE_ISO is set. 
+
+* don't set unset MENU-ENTRY-NAME if it is similar with the NODE-NAME,
+  it is useless as it is a construct that shouldn't happen.
+
+* avoid menu entry and description redundancy in the formatting function
+  and not in the main program.
+
+* accept - in @-command names (compatibility with makeinfo)
+
+* in user-defined macro arguments a comma in brace is escaped (compatibility
+  with makeinfo from texinfo 4.8.90)
+
+* don't add the section title to the html title when the document isn't split
+
+* BUG FIXES
+  ---------
+
+* When the file extension is set to the empty string, a trailing `.' will not
+  be automatically added to file names.
+
+* The texi2html script is now created by make and not configure. 
+
+* It is possible to build the translation files from outside of the 
+  build directory.
+
+* When configure detects that no Data::Dumper is present, the build scripts
+  will simply copy the files instead of breaking.
+
+* remove handling of quotation second arg, quotation has only one arg.
+
+* handle nested ifset/ifclear.
+
+* Improved handling of @sc and @centerchap.
+
+* More flexible normal_text.
+
+* style_stack really contains the formatting @-commands. 
+
+* caching of html generated by latex2html reenabled.
+
+* when not split and no section navigation is output, the about page and
+  navigation direction are not output for all the elements.
+
+* FOR DEVELOPERS
+  --------------
+
+* Standardized on Automake 1.10.0
+
+1.76 (February  3 2005)
+
+* BUG FIXES
+  ---------
+
+* Perl no longer needs to be installed at build time, but when it is not, the
+  path to `perl' that will be used at run time must be passed to the
+  `configure' script.
+
+1.74 (January 31 2005)
+
+* COMPATIBILITY
+  -------------
+
+* The argument on def like commands line (@deffn and friends) may be 
+  bracketed, therefore there is no difference between this element and 
+  others. There is no need of items with { in front in the %def_map
+  anymore.
+
+* NEW FEATURES
+  ------------
+
+* More @-commands are available to the user, that were ignored before.
+  Most of these @-commands are those related with structure or printed 
+  output.
+
+* BUG FIXES
+  ---------
+
+* many deffn and friends line parsing bugs fixed.
+
+1.72 (December 29 2004)
+
+* NEW FEATURES
+  ------------
+
+* Handle texinfo 4.7 constructs:
+  @caption, @shortcaption, @ordf, @ordm, @registeredsymbol, @deftypecv, 
+  @LaTeX, @indicateurl, @docbook, @ifdocbook, @ifnotdocbook, @comma, 
+  @headitem, @quotation second arg, @acronym second arg.
+  @url is now a synonym for @uref. @ at the end of a @def* line continues the
+  line.
+  Handle texinfo 4.8 constructs:
+  @abbr, @slanted, @euro and @sansserif.
+* Cross refs are done according to the specification presented in the texinfo
+  manual in the node HTML Xref.
+
+* BUG FIXES
+  ---------
+
+* Re enable compatibility with perl older that 5.6.
+
+1.70 (March 24 2004)
+
+* BUG FIXES
+  ---------
+
+* use i18n files even when translations.pl is not included. Include
+  translations.pl.
+
+* COMPATIBILITY
+  -------------
+
+* install html manual in $datadir/texinfo/html.
+
+* NEW FEATURES
+  ------------
+
+* Add a spec file, usefull to build a rpm.
+
+* FOR DEVELOPERS
+  --------------
+
+* Standardized on Autoconf 2.59 & Automake 1.8.3
+
+1.68 (March 20 2004)
+
+* COMPATIBILITY
+  -------------
+
+* When the manual is split the default is to put resulting files in a 
+  directory with name the manual file basename (previously they were left in
+  the current directory). To avoid that, call texi2html with '-output .'.
+
+*  The main configuration files are now ./Config, ~/.texi2html/Config, 
+  $sysconfdir/texi2html/Config and last $datadir/texi2html/Config. They are 
+  sourced in that order.
+  In the future `/etc/texi2htmlrc' and `~/.texi2htmlrc' will no longer be 
+  sourced and any existing site or user configuration should be moved to the 
+  new locations if you wish it to be used by newer versions of Texi2HTML.
+
+* Translation files are now stored in $datadir/texi2html/i18n/*, 
+  $sysconfdir/texi2html/i18n/*, ~/.texi2html/i18n/*, and sourced in that order. 
+  The translated strings are now associated with the english strings.
+  Please see the documentation for the format of the new translation files.
+
+* First index page is the first page with a non empty index (with @printindex).
+
+* The glossary and bibliography terms aren't searched anymore. You should use 
+  @macro to simulate these features (look at Tests/macros/glossary.texi for
+  an example).
+
+* We've standardized on GNU-style `--' prefixed long options, rather than the
+  old single-dash prefixed long options in the help, but the single-dash style
+  is still accepted on the command line for the time being. 
+  We also changed `_' to `-' in option names.
+
+* @setref handling is removed as the right corresponding @-command is @anchor.
+
+* No more global variables outside of namespaces.
+  Global variables are now in the Texi2HTML namespace.
+  leading T2H_ is stripped from variable, hashes and array names. You should 
+  change your variable names for the new release. As the global variables 
+  (%THISDOC, $THIS_SECTION...) are in the Texi2HTML namespace you should use,
+  for example, $Texi2HTML::THISDOC{'fulltitle'} now.
+  functions from the main program should now be qualified in the main
+  namespace. t2h_ is stripped from the function names too.
+  t2h_anchor is now a function reference in init file, and thus should 
+  be called like &$anchor(...).
+  toc file and main file are arguments for print_frame, overview lines are 
+  arguments for print_toc_frame (instead of global variables).
+
+* $THISPROG, $T2H_HOMEPAGE, $T2H_AUTHORS, $T2H_TODAY, $T2H_USER are now 
+  values associated with the following keys in %Texi2HTML::THISDOC: 
+  `program', `program_homepage', `today', `user'.
+
+* Changes in the function reference used for the page layout: 
+  print_section don't do the end of page or section anymore (except when 
+  split at node), end_section does the end of a section, and print_*_footer 
+  does the end of page.
+  the print_*_header, print_*_footer... functions take a ref on the buttons
+  array as argument, instead of using the $T2H_BUTTONS global variable.
+  Have a look at the texi2html.init file to update your configuration files.
+
+* T2H_InitGlobals is not used anymore. Use the function reference init_out 
+  to define $BODYTEXT dynamically and %Texi2HTML::THISDOC values in 
+  print_page_foot and about_body to recreate the address instead of the 
+  $T2H_ADDRESS.
+  You can have a look at program_string in texi2html.init which recreates 
+  the address. $T2H_ADDRESS isn't used anymore.
+
+* variables for latex2html are not in texi2html init file anymore but in 
+  l2h.init.
+
+* don't expand @ifinfo regions by default.
+
+* option --output obsoletes -out_file and -subdir. It is the same than 
+  --out_file when output is not split, and the same than --subdir when it is
+  split.
+
+* If not split, the resulting file has a leading directory, and the directory 
+  doesn't exist, it is created.
+
+* If a directory creation fails the program aborts.
+
+* Don't use T2H_CENTER_IMAGE, @center should be used.
+
+* the init_out function redefines dynamically %NAVIGATION_TEXT, %BUTTONS_GOTO
+  and $BODYTEXT. You should redefine the hash values in that function. If you 
+  want to reuse the values of the default values set by init_out,
+  you could do something like:
+
+  my $default_init_out = $init_out;
+  $init_out = \&makeinfo_like_init_out;
+  sub makeinfo_like_init_out() 
+  {
+     my $encoding = &$default_init_out();
+     $NAVIGATION_TEXT{'Following'} = ' &gt; ';
+     return $encoding;
+  }
+
+* NEW FEATURES
+  ------------
+
+* Many changes towards output of stricter HTML.
+
+* initialization files for html 3.2, xhtml, html 4.0 with inline style,
+  no header, utf8 characters outputted, makeinfo style, book style, conversion
+  to chm files and conversion to roff. Initialization files are searched 
+  in ./, ~/.texi2html, $sysconfdir/texi2html and last $datadir/texi2html. 
+  The file names are html32.init, xhtml.init, inlinestyle.init, 
+  noheaders.init, utf8.init, makeinfo.init, book.init, chm.init and roff.init.
+
+* The test suite is much more comprehensive and uses validate and tidy to
+  assess the correctness of the HTML.
+
+* Handling of @html, @verbatim, @verb, @sp, @=, @copying, @insertcopying,
+  @cartouche, @titlefont, @dircategory, @direntry, @shorttitlepage, @\,
+  @afourlatex, @afourwide, @firstparagraphindent, @exampleindent, @novalidate,
+  @definfoenclose, @kbdinputstyle, @centerchap, @documentdescription,
+  @documentencoding, @contents, @shortcontents, @verbatiminclude.
+
+* With --no-validate node cross-reference validation is suppressed (like
+  @novalidate).
+
+* --expand may be specified more than once such that more than one additional
+  region could be expanded. --noexpand does the reverse. --iftex, --ifinfo...
+  and --no-ifinfo... can be used instead.
+
+* add http-equiv="Content-Type" tag for the charset declaration.
+
+* HTML formatting is isolated in customizable functions located in the 
+  initialization files. 
+
+* menu comments are in a preformatted context.
+
+* Any combination of caps for `top' leads to the top node.
+
+* @ref{(perl)Top} leads to a ref to the info manual. 
+
+* References to external manual in @ref and menus are links to the html 
+  pages (with the same convention than makeinfo --html use).
+  --html-xref-prefix is the base dir for external manual references.
+
+* With --node-files do a file per node which can be used as a target for
+  cross references from other manuals (including manuals generated with 
+  makeinfo --html).
+
+* With --use-nodes nodes are sectioning commands whe they are not associated
+  with a structuring command.
+
+* With --toc-links create links from headings to toc entries.
+
+* distinct directions (next, prev...) for nodes and sections, more directions.
+
+* split at chapter, section or for every node.
+
+* new possibilities for buttons. If this is a ref to a scalar, the text 
+  appears in navigation. If it is an array, the first element is a direction 
+  used for the href, the second element is a scalar ref for the text.
+
+* With --noseparated-footnotes the footnotes are in the same page than the
+  text.
+
+* %NO_TEXI hash similar with %HREF but without texinfo commands,
+  %THISDOC{'title_no_texi'}
+
+* "-U value" does the same than "@clear value".
+
+* -P option prepends directory for include files before the document directory.
+
+* -macro-expand generates a file with expanded macros and @include.
+
+* pass $L2H_HTML_VERSION for the html version to latex2html.
+
+* support for css. The --css-include option does the same than in makeinfo 
+  (parse the file, and echo the @import part before the texi2html css rules, 
+  the rules part after the texi2html css rules).
+  The texi2html css commands may be customized too.
+
+* Text before the first @node or sectioning command is part of the first
+  section unless -ignore-preamble-text is set.
+
+* if `-' is given to the -output option, output on STDOUT.
+
+* Add images from the Singular project.
+
+* All the strings appearing in the HTML are internationalized.
+
+* centering and flushing is really handled.
+
+* Format titlepage (even though the formatted text isn't used by default).
+
+* Handle all the encodings perl knows about.
+
+* BUG FIXES
+  ---------
+
+* @multitable size determination, out of bounds columns ignored.
+
+* In @table and @itemize, @item is replaced by the @-command argument.
+
+* nested @-commands are better handled. 
+
+* in index keys @-commands are replaced by the right symbols.
+
+* files are omitted in hrefs when they points to the same file.
+
+* $value{_title}... are expanded during HTML generation.
+
+* @H{a} leads to a'' and not &aacute; 
+
+* cedilla are accepted in node names.
+
+* Any characters are accepted in menu comments.
+
+* frame target is the top file, and not the toc file.
+
+* rewriting of the @macro code completely. This likely fixed some bugs but 
+  this hasn't been verified by running the new, more complex test cases 
+  against the old code.
+
+* rewriting of the document structure resolution.
+  unnumbered regions are at the right level and splitted indices don't break
+  the document structure anymore.
+  index entries and footnotes are more precisely located.
+
+* @-commands ignored are ignored with the line, the arg or following spaces
+  like makeinfo does.
+
+* FOR DEVELOPERS
+  --------------
+
+* Standardized on Autoconf 2.59 & Automake 1.8.2
+
+* The --enable-maintainer-mode option is now required by configure to enable
+  what is considered the maintainer-specific portions of Makefiles.  This
+  includes the portions which automatically rebuild the configure and build
+  files (configure, aclocal, Makefile.in, etc) when configure.in or other
+  dependencies are changed.
+
+* The config is in the Texi2HTML::Config namespace. The latex2html related
+  functions are in the Texi2HTML::LaTeX2HTML namespace. The 
+  internationalization functions are in the Texi2HTML::I18n namespace in 
+  T2h_i18n.pm.
+
+1.66 (June 8 2002)
+* Many bug fixes.
+
+1.65 (August 26 2001)
+* Many bug fixes.
+* The operation of the previously broken << (FastBack) and >> (FastForward)
+  buttons has changed slightly.  FastBack now returns to the beginning of the
+  current chapter and FastForward now jumps to the beginning of the next
+  chapter.
+
+1.64 (July 3 2000)
+* Incorporated first  version of Texi2html Texinfo manual, authored by
+  Karl Heinz Marbaise <khmarbaise@gmx.de>
+* New handling of command line options:
+  - can be abbreviated to shortest unique prefix
+  -help now works and is up-to-date
+
+1.63 (June 23 2000)
+* New customization variable: 
+   $T2H_HREF_DIR_INSTEAD_FILE: 
+       if set (e.g., to index.html) replace hrefs to this file 
+        (i.e., to index.html) by ./
+* New command-line option:
+  -toc_file FILE 
+       for those who want the TOC to be in FILE
+* bug fixes related to macro invocation 
+ 
+1.62 (12 April 2000)
+* New customization variables: 
+   $T2H_SPLIT_INDEX [default: = 100]
+     index pages are split at next letter, if more than that many entries
+   $T2H_NODE_NAME_IN_MENU [default = 0]
+      for enforcing node names in meny entries
+   $T2H_AVOID_MENU_REDUNDANCY [default = 1]
+      to avoid display of duplicate meny entry information
+   $T2H_INDEX_CHAPTER [default = '']
+      if set, use chapter of this name for 'Index' Button in
+      navigation bars, else use first chapter whose name matches
+      "index" (case insensitive).
+   $T2H_TOP_HEADING [ default = '']
+      if non-empty, and no heading is in Top node, then use this as heading
+      for top node/section; otherwise, use @settitle, @shorttitle.
+* index generation: observes typesetting in fixed-width font, @ftable, 
+  @vtable implemented
+* Peter Moulder & Teun Burgers: Misc documentation and distribution
+  changes
+* numerous small bugs fixed (handling of menu entries, paragraphs in
+  lists/tables, etc).
+
+
+1.61 (31 March 2000)
+* By default, $T2H_TOP_FILE is not set, and so $docu_name.html is used.
+* Added T2H_print_chapter_header, T2H_print_chapter_footer for more
+  fine-grained control of T2H_SPLIT eq 'chapter', added option
+  -section_navigation, $T2H_SECTION_NAVIGATION to supress output of
+  navigation panels per section
+* naming scheme and calling convention of customizable subs changed:
+  prefix T2H_, call &$T2H_, assignment $T2H_<name> = \&T2H_DEFAULT_<name>
+* mailinglist created: texi2html@mathematik.uni-kl.de
+* conversion to standard gnu package with Makefile.am, README,
+  AUTHORS, etc. (Peter Moulder  <reiter@netspace.net.au>) 
+* Initialization as suggested by Peter Moulder:
+   1. /usr/local/etc/texi2htmlrc (or whatever given by --sysconfdir to
+     configure)
+   2. $HOME/.texi2htmlrc
+   3. command-line options, including -init_file
+  where later options override previous ones.
+* incoporated patches from Peter Moulder (backward-compatible
+  command-line options, separate man-page, etc).
+* Automatic node pointer creation added
+* @enddots, @exclamdown, @pounds, and relatives added.
+
+Major Changes from 1.58 to 1.60 
+* primitve foreign language support
+* support of all "Umlaute"
+* anchors, macros
+* latex2html incooperation
+* customizable page layout (texi2html.init)
+* index as table with corresponding sections
+
+

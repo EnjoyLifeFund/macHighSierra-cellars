@@ -1,0 +1,487 @@
+This file contains a list of things yet to be done (see also in doc/TODO):
+
+Before next release
+-------------------
+
+* verify that a format option switch never overwrite previously
+  set user option switch. For example, right now, --html overrides
+  --no-split which is bad. Report from Karl.
+
+* now config variables are read-only after command line switches
+  expansion. If defined, they set $Texi2HTML::THISDOC{'VAR'}
+  and if not defined, $Texi2HTML::THISDOC{'VAR'} is autodetected.
+  $Texi2HTML::THISDOC{'VAR'} is then used in the code.
+
+  This means that, if a variable that was not autodetected becomes
+  autodetected, the code will have to switch to using 
+  $Texi2HTML::THISDOC{'VAR'} instead of $VAR. This is very bad since it
+  means API breaking.
+
+  All that is now more or less encapsulated in get_conf, but the 
+  problem remains.
+
+set_from_command_line('somevar', $value);
+set_from_document('somevar', $value);
+set_from_init_file('somevar', $value);
+get_conf('somevar');
+
+
+
+Later
+-----
+
+* have a way to know whether a description is present or not 
+  when formatting the menu_entry. This could allow not having a 
+  colon after menu_entry when there is no description.
+
+* test --headers --output, and the other order, especially when in 
+  info mode, such that it triggers also plaintext. Also test with 
+  directories and files.
+
+* line breaking could happen after a full width character.
+
+* images.texi, paragraph_in_samp.texi should be tested in xml too.
+  Maybe they should be moved to coverage, and in coverage all the formats
+  should be tested like in sectioning. 
+
+* invalid/caption_not_closed.texi some doubtful <p><strong></strong></p>
+  appears, it is empty and it isn't clear where it comes from.
+  similarly in formatting/table_in_table_item.texi, some empty stuff:
+<td><pre class="example"><code></code></pre><dl compact="compact">
+<dd><pre class="example"><code></code></pre></dd>
+
+* add --command command line that gives inserted lines. This should wait
+  for @setfilename status to be resolved, on TeX, since otherwise there
+  is the issue of inserting before or after @setfilename to be resolved.
+
+* many FIXME in the code
+
+* relevant makeinfo error messages not used
+"Footnotes inside footnotes are not allowed"
+"%cfloat environments cannot be nested"
+
+"%s: Skipping macro expansion to stdout as Info output is going there.\n"
+
+* Create detailed texinfo documentation (see in doc)
+
+* add sample init files for different layouts
+  - use events (onmousover, etc) for anchors
+  - use style-sheets for formatting of various elements (like @example,
+  etc).
+  - xhtml with in line style
+  - Singular manual style
+  - How complicated could it be to get a creation of SGML ?
+  - to LaTeX
+  - to RTF
+  - to open document
+
+* Document 
+  The fact that there are 3 commands that may be called, and --program.
+  The locations for config files and init files (including --conf-dirs).
+
+  Texi2HTML::THIS_ELEMENT
+  $NEW_CROSSREF_STYLE, $EXTERNAL_CROSSREF_SPLIT, $INLINE_INSERTCOPYING
+  $OVERVIEW_LINK_TO_TOC
+  $DATE_IN_HEADER
+  $INDEX_ENTRY_COLON
+  $MENU_ENTRY_COLON
+  $Texi2HTML::THISDOC{'htmlxref'}
+  $Texi2HTML::THISDOC{macro name}
+  $Texi2HTML::THISDOC{'hyphenation'}
+  $Texi2HTML::THISDOC{'do_about'}
+  $Texi2HTML::THISDOC{'split_level'}
+  $Texi2HTML::THISDOC{'line_nr'}
+  $Texi2HTML::THISDOC{'input_directory'}
+  $Texi2HTML::THISDOC{'simpletitle'}
+  $Texi2HTML::THISDOC{'filename'}->{'toc_frame'}
+  $Texi2HTML::THISDOC{'filename'}->{'frame'}
+  $Texi2HTML::THISDOC{'CSS_LINES'}
+  'childnext'
+
+  $empty_preformatted
+  $copying_comment, $titlepage better and $documentdescription
+  $program_string, $footnote_texi
+  $heading arguments and the whole heading and heading_element relationship
+  $begin_paragraph_texi $tab_item_texi $begin_style_texi
+  $begin_special_region $end_special_region $simple_command $thing_command
+  Also element formatting documentation, especially print_foot_navigation
+  is not up to date.
+  new arguments and return args of index_summary_letter
+  new argument of def
+  new argument of def_item
+  new arguments of list_item
+  new argument of inline_content
+  $shortcontents and $contents
+  $misc_command_line
+  new argument of printindex
+  new arguments of $unknown_style
+  new arguments of index_entry_label
+  new arguments of index_entry
+  new argument of style
+  NODE_FILENAMES
+  $Texi2HTML::THISDOC{'format_from_command_line'}
+  language_codes
+  region_codes
+  $PROGRAM_NAME_IN_FOOTER
+  $HEADER_IN_TABLE
+  button_formatting
+  TOP_BUTTONS
+  USE_TITLEPAGE_FOR_TITLE
+  SHOW_TITLE
+  NO_CSS
+  INLINE_CSS_STYLE
+  print_redirection_page?
+  new argument of menu_link
+  @command_handler_output
+  t2h_add_text_substitutions, t2h_remove_text_substitutions,
+  @text_substitutions_normal, @text_substitutions_texi,
+  @text_substitutions_simple_format, @text_substitutions_pre and
+  t2h_text_substitutions
+  t2h_default_set_iso_symbols
+  document the math related maps, simple_map_math, math_map, style_map_math
+  document sorting_things_map
+  new quotation argument
+
+* Use omhelp latex parser and mathml generator for both xhtml and 
+  docbook
+        http://www.seanet.com/~bradbell/omhelp/latex.xml
+
+* in LaTeX, @example and the like could be implemented as \fancyvrb
+  with fontfamily=helvetica, fontsize=\small commandchars=\\\{\}
+
+* %f$x (index in printf) appeared in perl 5.8.0, 18 jul 2002
+
+* document the new $image arguments/API
+
+* document the css classes:
+
+Sectioning command headings @top, @chapter, @appendix...
+h? @var{command_name}
+
+for @display, @example, @smallexample...
+pre @var{environment_name} 
+
+for @node, in case it is output as a header (which is quite rare).
+h3 node-heading
+
+For summary letters in indices
+a summary-letter
+
+For lists that should not have a bullet in front
+ul no-bullet
+
+When whole menu is in a preformatted environment
+pre menu-preformatted
+
+For the menu text between menu entries
+pre menu-comment
+
+For a whole header, depending on $HEADER_IN_TABLE:
+table header
+div header
+
+Others
+
+pre verbatim
+pre verbatiminclude
+div footnote
+table cartouche
+blockquote smallquotation
+table index-@var{index_name}
+div shortcontents
+div contents
+div float
+dl listoffloats
+h1 settitle
+table menu
+
+@code and @allowcodebreaks false: span nocodebreak
+@w and - or _ in word: span nolinebreak
+
+@dots small dots
+@endots small enddots
+@sansserif span sansserif
+@r span roman
+@titlefont h1 titlefont
+
+* test stuff on 'line_command' relevant in pass 1, like @macro, @ignore...
+
+* in chm.init (Jose Fonseca)
+
+[WINDOWS]
+ 
+Default=,"ug.hhc","ug.hhk","ug.html","ug.html",,,,,0x22520,,0x384e,,,,,,,,0
+
+The numbers are a bitmask of the enabled buttons. The ones here are
+IMO a good default. In the future you may also add that as an
+option, as the Docbook XSL stylesheets do (see in
+http://docbook.sourceforge.net/release/xsl/snapshot/doc/html/rn20.html
+all the CHM related parameters one can change).
+
+* antispam @email
+<script type="text/javascript">
+<!--
+/* This hacks the DOM so that copy&paste in Firefox ignores the "nospam"
+   spans. */
+function clean_antispam() {
+  document.getElementById("span1").firstChild.nodeValue = "";
+  document.getElementById("span2").firstChild.nodeValue = "";
+}
+//-->
+</script>
+
+<body onLoad="clean_antispam()">
+<tt>&lt;bug-gnulib<span id="span1" style="display:none;">-nospam</span>&#64;<span id="span2" style="display:none;">nospam.</span>gnu.org&gt;</tt>
+</body>
+
+* roff is not uptodate. At least the @quote* and @guillem* and many 
+  others.
+
+* texi2dvi doesn't accept @table in @format
+
+* when there are nested complex_formats, a small format that doesn't have
+  style, like smalldisplay in a format with style, like example, the
+  smalldisplay will use the class of the above format, and lose the 
+  small font property.
+
+* decide @documentencoding @. And maybe change regexp. (?)
+
+* test for something along:
+@setfilename ../../info/xemacs.info
+
+* docbook: in function no style. 
+  replaceable is for @var or function argument. Only characters.
+  Maybe replaced with parameter?
+
+  Instead of synopsis may use specialized synopsis, funcsynopsis/funcprototype
+  for deftype*, funcdef for defffn, ooclass for object oriented.
+  deffn:
+  <funcsynopsis><funcprototype><funcdef role=...><function>d--effn_name</function></funcdef><paramdef><parameter>args</parameter></paramdef></funcprototype></funcsynopsis>
+  defvr, deftypevr: varname, and type and not returnvalue
+  deftypefn: 
+  <funcsynopsis><funcprototype><funcdef role=...>type <function>d--eftypefn_name</function></funcdef><paramdef>a type<parameter>in var..</parameter></paramdef></funcprototype></funcsynopsis>
+  deftp: structname/structfield. Both contains a replaceable. Problem with
+  structfield is that there should be one by field.
+  defcv: classname + property, and category in synopsis
+  deftypecv: classname + type + property, and category in synopsis
+    fieldsynopsis?
+  defop: <classsynopsis><classsynopsisinfo>category</classsynopsisinfo><ooclass><classname>class<><><methodsynopsis><methodname><replaceable><></methodname><methodparam><parameter>...<><><>
+  deftypeop: same with type in methodparam.
+
+  also informalfigure in @float
+
+  also use informaltable or table, for multitable?
+
+  What is before the first sectioning command is put in <bookinfo><abstract>.
+
+  what about @titlefont in docbook?
+
+  maybe use simpara instead of para. Indeed, simpara is for paragraph without
+  block elent within, and it should be that way in generated output.
+
+  put <title> in <articleinfo>?
+
+  what to do for guilsinglleft, guilsinglright? Currently &lt; &gt; since
+  there is no &lsaquo; nor &rsaquo;
+
+* to solve above issue (first issue), the definition arg formatted with 
+  simple_format should alo be passed down
+
+* in docbook, when there is only one section <article> should be better
+  than book. Maybe the best way to do that would be passing the 
+  information that there is only one section to the functions formatting
+  the page header and page footer.
+
+* in docbook, if there are 2 nodes without anything to put an id on 
+  the first is forgotten. Also why no id on <para>?
+
+* have a special debug mode where text processing is traced. It means
+  that PASS_TEXT/SCAN_TEXT is shown and substitute_line (and maybe 
+  other like substitute_text) and shown, now that there is a nice 
+  context information.
+
+* when closing @-commands with braces in first passes, the braces are not
+  output in order to correct the document. However, end of formats are output
+  in the first pass (and therefore these formats cannot be wrong in 
+  other passes, and nothing is done to close them). Also it is not clear where
+  error messages should appear. Indeed in the first pass the line count
+  are less precise since commands are closed at the end of file, not when 
+  finding a @node or @section. If error messages are done in pass_text, 
+  they won't be output when only macros are expanded, but maybe it is better
+  like that? (and in makeinfo compatibility mode, a normal processing
+  will be done with -E).
+
+* @anchor{} should always ignore following whitespace (including newlines).
+  Karl insists on that for backward compatibility.
+
+* ignore spaces after @ command, before {, like texi2dvi does? Karl 
+  insists on that because TeX has to do it like that.
+
+* in info, @. @! and @? should always be followed by at least 2 spaces
+  even in text, not only on end of lines. Also the number of spaces after
+  a . in the text may be adjusted to 2. It is not sure, though, whether
+  we should do it or leave it  to the user. There is a bug:
+  https://savannah.gnu.org/bugs/?20444
+
+* add tests for -o - and input coming from stdin, including check of 
+  out file names.
+  also -o /dev/null and similar.
+  There is also a check in layout/formatting_exotic with 
+  --internal-links=/dev/null which is not portable
+
+* Perhaps we should also make an option -Werror which turns all warnings
+  into errors.
+
+* when determining the different letters and later sorting them, there 
+  perl sorting and i18n stuff should be used at least when 
+  --enable-encoding is set. Cf testcases in encoding/encoding_index*.
+  Currently, for example for encoding_index-latin1 accented letters are
+  at the end. And degree is at o...
+
+* formatting/indicateurl_paragraph.texi there should be a warning that
+  a simple_style was cut by a paragraph.
+
+* invalid/node_in_copying there is no error message
+
+* info/long_uref_after_item.texi report from Kevin Ryde,
+  it would be logical to treat the space after the itemize mark as 
+  a tie instead of a breakpoint.
+
+* in sectioning/first_section_no_node in _html, the @unnumbered is included
+  in the first node, while makeinfo outputs it before the first node, and 
+  the header is only output when there is a @node.
+
+* in formatting/table_in_table_item.texi, some lines maybe have too much 
+  leading spaces (precisely in @code in @table in @table @item, line
+in nested table line
+
+* In japanese.texi lines are not cut right.
+
+* formatting/float_copying index entries in insertcopying are not right.
+  Maybe it is because they are in footnotes. Or maybe because they are
+  in a caption.
+
+* in examples/chm.init use main::open_out to open files.
+
+* examples/mediawiki.init: end of lines within lists leads to empty lines
+  that may not be what the user wanted. Maybe this could be ameliorated.
+
+* mediawiki: external links, in node directions, in menus, in @refs 
+  aren't correct. Not exactly sure what should be correct.
+
+* mediawiki: Cite extension is required for footnotes
+  $wgUseTeX = true; required for math
+
+* in xml have documentencoding have an argument.
+
+* for https://savannah.gnu.org/bugs/?25820 it is unclear whether &amp;
+  is correct for & or not
+
+* from https://savannah.gnu.org/bugs/?22696, encodings/chinese_mixed_with_en
+  the info output is not good with Chinese texts only, not aligned in source
+  and a mix of English and Chinese texts.
+
+* Maybe put a lone anchor in a <div> for strict html (Noah Slater).
+
+* drop color from body and put in css (Noah Slater).
+
+* maybe put lang= in <html> and not <body>, though I am not convinced.
+
+* $MENU_ENTRY_COLON and $INDEX_ENTRY_COLON maybe could be generalized
+  to other formats than html
+
+Misc info and boring stuff
+--------------------------
+
+* use Unicode::LineBreak if detected for line breaking and character 
+  width computation.
+
+* texi2html is immune to https://savannah.gnu.org/bugs/?25822
+
+* the following is erroneous, but maybe it could be better handled anyway
+-> error with @item on same line than @table
+@xref{node,
+@table @emph
+@item line
+text
+@end table
+}
+
+* test @printindex in diverse contexts and handle right, or complain about
+  things like
+@code{
+@printindex cp
+}
+
+* @macro definition in @ifset is parsed but ignored. So in the following, the
+@end ifset appearing in the macro is ignored if 'a' is not set, and the 
+macro isn't defined.
+
+@ifset a
+@macro bidule
+@end ifset
+@end macro
+@end ifset
+
+* certainly not a big deal, but in invalid/verb_not_closed @verb content
+  is not output
+
+* certainly not a big deal, but in invalid/bad_tab_nesting, the @code quotes
+  are not surrounding the @tab, although there is no error message
+
+* @insertcopying in @copying doesn't lead to error message with 
+  INLINE_INSERTCOPYING. See invalid/recursive_copying
+
+* In indices/makeinfo_index_nodes there is no elements, and thus no 
+  [Index] link since it uses the index chapter (or @top), and there is 
+  no chapter not @top.
+
+* in index_split the section associated with indices is the numbered section
+  not the associated node where the @cindex are. Good or bad?
+
+* @chapter following a @appendix still uses a number for numbering, and
+  is not affected by the @appendix number. Karl is ok with that.
+
+* manuals/mini_ker result is not valid, because tex4ht and latex2html
+  open paragraphs in tex rendering while the whole is already in a 
+  paragraph.
+
+* utf8.init doesn't work with info.init (see encodings/nodetest_to_utf8_latin1)
+
+* menu_description is menucomment in xml. 
+  menuentry is the menunode+menutitle+menucomment
+  menu_comment in makeinfo --xml treated as normal text.
+  the documentation, however uses the same words than in texi2html.
+
+* enable_encoding.init is certainly dependent on USE_UNICODE through
+the use of non 8 bit representation of characters.
+
+* code_style is used for code_style style @-commands in remove_texi.
+  However since -- is removed to have strict html comments, it looks like
+  it isn't.
+
+* empty lines in @hyphenation are not valid for texi2dvi
+
+* in indices/index_special_region.texi, there is the error message
+index_special_region.texi:8: Anchor `Copying information' previously defined (l. 8)
+This is right since it is used in @insertcopying a lot, but it looks
+weird since the line of definition and redefinition are the same.
+
+* simple quotes and @set txicodequoteundirected and txicodequotebacktick
+info:
+ ' -> ' always
+
+html:
+ ' -> '             in code_style and preformatted
+ ' -> [lr]squo      otherwise
+
+tex, default:
+ ' -> [lr]squo      always
+
+tex + txicodequote*:
+ ' -> '             in code_style
+ ' -> [lr]squo      otherwise
+
+So things are right as is, but in formats that always set the quotes to 
+a special font should honor  txicodequote* like tex. There is an example
+of such code commented out in texi2html.init in normal_text.

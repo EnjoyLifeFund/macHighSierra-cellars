@@ -1430,7 +1430,7 @@ sub ShellEscape {
 
 sub FindClang {
   if (!defined $Options{AnalyzerDiscoveryMethod}) {
-    $Clang = Cwd::realpath("/usr/local/Cellar/llvm/4.0.1/bin/clang") if (-f "/usr/local/Cellar/llvm/4.0.1/bin/clang");
+    $Clang = Cwd::realpath("@@HOMEBREW_PREFIX@@/Cellar/llvm/4.0.1/bin/clang") if (-f "@@HOMEBREW_PREFIX@@/Cellar/llvm/4.0.1/bin/clang");
     if (!defined $Clang || ! -x $Clang) {
       $Clang = Cwd::realpath("$RealBin/clang") if (-f "$RealBin/clang");
     }

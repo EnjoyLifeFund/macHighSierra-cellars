@@ -29,8 +29,8 @@ MODLIBS=        $(LOCALMODLIBS) $(BASEMODLIBS)
 VERSION=	3.6
 srcdir=		.
 
-abs_srcdir=	/private/tmp/python3-20170729-292-1gl3go/Python-3.6.2
-abs_builddir=	/private/tmp/python3-20170729-292-1gl3go/Python-3.6.2
+abs_srcdir=	/private/tmp/python3-20170810-43254-yd5gu0/Python-3.6.2
+abs_builddir=	/private/tmp/python3-20170810-43254-yd5gu0/Python-3.6.2
 
 
 CC=		clang
@@ -177,7 +177,7 @@ LIPO_32BIT_FLAGS=
 OTHER_LIBTOOL_OPT=
 
 # Environment to run shared python without installed libraries
-RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/python3-20170729-292-1gl3go/Python-3.6.2
+RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/python3-20170810-43254-yd5gu0/Python-3.6.2
 
 # ensurepip options
 ENSUREPIP=      no
@@ -214,7 +214,7 @@ LDLIBRARYDIR=
 INSTSONAME=	$(LDLIBRARY)
 
 
-LIBS=		-lintl -ldl  -framework CoreFoundation
+LIBS=		-ldl  -framework CoreFoundation
 LIBM=		
 LIBC=		
 SYSLIBS=	$(LIBM) $(LIBC)

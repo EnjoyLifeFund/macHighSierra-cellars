@@ -1,0 +1,2 @@
+#!/bin/bash
+PYTHONPATH="/usr/local/Cellar/cython/0.26/libexec/lib/python2.7/site-packages" exec "/usr/local/Cellar/cython/0.26/libexec/bin/cython" "$@"

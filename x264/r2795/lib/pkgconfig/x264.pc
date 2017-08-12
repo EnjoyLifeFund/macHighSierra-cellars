@@ -1,0 +1,11 @@
+prefix=/usr/local/Cellar/x264/r2795
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: x264
+Description: H.264 (MPEG4 AVC) encoder library
+Version: 0.148.2795 aaa9aa8
+Libs: -L${exec_prefix}/lib -lx264 
+Libs.private: -lpthread -lm -ldl
+Cflags: -I${prefix}/include
