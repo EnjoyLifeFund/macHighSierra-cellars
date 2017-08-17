@@ -1,0 +1,2 @@
+#!/bin/bash
+exec "/usr/local/Cellar/docbook-xsl/1.79.1/docbook-xsl/epub/bin/dbtoepub" "$@"

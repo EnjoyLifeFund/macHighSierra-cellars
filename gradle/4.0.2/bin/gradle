@@ -1,2 +1,0 @@
-#!/bin/bash
-JAVA_HOME="${JAVA_HOME:-$(/usr/libexec/java_home)}" exec "/usr/local/Cellar/gradle/4.0.2/libexec/bin/gradle" "$@"

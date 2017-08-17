@@ -1,0 +1,79 @@
+2.0.2
+=====
+* Fixed crash in locale filter and drop rule, #715116
+* Don't hardcode python path, #72533 (Ryan Lortie)
+* Updated man page
+
+2.0.1
+=====
+* Reworked default ITS rules for better performance
+
+2.0.0
+=====
+* Support for ITS 2.0 Preserve Space data category
+* Support for ITS 2.0 Locale Filter data category
+* Support for ITS 2.0 External Resource data category
+* Support for ITS 2.0 ID Value data category
+* Support for ITS 2.0 parameters, including user overrides
+* Support for ITS 2.0 local withinText attribute
+* Fixed handling of localization note inheritance
+* Fixed handling of namespace prefixes on elements
+* Added option to retain entity references in PO files
+* Added option to load external DTDs (Galen Charlton)
+* Added built-in rules for DocBook 5
+* Updated built-in rules to use ITS 2.0 Preserve Space and External
+  Resource instead of 1.x custom extensions
+* Excluded editor remarks and comments in built-in DocBook and Mallard
+  rules with Locale Filter
+* Made all DocBook *info children not within text in built-in rules
+
+1.2.0
+=====
+* Added new "join mode" for multilingual XML formats
+* Correctly handle ITS version attribute
+* Better handling of multiple localization notes
+* XML path markers are now in dedicated comments
+* Show language code when failing to get translation from PO
+* Added more regression tests
+
+1.1.3
+=====
+* Handle UTF-8 in attribute values
+* Don't output non-translatable external ref messages
+* Better error handling
+
+1.1.2
+=====
+* Better handling of XML errors in PO files
+
+1.1.1
+=====
+* Catch XML parsing errors and exit with error code
+* Fixed placeholder translation when it contains sub-elements
+* Improved autogen.sh for out of tree compilations
+* Commits by Claude Paroz, Javier Jardón
+
+1.1.0
+=====
+* Added itst:context to set msgctxt
+* Added itst:drop to drop context from translations
+* Allow XML attribute to be translated
+* Allow locNotePointer to return a string
+* Allow localization notes to be space-preserving
+* Allow both XLink and child rules on its:rules
+* Fixed Unicode encoding/decoding errors
+* Added automated test suite
+* Added a man page
+* Python 3 fixes
+* Commits by Shaun McCance, Claude Paroz
+
+1.0.1
+=====
+* Convert POSIX-style locales to BCP47
+* Use #. instead of plain # for comments
+* Added PO header to output
+* Added --version
+
+1.0.0
+=====
+* Initial release
