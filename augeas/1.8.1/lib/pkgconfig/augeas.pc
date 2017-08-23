@@ -1,0 +1,11 @@
+prefix=/usr/local/Cellar/augeas/1.8.1
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: augeas
+Version: 1.8.1
+Description: Augeas configuration editing library
+Requires.private: libxml-2.0
+Libs: -L${libdir} -laugeas 
+Cflags: -I${includedir}
