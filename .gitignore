@@ -1,5 +1,3 @@
-bazel
+cassandra/3.10_1/libexec/logs/
 mesos
-mesos.zip
-*.pyc
-gcc/
+bazel
