@@ -1,0 +1,1 @@
+../../../../libexec/share/lua/5.2/luarocks/admin_remove.lua

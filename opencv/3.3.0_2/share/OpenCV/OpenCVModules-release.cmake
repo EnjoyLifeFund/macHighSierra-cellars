@@ -486,7 +486,7 @@ list(APPEND _IMPORT_CHECK_FILES_FOR_correspondence "${_IMPORT_PREFIX}/share/Open
 set_property(TARGET multiview APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(multiview PROPERTIES
   IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "@@HOMEBREW_PREFIX@@/lib/libglog.dylib;numeric"
+  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "/usr/local/lib/libglog.dylib;numeric"
   IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/share/OpenCV/3rdparty/lib/libmultiview.a"
   )
 

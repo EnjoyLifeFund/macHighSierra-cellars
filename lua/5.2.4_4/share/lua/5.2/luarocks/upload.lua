@@ -1,0 +1,1 @@
+../../../../libexec/share/lua/5.2/luarocks/upload.lua
