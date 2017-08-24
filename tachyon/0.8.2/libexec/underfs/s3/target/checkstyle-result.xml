@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="5.9">
+<file name="/Users/binfan/tmp/tachyon-0.8.2/underfs/s3/src/main/java/tachyon/underfs/s3/S3InputStream.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/underfs/s3/src/main/java/tachyon/underfs/s3/S3OutputStream.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/underfs/s3/src/main/java/tachyon/underfs/s3/S3UnderFileSystem.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/underfs/s3/src/main/java/tachyon/underfs/s3/S3UnderFileSystemFactory.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/underfs/s3/src/test/java/tachyon/underfs/s3/S3UnderFileSystemFactoryTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/underfs/s3/src/test/java/tachyon/underfs/s3/S3UnderFileSystemTest.java">
+</file>
+</checkstyle>

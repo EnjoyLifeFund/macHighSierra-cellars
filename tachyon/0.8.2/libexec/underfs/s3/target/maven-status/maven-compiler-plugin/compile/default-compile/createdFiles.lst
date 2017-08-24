@@ -1,0 +1,4 @@
+tachyon/underfs/s3/S3UnderFileSystem.class
+tachyon/underfs/s3/S3InputStream.class
+tachyon/underfs/s3/S3OutputStream.class
+tachyon/underfs/s3/S3UnderFileSystemFactory.class

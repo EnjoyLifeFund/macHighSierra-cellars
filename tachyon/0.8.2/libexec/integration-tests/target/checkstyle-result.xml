@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="5.9">
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/BufferedBlockInStreamIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/FileInStreamIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/FileOutStreamIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/IsolatedTachyonFileSystemIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/LocalBlockInStreamIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/RemoteBlockInStreamIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/table/RawColumnIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/table/RawTableIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/TachyonFileSystemIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/TachyonFileSystemUtilsIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/client/UfsUtilsIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/contract/TachyonFSContract.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/contract/TachyonFSContractCreateIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/contract/TachyonFSContractDeleteIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/contract/TachyonFSContractLoadedIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/contract/TachyonFSContractMkdirIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/contract/TachyonFSContractOpenIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/contract/TachyonFSContractRenameIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/contract/TachyonFSContractSeekIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/fs/AccumulatingReducer.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/fs/DFSIOIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/fs/IOMapperBase.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/HdfsFileInputStreamIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/TFSBlockLocationIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/TFSRenameIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/hadoop/TFSStatisticsTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/IntegrationTestConstants.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/file/FileSystemMasterIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/FileSystemMasterClientIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/JournalIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/JournalShutdownIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/MasterFaultToleranceIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/MasterTestUtils.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/PinIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/rawtable/RawTableMasterIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/master/ServiceSocketBindIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/network/protocol/MessageSavingHandler.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/network/protocol/RPCMessageIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/security/MasterClientAuthenticationIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/security/WorkerClientAuthenticationIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/underfs/glusterfs/GlusterFSCluster.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/underfs/hdfs/LocalMiniDFSCluster.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/underfs/s3/S3UnderStorageCluster.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/underfs/UnderStorageSystemInterfaceIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/worker/block/meta/CapacityUsageIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/worker/block/meta/TieredStoreIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/worker/BlockServiceHandlerIntegrationTest.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/integration-tests/src/test/java/tachyon/worker/DataServerIntegrationTest.java">
+</file>
+</checkstyle>

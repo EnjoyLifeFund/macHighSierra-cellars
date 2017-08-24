@@ -1,0 +1,4 @@
+tachyon/underfs/hdfs/HdfsUnderFileSystem.class
+tachyon/underfs/hdfs/HdfsUnderFileSystemFactory.class
+tachyon/underfs/hdfs/HdfsUnderFileSystemUtils.class
+tachyon/underfs/hdfs/HdfsUnderFileSystem$1.class

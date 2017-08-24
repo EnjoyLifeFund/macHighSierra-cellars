@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="5.9">
+<file name="/Users/binfan/tmp/tachyon-0.8.2/minicluster/src/main/java/tachyon/LocalFilesystemCluster.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/minicluster/src/main/java/tachyon/master/ClientPool.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/minicluster/src/main/java/tachyon/master/LocalTachyonCluster.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/minicluster/src/main/java/tachyon/master/LocalTachyonClusterMultiMaster.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/minicluster/src/main/java/tachyon/master/LocalTachyonMaster.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/minicluster/src/main/java/tachyon/master/OldClientPool.java">
+</file>
+<file name="/Users/binfan/tmp/tachyon-0.8.2/minicluster/src/main/java/tachyon/underfs/UnderFileSystemCluster.java">
+</file>
+</checkstyle>
