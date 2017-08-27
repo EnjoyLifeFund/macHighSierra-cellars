@@ -1,0 +1,5 @@
+# Ignore directories in docker build
+node_modules/
+test/
+tools/
+
