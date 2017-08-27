@@ -1,0 +1,63 @@
+.ad l
+.TH ldns 3 "30 May 2006"
+.SH NAME
+ldns_init_random \- seed the random function
+
+.SH SYNOPSIS
+#include <stdint.h>
+.br
+#include <stdbool.h>
+.br
+.PP
+#include <ldns/ldns.h>
+.PP
+int ldns_init_random(FILE *fd, unsigned int size);
+.PP
+
+.SH DESCRIPTION
+.HP
+\fIldns_init_random\fR()
+Seed the random function.
+If the file descriptor is specified, the random generator is seeded with
+data from that file. If not, /dev/urandom is used.
+
+applications should call this if they need entropy data within ldns
+If openSSL is available, it is automatically seeded from /dev/urandom
+or /dev/random.
+
+If you need more entropy, or have no openssl available, this function
+\%MUST be called at the start of the program
+
+If openssl *is* available, this function just adds more entropy
+
+\.br
+\fBfd\fR: a file providing entropy data for the seed
+\.br
+\fBsize\fR: the number of bytes to use as entropy data. If this is 0,
+only the minimal amount is taken (usually 4 bytes)
+\.br
+Returns 0 if seeding succeeds, 1 if it fails
+.PP
+.SH AUTHOR
+The ldns team at NLnet Labs. Which consists out of
+Jelte Jansen and Miek Gieben.
+
+.SH REPORTING BUGS
+Please report bugs to ldns-team@nlnetlabs.nl or in 
+our bugzilla at
+http://www.nlnetlabs.nl/bugs/index.html
+
+.SH COPYRIGHT
+Copyright (c) 2004 - 2006 NLnet Labs.
+.PP
+Licensed under the BSD License. There is NO warranty; not even for
+MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.
+
+.SH SEE ALSO
+\fIldns_sign_public\fR, \fIldns_key\fR.
+And \fBperldoc Net::DNS\fR, \fBRFC1034\fR,
+\fBRFC1035\fR, \fBRFC4033\fR, \fBRFC4034\fR  and \fBRFC4035\fR.
+.SH REMARKS
+This manpage was automatically generated from the ldns source code by
+use of Doxygen and some perl.

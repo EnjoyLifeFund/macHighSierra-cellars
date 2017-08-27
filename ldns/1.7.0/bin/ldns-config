@@ -1,0 +1,36 @@
+#!/bin/sh
+
+prefix="/usr/local/Cellar/ldns/1.7.0"
+exec_prefix="${prefix}"
+VERSION="1.7.0"
+CFLAGS="-Wunused-function -Wstrict-prototypes -Wwrite-strings -W -Wall -g -O2 -mmacosx-version-min=10.10 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk"
+CPPFLAGS="  -I/usr/local/opt/openssl@1.1/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/Python.framework/Versions/2.7/include/python2.7"
+LDFLAGS="  -L/usr/local/opt/openssl@1.1/lib -L/System/Library/Frameworks/Python.framework/Versions/2.7/lib -lpython2.7"
+LIBS="  -lcrypto -lssl"
+LIBDIR="${exec_prefix}/lib"
+INCLUDEDIR="${prefix}/include"
+LIBVERSION="2:0:0"
+
+for arg in $@
+do
+    if [ $arg = "--cflags" ]
+    then
+        echo "-I${INCLUDEDIR}"
+    fi
+    if [ $arg = "--libs" ]
+    then
+        echo "${LDFLAGS} -L${LIBDIR} ${LIBS} -lldns"
+    fi
+    if [ $arg = "-h" ] || [ $arg = "--help" ]
+    then
+        echo "Usage: $0 [--cflags] [--libs] [--version]"
+    fi
+    if [ $arg = "--version" ]
+    then
+        echo "${VERSION}"
+    fi
+    if [ $arg = "--libversion" ]
+    then
+        echo "${LIBVERSION}"
+    fi
+done

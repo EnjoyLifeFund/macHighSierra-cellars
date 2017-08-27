@@ -1,0 +1,174 @@
+2004-09-19  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* NEWS, TODO, configure.ac, doc/gpp.pp, src/gpp.c:
+	Added #date meta-macro
+
+2004-07-11  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* configure.ac: Upgrade version number
+
+	* THANKS: *** empty log message ***
+
+	* NEWS: Downgraded version number
+
+	* BUGS: Bug report from Richard M. Myers
+
+	* TODO: More wishlist items from users
+
+	* configure.ac, src/Makefile.am, src/gettext.h, src/gpp.c, autogen.mak, Makefile.am:
+	Roll back changes to 2004-07-05
+
+	* Makefile.am, NEWS, THANKS, autogen.mak, configure.ac, src/Makefile.am, src/gettext.h, src/gpp.c:
+	Added gettext patch from Lucas Wall <kthulhu@usa.net>
+
+2004-07-05  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* src/gpp.c:
+	Fixed bug where #error/#warning inside an #if block was always
+	executed (even in the false branch)
+
+2004-06-22  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* THANKS: Debian package
+
+2004-02-14  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* NEWS, README, THANKS, TODO, configure.ac, doc/gpp.pp, src/gpp.c, BUGS, INSTALL:
+	Added --include option
+
+2004-02-07  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* TODO: Misc updates
+
+	* INSTALL: Updated copyright notice.
+
+	* INSTALL:
+	Simplified installation instructions into Unix and non-Unix varieties.
+
+	* doc/gpp.pp: Documentation for #error and #warning
+
+	* NEWS: Changes for 2.21
+
+	* src/gpp.c: Added #error and #warning meta-macros
+
+	* configure.ac: Bump version number
+
+2004-01-17  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* NEWS: Describes new features in 2.20
+
+	* src/gpp.c: Adding globbing and elif support
+
+	* doc/gpp.pp: Added documentation for globbing and elif
+
+	* configure.ac: Now checks for fnmatch.h
+
+	* THANKS: *** empty log message ***
+
+	* src/gpp.c: Fixed line number bug
+
+	* configure.ac: *** empty log message ***
+
+	* configure.ac:
+	Removed MALLOC/REALLOC checks (we never malloc(0) anyway AFAIK)
+
+2004-01-16  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* THANKS, TODO, configure.ac, doc/gpp.pp, src/gpp.c, NEWS:
+	Fixed crash bug, added #line and #file macros, updated licence for documentation
+
+	* TODO: *** empty log message ***
+
+2003-12-31  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* Makefile.am: Added BUGS, TODO to distribution
+
+	* NEWS, README, THANKS, TODO, configure.ac, doc/gpp.pp, gpp.c, gpphelp.pp, src/Makefile.am, src/gpp.c, AUTHORS, BUGS, CHANGELOG, COPYING, INSTALL, LICENCE, Makefile, Makefile.am:
+	Autoconfiscated plus various bugfixes and updates; see NEWS for details
+
+2003-11-22  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* CHANGELOG, gpp.c: Changed licence
+
+	* gpphelp.pp: *** empty log message ***
+
+	* README: Initial import
+
+	* Makefile, CHANGELOG: *** empty log message ***
+
+	* CHANGELOG: Added CVS Id string
+
+	* CHANGELOG: Licence
+
+	* gpphelp.pp: Changed copyright notices
+
+	* gpp.c: Added to to-do list
+
+	* gpp.c: Changed copyright notices
+
+	* Makefile: Added CVS Id string
+
+	* CHANGELOG: *** empty log message ***
+
+	* gpphelp.pp: Added documentation for long options
+
+	* gpp.c: Added long option variants
+
+	* gpphelp.pp: Documentation for -h, --help, --version
+
+	* gpp.c: Added -help, -version arguments
+
+	* CHANGELOG: *** empty log message ***
+
+	* gpphelp.pp: Fixed grammar, spelling, typography, typos
+
+2003-11-21  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* gpphelp.pp: Changed copyright notices
+
+	* gpp.c: *** empty log message ***
+
+	* gpp.c: Updated version number
+
+	* gpp.c: *** empty log message ***
+
+	* gpp.c:
+	Added const qualifiers where appropriate (may not have caught them
+	all, though)
+
+	* gpp.c: Removed casting to calloc() calls, sizeof(char)
+
+	* gpp.c: Removed casting to realloc() calls
+
+	* gpp.c: Removed casting in memcpy()
+
+	* gpp.c: Many instances of () -> (void)
+
+	* gpp.c: ProcessContext() -> ProcessContext(void)
+
+	* gpp.c: Removed malloc() casting
+
+2003-10-04  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	* LICENCE: LGPL
+
+	* LICENCE: Wrong licence; should be LGPL
+
+	* LICENCE: Adding GNU licence
+
+	* gpphelp.pp: Added nothingisreal.com home page
+
+	* gpp.c: Misc authorship changes and C code niceties
+
+	* gpphelp.pp: Fixed bugs in author attribution
+
+	* gpphelp.pp: Deleted space before /> in example
+
+	* CHANGELOG, Makefile, gpp.1, gpp.c, gpp.html, gpphelp.pp:
+	Initial release of 2.11
+
+	* CHANGELOG, Makefile, gpp.1, gpp.c, gpp.html, gpphelp.pp:
+	Initial import into CVS
+
+	* CHANGELOG, Makefile, gpp.1, gpp.c, gpp.html, gpphelp.pp: New file.
+
