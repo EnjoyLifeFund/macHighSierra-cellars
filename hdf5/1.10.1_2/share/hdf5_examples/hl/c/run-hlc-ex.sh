@@ -31,7 +31,7 @@ EXIT_FAILURE=1
 
 # Where the tool is installed.
 # default is relative path to installed location of the tools
-prefix="${prefix:-/usr/local/Cellar/hdf5/1.10.1_2}"
+prefix="${prefix:-/usr/local/Cellar/hdf5/1.10.1}"
 PARALLEL=no             # Am I in parallel mode?
 AR="ar"
 RANLIB="ranlib"

@@ -24,7 +24,7 @@
 ## then modify them accordingly to represent the new paths.               ##
 ##                                                                        ##
 ############################################################################
-prefix="/usr/local/Cellar/hdf5/1.10.1_2"
+prefix="/usr/local/Cellar/hdf5/1.10.1"
 exec_prefix="${prefix}"
 libdir="${exec_prefix}/lib"
 includedir="${prefix}/include"
@@ -77,8 +77,8 @@ dash_c="no"
 get_output_file="no"
 
 SHOW="eval"
-CCBASE="clang"
-CLINKERBASE="clang"
+CCBASE="cc"
+CLINKERBASE="cc"
 
 # CFLAGS, CPPFLAGS and LDFLAGS are reserved for use by the script user.
 # FLAGS brought from the hdf5 build are put in H5BLD_*FLAGS.
@@ -89,10 +89,10 @@ CLINKERBASE="clang"
 # paths and libraries from AM_LDFLAGS, LDFLAGS, AM_LIBS or LIBS carried in 
 # from the hdf5 build. The order of the flags is intended to give precedence
 # to the user's flags.
-H5BLD_CFLAGS=" "
-H5BLD_CPPFLAGS=" -I/usr/local/opt/szip/include "
-H5BLD_LDFLAGS=" -L/usr/local/opt/szip/lib "
-H5BLD_LIBS="-lsz -lz -ldl -lm "
+H5BLD_CFLAGS=" -fomit-frame-pointer -funroll-loops  -ffast-math -Ofast -fno-signed-zeros -ffp-contract=fast -mmmx -msse -flto  "
+H5BLD_CPPFLAGS=" -I/usr/local/opt/openblas/include -I/usr/local/opt/llvm/include -I/usr/local/opt/readline/include -I/usr/local/opt/zlib/include -I/usr/local/opt/openssl@1.1/include -I/usr/local/opt/portable-expat/include "
+H5BLD_LDFLAGS=" -L/usr/local/opt/openblas/lib -L/usr/local/opt/llvm/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/openssl@1.1/lib -L/usr/local/opt/portable-expat/lib "
+H5BLD_LIBS="-lz -ldl -lm "
 
 CC="${HDF5_CC:-$CCBASE}"
 CLINKER="${HDF5_CLINKER:-$CLINKERBASE}"
@@ -170,7 +170,7 @@ usage() {
 # libhdf5.settings file reside in the lib directory.
 showconfigure()
 {
-  cat /usr/local/Cellar/hdf5/1.10.1_2/share/hdf5/libhdf5.settings
+  cat ${libdir}/libhdf5.settings
   status=$?
 }
 

@@ -5,7 +5,7 @@
 /* #undef H5_AC_APPLE_UNIVERSAL_BUILD */
 
 /* Define if C++ compiler recognizes offsetof */
-#define H5_CXX_HAVE_OFFSETOF 1
+/* #undef H5_CXX_HAVE_OFFSETOF */
 
 /* Define if this is a debug build. */
 /* #undef H5_DEBUG_BUILD */
@@ -25,46 +25,46 @@
 
 /* Define to a macro mangling the given C identifier (in lower and upper
    case), which must not contain underscores, for linking with Fortran. */
-#define H5_FC_FUNC(name,NAME) name ## _
+/* #undef H5_FC_FUNC */
 
 /* As FC_FUNC, but for C identifiers containing underscores. */
-#define H5_FC_FUNC_(name,NAME) name ## _
+/* #undef H5_FC_FUNC_ */
 
 /* Define if Fortran C_LONG_DOUBLE is different from C_DOUBLE */
-#define H5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE 1
+/* #undef H5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE */
 
 /* Define if we have Fortran C_LONG_DOUBLE */
-#define H5_FORTRAN_HAVE_C_LONG_DOUBLE 1
+/* #undef H5_FORTRAN_HAVE_C_LONG_DOUBLE */
 
 /* Define if we have Fortran intrinsic C_SIZEOF */
-#define H5_FORTRAN_HAVE_C_SIZEOF 1
+/* #undef H5_FORTRAN_HAVE_C_SIZEOF */
 
 /* Define if we have Fortran intrinsic SIZEOF */
-#define H5_FORTRAN_HAVE_SIZEOF 1
+/* #undef H5_FORTRAN_HAVE_SIZEOF */
 
 /* Define if we have Fortran intrinsic STORAGE_SIZE */
-#define H5_FORTRAN_HAVE_STORAGE_SIZE 1
+/* #undef H5_FORTRAN_HAVE_STORAGE_SIZE */
 
 /* Determine the size of C long double */
-#define H5_FORTRAN_SIZEOF_LONG_DOUBLE "16"
+/* #undef H5_FORTRAN_SIZEOF_LONG_DOUBLE */
 
 /* Define Fortran compiler ID */
-#define H5_Fortran_COMPILER_ID none
+/* #undef H5_Fortran_COMPILER_ID */
 
 /* Define valid Fortran INTEGER KINDs */
-#define H5_H5CONFIG_F_IKIND INTEGER, DIMENSION(1:num_ikinds) :: ikind = (/1,2,4,8,16/)
+/* #undef H5_H5CONFIG_F_IKIND */
 
 /* Define number of valid Fortran INTEGER KINDs */
-#define H5_H5CONFIG_F_NUM_IKIND INTEGER, PARAMETER :: num_ikinds = 5
+/* #undef H5_H5CONFIG_F_NUM_IKIND */
 
 /* Define number of valid Fortran REAL KINDs */
-#define H5_H5CONFIG_F_NUM_RKIND INTEGER, PARAMETER :: num_rkinds = 4
+/* #undef H5_H5CONFIG_F_NUM_RKIND */
 
 /* Define valid Fortran REAL KINDs */
-#define H5_H5CONFIG_F_RKIND INTEGER, DIMENSION(1:num_rkinds) :: rkind = (/4,8,10,16/)
+/* #undef H5_H5CONFIG_F_RKIND */
 
 /* Define valid Fortran REAL KINDs Sizeof */
-#define H5_H5CONFIG_F_RKIND_SIZEOF INTEGER, DIMENSION(1:num_rkinds) :: rkind_sizeof = (/4,8,16,16/)
+/* #undef H5_H5CONFIG_F_RKIND_SIZEOF */
 
 /* Define to 1 if you have the `alarm' function. */
 #define H5_HAVE_ALARM 1
@@ -119,7 +119,7 @@
 #define H5_HAVE_FILTER_DEFLATE 1
 
 /* Define if support for szip filter is enabled */
-#define H5_HAVE_FILTER_SZIP 1
+/* #undef H5_HAVE_FILTER_SZIP */
 
 /* Determine if __float128 is available */
 /* #undef H5_HAVE_FLOAT128 */
@@ -140,7 +140,7 @@
 #define H5_HAVE_FUNCTION 1
 
 /* Determine if INTEGER*16 is available */
-#define H5_HAVE_Fortran_INTEGER_SIZEOF_16 1
+/* #undef H5_HAVE_Fortran_INTEGER_SIZEOF_16 */
 
 /* Define to 1 if you have the `GetConsoleScreenBufferInfo' function. */
 /* #undef H5_HAVE_GETCONSOLESCREENBUFFERINFO */
@@ -192,7 +192,7 @@
 /* #undef H5_HAVE_LIBPTHREAD */
 
 /* Define to 1 if you have the `sz' library (-lsz). */
-#define H5_HAVE_LIBSZ 1
+/* #undef H5_HAVE_LIBSZ */
 
 /* Define to 1 if you have the `ws2_32' library (-lws2_32). */
 /* #undef H5_HAVE_LIBWS2_32 */
@@ -351,7 +351,7 @@
 #define H5_HAVE_SYS_TYPES_H 1
 
 /* Define to 1 if you have the <szlib.h> header file. */
-#define H5_HAVE_SZLIB_H 1
+/* #undef H5_HAVE_SZLIB_H */
 
 /* Define if we have thread safe support */
 /* #undef H5_HAVE_THREADSAFE */
@@ -463,7 +463,7 @@
 #define H5_PAC_C_MAX_REAL_PRECISION 21
 
 /* Define Fortran Maximum Real Decimal Precision */
-#define H5_PAC_FC_MAX_REAL_PRECISION 33
+/* #undef H5_PAC_FC_MAX_REAL_PRECISION */
 
 /* Width for printf() for type `long long' or `__int64', use `ll' */
 #define H5_PRINTF_LL_WIDTH "l"
