@@ -52,7 +52,7 @@ As a last resort, you can use the legacy Makefile:
 
 ATI/AMD suggest you to use ATISTREAMSDKROOT env variable to
 provide where you have installed their SDK root.
-nvidia simply install it in @@HOMEBREW_PREFIX@@/nvidia .
+nvidia simply install it in /usr/local/nvidia .
 
 The legacy Makefile assumes you have $ATISTREAMSDKROOT set up to point
 to your ATI installation or you have $NVIDIA_CUDA pointing to nvidia

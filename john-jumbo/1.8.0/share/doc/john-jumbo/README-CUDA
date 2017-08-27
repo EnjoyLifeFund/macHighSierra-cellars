@@ -23,9 +23,9 @@ Compiling:
 
 
 If you have problems with JtR CUDA support:
-  Please check that your PATH contains cuda bin (eg. @@HOMEBREW_PREFIX@@/cuda/bin)
+  Please check that your PATH contains cuda bin (eg. /usr/local/cuda/bin)
   and that your LD_LIBRARY_PATH (or equivalent) contains cuda lib path
-  (eg. @@HOMEBREW_PREFIX@@/cuda/lib and/or @@HOMEBREW_PREFIX@@/cuda/lib64).
+  (eg. /usr/local/cuda/lib and/or /usr/local/cuda/lib64).
 
 
 Performance issues:

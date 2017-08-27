@@ -136,11 +136,11 @@ that probably work fine but these instructions are for "Homebrew":
 	brew install gcc openssl
 	brew link --force openssl
   3. From John's "src" directory:
-	cp -avi osx_as_wrapper.sh @@HOMEBREW_PREFIX@@/bin/as
+	cp -avi osx_as_wrapper.sh /usr/local/bin/as
   4. Link whatever gcc version you got from Homebrew to just "gcc" in the
-     @@HOMEBREW_PREFIX@@/bin directory. This example is for gcc-4.7:
-        ln -s gcc-4.7 @@HOMEBREW_PREFIX@@/bin/gcc
-  5. Make sure @@HOMEBREW_PREFIX@@/bin preceeds /usr/bin in your $PATH
+     /usr/local/bin directory. This example is for gcc-4.7:
+        ln -s gcc-4.7 /usr/local/bin/gcc
+  5. Make sure /usr/local/bin preceeds /usr/bin in your $PATH
 
 After the above, you should be able to get an optimal build with AVX and/or
 whatever extra features your CPU has got.
@@ -152,6 +152,6 @@ about llvm-gcc not found, try this (Homebrew example):
 
   $ brew install llvm-gcc-28
   $ sudo \
-      ln -s @@HOMEBREW_PREFIX@@/Cellar/llvm-gcc28/2.8/bin/llvm-gcc /usr/bin/llvm-gcc-4.2
+      ln -s /usr/local/Cellar/llvm-gcc28/2.8/bin/llvm-gcc /usr/bin/llvm-gcc-4.2
 
 After that you should be able to build with the default Makefile.

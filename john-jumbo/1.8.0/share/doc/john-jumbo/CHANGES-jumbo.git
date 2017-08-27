@@ -609,7 +609,7 @@ magnum (1889):
 	OMP support for raw-sha512-ng.
 	Tweak OMP_SCALE for AMD.
 	Add macosx-x86-64-native build target. To use it, you need to copy
-	  osx_as_wrapper.sh (from the src directory) to @@HOMEBREW_PREFIX@@/bin/as or
+	  osx_as_wrapper.sh (from the src directory) to /usr/local/bin/as or
 	  to some other directory (but the script MUST be called 'as') and
 	  ensure this directory is first in your $PATH.
 	keystore2john: Use basename of filename for login field, and convert
@@ -1397,7 +1397,7 @@ magnum (1889):
 	  See issue #404
 	Makefile CUDA: Add natural path to nvcc with an NVCC macro, and
 	  make the OSX -ccbin quirk a macro too.
-	CUDA fix for when nvcc is not in @@HOMEBREW_PREFIX@@/bin.
+	CUDA fix for when nvcc is not in /usr/local/bin.
 	Fix bfcrypt-opencl for devices with too little local memory (auto tune
 	  down or fallback to using CPU kernel).
 	Change some ambigous OpenCL function names:
@@ -2160,7 +2160,7 @@ magnum (1889):
 	  in --help and we don't need to AC_SUBST them.
 	Since we list OPENSSL_CFLAGS and OPENSSL_LIBS as precious, we must
 	  honor them also when pkg-config is not used. If they are not, check
-	  for @@HOMEBREW_PREFIX@@/ssl (just because legacy Makefile did).
+	  for /usr/local/ssl (just because legacy Makefile did).
 	Use strip with no options. POSIX defines no options so this ought
 	  to be most portable. Also, list S/Key in summary, not SKEY.
 	AC: Various Makefile fixes.
@@ -6367,7 +6367,7 @@ magnum (731):
 	Endian stuff.
 	Drop un-needed header in ssha-opencl.
 	Add macosx-x86-64-native build target. To use it, you need to copy
-	  osx_as_wrapper.sh (from the src directory) to @@HOMEBREW_PREFIX@@/bin/as or
+	  osx_as_wrapper.sh (from the src directory) to /usr/local/bin/as or
 	  to some other directory (but the script MUST be called 'as') and
 	  ensure this directory is first in your $PATH.
 	Precedence: MSCHAPv2 should pick sploit version over BS one.
@@ -6487,7 +6487,7 @@ magnum (731):
 	Fixes for building CUDA on OSX Mavericks.
 	Makefile CUDA: Add natural path to nvcc with an NVCC macro, and
 	  make the OSX -ccbin quirk a macro too.
-	CUDA fix for when nvcc is not in @@HOMEBREW_PREFIX@@/bin.
+	CUDA fix for when nvcc is not in /usr/local/bin.
 	Drop -cl-strict-aliasing from OpenCL build options. It's deprecated.
 	Print a warning when FMT_NOT_EXACT.
 	pkzip: Bugfix for #467. Two early rejection tests had to be disabled.
@@ -7559,7 +7559,7 @@ magnum (109):
 	RAR: Make check_huffman() less greedy (I had a false assertion-fail, for an invalid data stream)
 	RAR: Correct BINARY_SIZE (it should be zero!)
 	Raw-SHA1-ng: Set min_keys_per_crypt to 4 to avoid unnecessary performance hit in Single mode.
-	Opportunistic copy of john.bash_completion to any (all) present directories out of: /etc/bash_completion.d @@HOMEBREW_PREFIX@@/etc/bash_completion.d /opt/local/etc/bash_completion.d
+	Opportunistic copy of john.bash_completion to any (all) present directories out of: /etc/bash_completion.d /usr/local/etc/bash_completion.d /opt/local/etc/bash_completion.d
 	OpenCL auto-find GPU if no specific device requested. Also, an OSX OpenCL fix of unknown importance.
 	OpenCL/CUDA: differentiate gpu_id -> ocl_gpu_id and cuda_gpu_id. This was a necessity just waiting to happen.
 	A couple fixes for OSX. After this, ALL formats except some OpenCL ones builds and works fine under OSX 10.8 - including with HAVE_NSS, HAVE_KRB5 and HAVE_GMP. The separate make targets vncpcap2john and office2john are tested too and works fine.
