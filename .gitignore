@@ -2,3 +2,4 @@ cassandra/3.10_1/libexec/logs/
 mesos
 bazel
 llvm-x86_64
+*.pyc
