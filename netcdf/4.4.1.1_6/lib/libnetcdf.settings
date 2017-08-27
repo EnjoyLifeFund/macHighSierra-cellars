@@ -1,0 +1,35 @@
+# NetCDF C Configuration Summary
+==============================
+
+# General
+-------
+NetCDF Version:		4.4.1.1
+Configured On:		Sun Aug 27 04:48:49 PDT 2017
+Host System:		x86_64-Darwin-17.0.0
+Build Directory: 	/tmp/netcdf-20170827-23001-11dhyfm/netcdf-4.4.1.1/build
+Install Prefix:         /usr/local/Cellar/netcdf/4.4.1.1_6
+
+# Compiling Options
+-----------------
+C Compiler:		/usr/local/Homebrew/Library/Homebrew/shims/super/clang
+CFLAGS:			 -DNDEBUG
+CPPFLAGS:		 
+LDFLAGS:		 
+AM_CFLAGS:		
+AM_CPPFLAGS:		
+AM_LDFLAGS:		
+Shared Library:		yes
+Static Library:		no
+Extra libraries:	-lhdf5_hl -lhdf5 -lsz -lz -ldl -lm -lcurl
+
+# Features
+--------
+NetCDF-2 API:		yes
+HDF4 Support:		no
+NetCDF-4 API:		yes
+NC-4 Parallel Support:	no
+PNetCDF Support:	no
+DAP Support:		yes
+Diskless Support:	yes
+MMap Support:		no
+JNA Support:		no

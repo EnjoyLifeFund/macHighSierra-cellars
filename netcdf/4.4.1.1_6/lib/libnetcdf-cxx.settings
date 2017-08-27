@@ -1,0 +1,23 @@
+# NetCDF C Configuration Summary
+==============================
+
+# General
+-------
+NetCDF Version:		4.3.0
+Configured On:		Sun Aug 27 04:52:02 PDT 2017
+Host System:		x86_64-Darwin-17.0.0
+Build Directory: 	/tmp/netcdf--cxx-20170827-23001-1bbyhhd/netcdf-cxx4-4.3.0/build-cxx
+Install Prefix:         
+
+# Compiling Options
+-----------------
+C Compiler:		/usr/local/Homebrew/Library/Homebrew/shims/super/clang
+CFLAGS:			 -g -Wall -Wno-unused-variable -Wno-unused-parameter -DNDEBUG
+CPPFLAGS:		 -g -Wall -Wno-unused-variable -Wno-unused-parameter -DNDEBUG
+LDFLAGS:		 
+AM_CFLAGS:		
+AM_CPPFLAGS:		
+AM_LDFLAGS:		
+Shared Library:		yes
+Static Library:		no
+Extra libraries:	

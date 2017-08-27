@@ -1,0 +1,13 @@
+prefix=/usr/local/Cellar/netcdf/4.4.1.1_6
+exec_prefix=/usr/local/Cellar/netcdf/4.4.1.1_6
+libdir=/usr/local/Cellar/netcdf/4.4.1.1_6/lib
+includedir=/usr/local/Cellar/netcdf/4.4.1.1_6/include
+ccompiler=/usr/local/Homebrew/Library/Homebrew/shims/super/clang
+
+Name: netCDF
+Description: NetCDF Client Library for C
+URL: http://www.unidata.ucar.edu/netcdf
+Version: 4.4.1.1
+Libs: -L${libdir} -lnetcdf -lhdf5_hl -lhdf5 -lsz -lz -ldl -lm -lcurl
+Cflags: -I${includedir}
+
