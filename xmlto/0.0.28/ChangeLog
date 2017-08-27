@@ -1,0 +1,834 @@
+2915-11-18  Ondrej Vasik <ovasik@redhat.com>
+	* xmlto.in: fix broken temp files removal trap
+	* configure.in: do not detect links as elinks browser
+	as they are not compatible in recent versions
+
+2015-11-10  Justin Turney <justin.turney@gmail.com>
+	* xmlto.in: add new option --profile for preprocessing documents
+	with profiling stylesheet
+
+2015-02-11  Ondrej Vasik <ovasik@redhat.com>
+	* xmlif/xmlif.{c,l}: fix double free with invalid end attribute
+
+2015-02-05  Ondrej Vasik <ovasik@redhat.com>
+	* xmlif/xmlif.{c,l}: fix segfault with malformed end attribute
+
+2015-01-21  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in: prefer elinks over links nowadays (suggested by
+	mathiaswe from Gentoo)
+
+2015-01-15  Joost Pjotr Vermeer <jp@df5ea.net>
+	* xmlto.in: make source format detection less fragile and
+	  namespace prefix independent
+
+2014-10-03  Roy Marples <roy@marples.name>
+	* xmlto.in: eliminate unnecessary bashisms
+
+2014-04-08  Knut Schönfels <knut.schoenfels@redknee.com>
+	* xmlto.in: use correctly exit code from xsltproc
+
+2014-04-05  Ole Streicher <debian@liska.ath.cx>
+	* format/docbook/epub: fix mime type of epub file
+
+2013-01-07  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in: fix build with automake 1.13+
+	* format/docbook/epub: create dir for the css lists
+
+2012-12-20  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in: detect locations of sed/grep tools
+	* xmlto.in: handle detected sed and grep path variables
+	* format/fo/*: use variables for sed/grep instead of tool names
+
+2012-12-20  Kacper Perschke <kacper.perschke@gmail.com>
+	* format/docbook/epub: handle used css lists in epub format
+
+2012-09-02  Ondrej Vasik <ovasik@redhat.com>
+	* xmlto.in: recognize documented noextensions parameter in
+	  getopt
+
+2011-01-02  Ondrej Vasik <ovasik@redhat.com>
+	* xmlto.in: move searchpath computing into a function to
+	  prevent shell warning about local builtin used outside the
+	  function (debian #652974)
+
+2011-11-28  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in: detect grep location
+	* xmlto.in: use (fop/fop1).extensions parameter based on real
+	            fop version
+
+2011-07-14  Ondrej Vasik <ovasik@redhat.com>
+	* format/docbook/epub: initial experimental support for
+	        docbook to epub conversion
+	* configure.in: detect zip location
+	* xmlto.in: provide detected zip location to epub convertor
+
+2011-07-07  Ondrej Vasik <ovasik@redhat.com>
+	* README: Improve the readme file, create online manual
+	        pages on project wiki
+	* xmlto.in: use backend extensions by default, provide
+		--noextensions to disable this
+	* doc/xmlto.xml: mention --noextensions option in documentation
+
+2011-03-03  Ondrej Vasik <ovasik@redhat.com>
+	* format/{docbook,xhtml}/txt: show the text-web-browser
+	        converting command in verbose mode
+
+2010-07-13  Ondrej Vasik <ovasik@redhat.com>
+	* format/fo/{ps,dvi,pdf}: workaround passivetex limitation
+		for chapters titles starting with L (rhbz#526273)
+
+2009-09-18  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in:  Do not hardcode /bin/bash default
+		path, add support for detection of tail and gnu cp
+		binary (all changes from Ben Walton, maintainer of
+		xmlto under Solaris)
+	* xmlto.in: use detected tail command, export gnu cp
+		location for usage in format backends, use `type -t`
+		instead of `which` for detection of file availability,
+		do not use autodetected papersize when --noautosize
+		option is specified.
+	* format/*:	use detected gnu cp instead of hardcoded
+		cp, use `type -t` instead of `which` for detection
+		of file availability.
+
+2009-03-16  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in: Make tools/program paths detection
+		automated, could be overriden by envvar settings
+		passed to configure script. Added option for
+		choosing default backend and webbrowser (for
+		requirements)
+	* format/xhtml1: new backends for xhtml1 source format,
+		supports output formats awt, dvi, fo, mif, pcl, pdf,
+		ps, svg and txt
+	*	format/*:	use configured tools paths, autodetect
+		missing tools, correctly exit if tool is not
+		available
+	* xmlto.in: fixed libpaper cleaning up(deb #491390),
+		fixed --stringparam option functionality, xmllint
+		validity check now uses --noent option (deb #516253),
+		added some messages to easier detection of troubles,
+		use xhtml1 source format, consolidated error codes
+		(see docs), check for missing fop/dblatex and fallback
+		to passivetex if not found
+	* xmlto.spec.in: split package, two subpackages added:
+		tex subpackage for backends with passivetex requirements,
+		xhtml subpackage for xhtml1 source format
+	* doc/xmlto.xml: fixed compilation warnings, documented
+		exit error codes and changes
+	* doc/xmlif.xml: fixed compilation warnings
+	* xmlif/* : now licensed under GPLv2+
+	* various files: fixed wrong FSF address
+	* FAQ: Fixed obsolete informations
+	* Makefile.am: indentation and consolidation fixes
+
+2008-06-20  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in: Version 0.0.21 (stable).
+	* format/docbook/*: added experimental support of dblatex,
+	  fixed non-portability issue with 'cp -a'
+	* format/fo/*: added experimental support of dblatex,
+	  fixed non-portability issue with 'cp -a'
+	* xmlto.in: added optional nonmandatory support for
+	  libpaper, fixed bug in processing introduced by
+	  fop support
+	* doc/xmto.xml: Update documentation.
+
+
+2008-01-15  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in: Version 0.0.20 (stable).
+	* format/docbook/*: added experimental support of fop
+	* format/fo/*: added experimental support of fop
+	* xmlto.in: changed parsing of source format(preparation
+		for X3D and xhtml1 support), allowed passing of XSL
+		stylesheet from STDIN, avoid broken manpages by
+		disabling charmap subset
+	* THANKS: (NEW)file with people who sent ideas/patches
+		used in versions 0.0.19+
+	* various files: additional basename with space fixes,
+		cp in docbook format now recursive
+
+
+2007-11-19  Ondrej Vasik <ovasik@redhat.com>
+	* configure.in: Version 0.0.19 (stable)
+	* various files: added quotes for basenames with spaces
+	* xmlto.in: fixed warning in xmlto usage display
+	* Makefile.in,Makefile.am: bash not hardcoded
+
+2004-01-21  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.18 (stable).
+
+2004-01-02  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Use new-style arguments for head (bug #112634).
+
+2004-01-02  Tim Waugh  <twaugh@redhat.com>
+
+	* doc/xmlif.xml, xmlif/xmlif.l, xmlif/test/test.xml: More xmlif
+	changes from Eric Raymond.
+
+2003-11-30  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.17 (stable).
+
+2003-11-30  Tim Waugh  <twaugh@redhat.com>
+
+	* format/docbook/txt: Use w3m if available.  Patch from Richard
+	Bos <richard.bos@xs4all.nl>.
+
+2003-11-18  Eric S. Raymond  <esr@thyrsus.com>
+
+	* xmlto.in: Fixed error handling.
+
+2003-11-18  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.16 (stable).
+
+2003-11-18  Eric S. Raymond  <esr@thyrsus.com>
+
+	* xmlif/xmlif.l: Correct xmlif syntax to conform to standard
+	processing-instruction syntax.
+	* doc/xmlif.xml: Update documentation.
+	* xmlif/test/test.xml: Update test suite.
+
+	* xmlto.mak: Add pattern rule for xhtml.
+
+2003-10-30  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Invoke xmlto with options before arguments, to please
+	various flavours of getopt.
+
+2003-10-08  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Make --searchpath use xsltproc's --path option.
+
+	* Makefile.am: Fixed build failure advice.
+
+2003-10-07  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Ship FAQ.
+
+2003-10-07  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.15 (stable).
+
+2003-10-07  Tim Waugh  <twaugh@redhat.com>
+
+	* FAQ: New file.
+	* Makefile.am: Add advice about build failures.
+	* INSTALL: Likewise.
+
+2003-08-08  Tim Waugh  <twaugh@redhat.com>
+
+	* format/docbook/html, format/docbook/htmlhelp: Copy all output
+	files, in case the extension has been customized.
+
+2003-08-04  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Put options first in usage description.  Some buggy
+	getopt implementations seem to need options specified first.
+
+2003-07-29  Tim Waugh  <twaugh@redhat.com>
+
+	* format/fo/dvi, format/fo/pdf, format/fo/ps: Shorten line lengths
+	for TeX (bug #101055).
+
+2003-05-28  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Use --xinclude when invoking xmllint (Anders Carlsson).
+	Also use --postvalid since that causes XIncludes to be processed
+	before validation.
+
+2003-05-23  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.14 (stable).
+
+2003-05-23  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/custom.xsl, doc/README.docbook-xsl: Removed (no longer
+	needed).
+	* Maefile.am, format/docbook/man, xmlto.spec.in: Updated.
+
+2003-05-09  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.13 (stable).
+
+2003-05-09  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/custom.xsl: Sync with docbook-xsl.
+
+2003-04-11  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Back to --valid for xmllint.  Also don't need
+	--loaddtd as it's implied by --valid.
+
+2003-03-07  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/custom.xsl: Fix group/arg template to set non-breaking
+	spaces.  Add null template for sbr.
+
+2003-03-06  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/custom.xsl: ulink change is now upstream.
+
+	* xmlto.in: Fix typo.
+
+	* xsl/db2man/custom.xsl: Fix cmdsynopsis wrapping to behave like
+	funcsynopsis wrapping, i.e. get nroff to wrap for us.
+
+2003-01-29  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/custom.xsl: Use copyright symbol.
+
+	* xsl/db2man/custom.xsl: Fix '-' vs '\-'.
+
+	* xmlto.in: Don't use '--novalid' when invoking xsltproc, since
+	that causes it to skip over declared entities and that causes
+	errors.
+
+2003-03-07  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Use 'chunker.output.encoding' not 'default.encoding',
+	since the name changed.
+
+2002-12-22  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Always append to XSLTOPTS rather than inserting -v at
+	the beginning.
+
+2002-12-22  Graham Wilson <bob@decoy.wox.org>
+
+	* xmlto.in: Don't attempt validation on XSL-FO input.
+
+	* xmlto.in: Tell xsltproc not to validate, since we use xmllint
+	for that.
+
+2002-12-12  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.12 (stable).
+
+2002-12-05  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Use --postvalid instead of --valid when calling
+	xmllint (Graham Wilson).
+
+2002-11-22  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Magic encoding detection.
+
+2002-10-16  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.11 (stable).
+
+2002-10-16  Tim Waugh  <twaugh@redhat.com>
+
+	* doc/xmlif.xml: Indentation.  Add 'future directions' section.
+	Fix DOCTYPE system ID.  Also use DocBook XML V4.2.  Add xml PI.
+	* doc/xmlto.xml: DocBook XML V4.2.
+
+	* format/fo/dvi, format/fo/pdf: Use '--' here too.
+
+2002-10-16  Eric S. Raymond  <esr@thyrsus.com>
+
+	* format/docbook/html, format/docbook/htmlhelp,
+	format/docbook/man, format/docbook/xhtml: Format scripts don't
+	handle chunk names with leading - properly.  This fixes the
+	problem.
+
+2002-10-10  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: If xsltproc fails with exit code 4, try again with
+	--catalogs.
+
+2002-10-09  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/README, Makefile.am: No longer needed.
+
+	* xsl/db2man/custom.xsl, xmlto.spec.in: Updated for 1.56.0.
+
+2002-10-08  Tim Waugh  <twaugh@redhat.com>
+
+	* format/fo/dvi, format/fo/pdf, format/fo/ps: Handle another
+	situation in which xmltex needs a re-run.  Patch based on one
+	submitted by Matthias Andree <matthias.andree@gmx.de>.
+
+2002-10-07  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Validate the input file.  Can be overridden by new
+	option --skip-validation.
+	* doc/xmlto.xml: Document new behaviour.
+
+2002-10-06  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlif/test.xml: Moved..
+	* xmlif/test/test.xml: ..here.
+	* xmlif/test/result-no-condition,
+	xmlif/test/result-unrelated-condition,
+	xmlif/test/result-html, xmlif/test/result-pdf, xmlif/test/result-ps,
+	xmlif/test/result-foo, xmlif/test/result-baz,
+	xmlif/test/result-bar, xmlif/test/run-test: New files for testing
+	xmlif.
+	* Makefile.am: Run xmlif tests.
+
+	* format/fo/dvi, format/fo/pdf, format/fo/ps: Use 'cp' instead of
+	'mv' on $XSLT_PROCESSED, since it might be the original input file.
+
+2002-10-05  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.spec.in: Remove 'BuildArch: noarch'.
+	* Makefile.am: Build rules for xmlif.
+	* configure.in: Generate config.h.
+	* xmlif/xmlif.l: Understand --help and --version.
+
+2002-10-05  Eric S. Raymond  <esr@thyrsus.com>
+
+	* xmlif/xmlif.l: New program for conditional processing.
+	* xmlif/test.xml: Test input.
+	* doc/xmlif.xml: Documentation for xmlif.
+
+	* xmlto.in: Set POSTARGS and POSTPOSTARGS from -p option parameter.
+	* format/docbook/txt, format/fo/dvi, format/fo/pdf,
+	format/fo/ps: Use them.
+	* doc/xmlto.xml: Document new option.
+
+2002-09-10  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.mak: Add XMLTOFLAGS.
+
+2002-08-25  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl, xsl/db2man/lists.xsl, xsl/db2man/synop.xsl,
+	xsl/db2man/xref.xsl: Removed.
+	* xsl/db2man/custom.xsl: New file.  Customization layer for
+	db2man bugfixes.
+	* format/docbook/man: Use it.
+	* Makefile.am: Updated.  Don't ship CVS directories.
+
+2002-08-22  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Use sed to determine the root element of the input
+	document.  Bash seems to be very slow at variable expansions when
+	using UTF-8.
+
+	* xmlto.in: New option --searchpath for adjusting TEXINPUTS.
+	* format/fo/dvi, format/fo/pdf, format/fo/ps: Use it.
+	* doc/xmlto.xml: Document it.
+
+2002-08-06  Tim Waugh  <twaugh@redhat.com>
+
+	* format/fo/dvi, format/fo/pdf, format/fo/ps: Only re-run tex
+	if there were undefined references.
+
+2002-08-05  Tim Waugh  <twaugh@redhat.com>
+
+	* format/fo/dvi, format/fo/pdf, format/fo/ps: Work around tetex
+	limitation regarding filenames containing underscores (based on
+	patch attached to bug #70110).
+
+2002-08-02  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in, format/docbook/dvi, format/docbook/fo,
+	format/docbook/html, format/docbook/html-nochunks,
+	format/docbook/htmlhelp, format/docbook/javahelp,
+	format/docbook/man, format/docbook/pdf, format/docbook/ps,
+	format/docbook/txt, format/docbook/xhtml,
+	format/docbook/xhtml-nochunks, format/fo/dvi, format/fo/pdf,
+	format/fo/ps: Be less verbose by default (Eric Raymond).
+
+	* doc/xmlto.xml: Clarify --help function in man page (Eric
+	Raymond).
+
+2002-07-01  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.mak: New file.
+	* Makefile.am: Ship it.
+
+2002-06-27  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl, xsl/db2man/synop.xsl: Apply Joe Orton's
+	improvements:
+	- use SS for refsect2 subheadings
+	- truncate .TH title so that it doesn't overlap
+	- funcprototype fixes + trick to get funky wrapping
+
+2002-06-26  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Tell xsltproc to perform XInclude expansion (suggested
+	by James Henstridge).
+
+2002-06-20  Tim Waugh  <twaugh@redhat.com>
+
+	* format/docbook/txt: Use Michael Wiedmann's suggestion for better
+	options when using lynx.
+
+2002-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Fix AUTHOR section generation.
+
+2002-06-18  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.10 (stable).
+
+2002-06-18  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Catch up to CVS.
+
+	* format/fo/ps, format/fo/dvi: Export TEXINPUTS, like with pdf.
+
+2002-05-31  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl, xsl/db2man/synop.xsl, xsl/db2man/lists.xsl,
+	xsl/db2man/xref.xsl: Catch up to CVS.
+
+2002-05-10  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Catch up to CVS.
+
+	* xsl/db2man/synop.xsl: Remove unneeded arg/replaceable template,
+	and make group/arg/replaceable italic again.
+
+2002-05-09  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/synop.xsl: Get spacing right.
+	* xsl/db2man/synop.xsl: Catch up to CVS.
+
+	* xsl/db2man/lists.xsl: Handle listitem/simpara.
+
+2002-05-02  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Sync with CVS changes.
+	* xsl/db2man/synop.xsl: Likewise.
+
+2002-05-01  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.9 (stable).
+
+2002-05-01  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Allow variablelists, but not procedures,
+	to nest inside paras.
+
+	* xsl/db2man/docbook.xsl: Fix citerefentry after CVS sync.
+
+	* doc/xmlto.xml: Change examples section to use screens inside paras.
+	Because we can now..
+
+2002-04-30  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl, xsl/db2man/synop.xsl: Sync with CVS
+	changes.
+
+	* xsl/db2man/docbook.xsl: Use refname[1] for the man page filename,
+	not refentrytitle.
+
+2002-04-30  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Make man page depend on db2man.
+
+	* xsl/db2man/docbook.xsl: Use write.text.chunk from DocBook XSL.
+	No need for write-page template any more.
+
+2002-04-30  Jirka Kosek  <jirka@kosek.cz>
+
+	* xsl/db2man/docbook.xsl: Fix nested blocks.
+
+2002-04-23  Tim Waugh  <twaugh@redhat.com>
+
+	* bootstrap, Makefile.am: Use automake-1.6.
+
+2002-04-12  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Don't fetch entities over the network.
+
+2002-03-01  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Ship xsl/db2man/README as well.
+
+2002-02-28  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Give a warning if there are no refentry
+	elements in the input document.
+
+2002-02-12  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.8 (stable).
+
+2002-02-12  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/lists.xsl: Normalize space in variable list terms.
+	First attempt at handling nested variable lists.
+
+2002-02-12  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Display names of written files.  Mark-up
+	varname like replaceable.
+	* xsl/db2man/synop.xsl: Put .nf/.fi around synopsis.
+
+2002-01-31  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Escape backslashes.
+
+	* xmlto.in: Small fix for verbose output.
+
+2002-01-28  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Don't normalize space in paragraphs that
+	contain screens.  Nested blocks don't really work well at the
+	moment; if anyone has any idea how to fix it please let me know!
+
+2002-01-26  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Don't get stuck in a loop if a preprocessing instruction
+	is malformed.
+
+2002-01-23  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Make sure not to invoke the XSLT processor if there is
+	no stylesheet to use.
+
+2002-01-21  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.7 (stable).
+
+2002-01-21  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Fix refsect2 handling.
+
+	* xsl/db2man/docbook.xsl: Don't normalize space in paragraphs that
+	contain lists.
+	* xsl/db2man/lists.xsl: Make sure that there is a linefeed before
+	the start of the list.
+
+2002-01-18  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Check for working getopt, substitute GETOPT, BASH,
+	FIND, MKTEMP.
+	* xmlto.in: Placeholders for substitutions.
+
+	* Makefile.am: Use INSTALL and INSTALL_DATA instead of 'install'
+	so that a working install program gets used.
+
+2002-01-18  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Use getopt's options properly.
+
+2002-01-17  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Portability fix.
+
+	* xmlto.in: Avoid removing a directory in the path of the current
+	working directory.
+
+	* xmlto.in: Parametrize find, mktemp, and bash.
+
+	* xmlto.in: Hide errors from locale, in case LC_PAPER isn't
+	supported.
+
+	* Makefile.am: Use bash to run xmlto.
+
+2002-01-16  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.6 (stable).
+
+2002-01-15  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Select paper size from LC_PAPER.
+
+2002-01-11  Tim Waugh  <twaugh@redhat.com>
+
+	* format/fo/pdf, format/fo/dvi, format/fo/ps: Fix warning when
+	not using verbose mode.
+
+2002-01-09  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Actually ship xref.xsl.
+
+2002-01-09  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/lists.xsl: Make <orderedlist> behave properly.
+
+	* xmlto.in: Put -v first for xsltproc to work around a bug.
+
+	* xsl/db2man/xref.xsl: New file for handling <xref>.
+	* xsl/db2man/docbook.xsl: Use it.
+
+	* xsl/db2man/docbook.xsl: Fix <screen>s with multiple lines.
+
+	* xsl/db2man/docbook.xsl: Translate '&setmn;' to '\\'.
+
+2002-01-08  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.5 (stable).
+
+2002-01-08  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/lists.xsl: Prevent multiple paragraphs in a list item
+	from merging together.
+
+	* xsl/db2man/synop.xsl: Make <parameter> and <function> tags nest
+	nicely inside <command>.
+
+	* xsl/db2man/docbook.xsl: Make <type>s appear bold.
+
+	* xsl/db2man/docbook.xsl: Translate '&mdash;' to '--'.
+
+2001-12-17  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Fix warning when not using verbose mode.
+
+	* Makefile.am: Actually ship the format scripts for xhtml, htmlhelp
+	and javahelp.
+
+2001-12-17  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.4 (stable).
+
+2001-12-17  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Be extremely verbose (sh -x while post-processing)
+	at level 3 verbosity.
+
+	* doc/xmlto.xml: Document --extensions, --help, --version.
+
+	* format/fo/dvi, format/fo/pdf, format/fo/ps: Be more verbose.
+
+	* xmlto.in: Fix trap.
+
+2001-12-14  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Use getopt instead of trying to parse options by
+	hand.
+
+	* xmlto.in: Use TMPDIR if set.
+
+	* xmlto.in: Support --extensions.
+	* doc/xmlto.xml: Document --extensions.
+	* format/docbook/man: Tweak so as not to expect an output file.
+
+	* xmlto.in: Use xsltproc's -o option.
+
+2001-12-10  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Handle &hellip; and &minus;.
+
+	* xmlto.in: Show available format scripts in --help output.
+
+2001-12-08  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.3 (stable).
+
+2001-12-08  Joe Orton  <joe@manyfish.co.uk>
+
+	* xsl/db2man/docbook.xsl: Small tidy-up in write-page.
+
+2001-12-07  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Normalize space in refpurpose.
+
+	* xsl/db2man/synop.xsl: Grouped arguments shouldn't be bold.
+	Fix argument spacing in cmdsynopsis.  Support sbr.
+
+	* xsl/db2man/lists.xsl: Better handling of procedure steps.
+
+	* xmlto.in: Add -vv option for very verbose output.
+
+	* xsl/db2man/docbook.xsl: Tidy up author section handling.
+
+2001-12-06  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Handle refentryinfo/editor.
+
+	* xsl/db2man/docbook.xsl: Better handling of authors.
+
+	* xsl/db2man/docbook.xsl: Fix ulink handling.
+
+	* xsl/db2man/docbook.xsl: Handle refentryinfo/date,
+	refentryinfo/productname.
+
+	* xsl/db2man/docbook.xsl: Upper-case the refentrytitle in the header
+	and footer.
+
+2001-12-05  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.spec.in: Minor fixes.
+
+2001-12-05  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.2 (stable).
+
+2001-12-05  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: Check that format script exists.  Fix option parsing.
+
+	* format/docbook/xhtml, format/docbook/xhtml-nochunks,
+	format/docbook/htmlhelp, format/docbook/javahelp: New format
+	scripts.
+
+	* format/docbook/html: Use chunk.xsl now not xtchunk.xsl.
+	* xmlto.spec.in: Require docbook-xsl >= 1.47.
+
+2001-12-04  Tim Waugh  <twaugh@redhat.com>
+
+	* format/fo/dvi, format/fo/pdf, format/fo/ps: Created by moving the
+	post-processing steps from...
+	* format/docbook/dvi, format/docbook/pdf, format/docbook/ps: ..here.
+	Call the appropriate FO format script to do the post-processing.
+	Use "" as stylesheet, to prevent XSL-T processing of XSL-FO.
+	* xmlto.in: Don't XSL-T process if stylesheet name is empty.
+	* Makefile.am: Updated.
+
+	* xmlto.in: Determine input file type by inspection.  Identify
+	XSL-FO documents (with fo:root as root element), and assume
+	DocBook for everything else.
+
+2001-12-03  Joe Orton  <joe@manyfish.co.uk>
+
+	* xsl/db2man/docbook.xsl: Pick up /book/bookinfo/author if no
+	author is found in refentryinfo.
+
+2001-12-03  Joe Orton  <joe@manyfish.co.uk>
+
+	* xsl/db2man/docbook.xsl: Generate stub pages for each extra refname
+	in a refentry.
+	* xsl/db2man/synop.xsl: Handle funcsynopsisinfo, multiple paramdefs.
+
+2001-12-02  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/db2man/docbook.xsl: Fix 'generated by' line.  Broken by me,
+	fixed by Joe Orton.
+
+	* xsl/db2man/synop.xsl: Handle functions with void or varargs
+	instead of paramdef.
+
+	* xsl/db2man/synop.xsl: Move citerefentry template...
+	* xsl/db2man/docbook.xsl: ... here.
+
+2001-11-29  Tim Waugh  <twaugh@redhat.com>
+
+	* xsl/lists.xsl: Better man page output for unordered lists.
+
+	* xsl/db2man.xsl, xsl/lists.xsl, xsl/synop.xsl: Moved to xsl/db2man.
+	Renamed db2man.xsl docbook.xsl.
+	* format/docbook/man, Makefile.am: Track db2man stylesheets.
+
+2001-11-28  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.1 (stable).
+
+2001-11-28  Tim Waugh  <twaugh@redhat.com>
+
+	* xmlto.in: More comments.  Set XSLT_PROCESSOR before getting
+	stylesheet from format script.
+	* doc/xmlto.xml: Document XSLT_PROCESSOR, and exit codes.
+
+	* format/docbook/txt, Makefile.am: New format script.
+
+	* xmlto.spec.in: Require passivetex.
+
+	* xmlto.in: 'trap' isn't like atexit.  Use an array to remember
+	what to remove on exit.
+
+	* xsl/db2man.xsl: Handle programlisting.
+
+2001-11-23  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.0.0 (stable).
