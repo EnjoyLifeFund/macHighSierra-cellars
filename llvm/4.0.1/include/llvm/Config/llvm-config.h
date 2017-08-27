@@ -57,7 +57,7 @@
 /* #undef LLVM_ON_WIN32 */
 
 /* Installation prefix directory */
-#define LLVM_PREFIX "@@HOMEBREW_PREFIX@@/Cellar/llvm/4.0.1"
+#define LLVM_PREFIX "/usr/local/Cellar/llvm/4.0.1"
 
 /* Define if we have the Intel JIT API runtime support library */
 #define LLVM_USE_INTEL_JITEVENTS 0
