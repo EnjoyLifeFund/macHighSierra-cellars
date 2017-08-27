@@ -1,0 +1,87 @@
+./bin/FileCheck:                                       Mach-O 64-bit executable x86_64
+./bin/bugpoint:                                        Mach-O 64-bit executable x86_64
+./bin/c-index-test:                                    Mach-O 64-bit executable x86_64
+./bin/clang-4.0:                                       Mach-O 64-bit executable x86_64
+./bin/clang-apply-replacements:                        Mach-O 64-bit executable x86_64
+./bin/clang-change-namespace:                          Mach-O 64-bit executable x86_64
+./bin/clang-check:                                     Mach-O 64-bit executable x86_64
+./bin/clang-format:                                    Mach-O 64-bit executable x86_64
+./bin/clang-import-test:                               Mach-O 64-bit executable x86_64
+./bin/clang-include-fixer:                             Mach-O 64-bit executable x86_64
+./bin/clang-offload-bundler:                           Mach-O 64-bit executable x86_64
+./bin/clang-query:                                     Mach-O 64-bit executable x86_64
+./bin/clang-rename:                                    Mach-O 64-bit executable x86_64
+./bin/clang-reorder-fields:                            Mach-O 64-bit executable x86_64
+./bin/clang-tidy:                                      Mach-O 64-bit executable x86_64
+./bin/count:                                           Mach-O 64-bit executable x86_64
+./bin/find-all-symbols:                                Mach-O 64-bit executable x86_64
+./bin/git-clang-format:                                Python script text executable, ASCII text
+./bin/llc:                                             Mach-O 64-bit executable x86_64
+./bin/lld:                                             Mach-O 64-bit executable x86_64
+./bin/lli:                                             Mach-O 64-bit executable x86_64
+./bin/lli-child-target:                                Mach-O 64-bit executable x86_64
+./bin/llvm-PerfectShuffle:                             Mach-O 64-bit executable x86_64
+./bin/llvm-ar:                                         Mach-O 64-bit executable x86_64
+./bin/llvm-as:                                         Mach-O 64-bit executable x86_64
+./bin/llvm-bcanalyzer:                                 Mach-O 64-bit executable x86_64
+./bin/llvm-c-test:                                     Mach-O 64-bit executable x86_64
+./bin/llvm-cat:                                        Mach-O 64-bit executable x86_64
+./bin/llvm-config:                                     Mach-O 64-bit executable x86_64
+./bin/llvm-cov:                                        Mach-O 64-bit executable x86_64
+./bin/llvm-cxxdump:                                    Mach-O 64-bit executable x86_64
+./bin/llvm-cxxfilt:                                    Mach-O 64-bit executable x86_64
+./bin/llvm-diff:                                       Mach-O 64-bit executable x86_64
+./bin/llvm-dis:                                        Mach-O 64-bit executable x86_64
+./bin/llvm-dsymutil:                                   Mach-O 64-bit executable x86_64
+./bin/llvm-dwarfdump:                                  Mach-O 64-bit executable x86_64
+./bin/llvm-dwp:                                        Mach-O 64-bit executable x86_64
+./bin/llvm-extract:                                    Mach-O 64-bit executable x86_64
+./bin/llvm-link:                                       Mach-O 64-bit executable x86_64
+./bin/llvm-lto:                                        Mach-O 64-bit executable x86_64
+./bin/llvm-lto2:                                       Mach-O 64-bit executable x86_64
+./bin/llvm-mc:                                         Mach-O 64-bit executable x86_64
+./bin/llvm-mcmarkup:                                   Mach-O 64-bit executable x86_64
+./bin/llvm-modextract:                                 Mach-O 64-bit executable x86_64
+./bin/llvm-nm:                                         Mach-O 64-bit executable x86_64
+./bin/llvm-objdump:                                    Mach-O 64-bit executable x86_64
+./bin/llvm-opt-report:                                 Mach-O 64-bit executable x86_64
+./bin/llvm-pdbdump:                                    Mach-O 64-bit executable x86_64
+./bin/llvm-profdata:                                   Mach-O 64-bit executable x86_64
+./bin/llvm-readobj:                                    Mach-O 64-bit executable x86_64
+./bin/llvm-rtdyld:                                     Mach-O 64-bit executable x86_64
+./bin/llvm-size:                                       Mach-O 64-bit executable x86_64
+./bin/llvm-split:                                      Mach-O 64-bit executable x86_64
+./bin/llvm-stress:                                     Mach-O 64-bit executable x86_64
+./bin/llvm-strings:                                    Mach-O 64-bit executable x86_64
+./bin/llvm-symbolizer:                                 Mach-O 64-bit executable x86_64
+./bin/llvm-tblgen:                                     Mach-O 64-bit executable x86_64
+./bin/llvm-xray:                                       Mach-O 64-bit executable x86_64
+./bin/modularize:                                      Mach-O 64-bit executable x86_64
+./bin/not:                                             Mach-O 64-bit executable x86_64
+./bin/obj2yaml:                                        Mach-O 64-bit executable x86_64
+./bin/opt:                                             Mach-O 64-bit executable x86_64
+./bin/sancov:                                          Mach-O 64-bit executable x86_64
+./bin/sanstats:                                        Mach-O 64-bit executable x86_64
+./bin/set-xcode-analyzer:                              Python script text executable, ASCII text
+./bin/verify-uselistorder:                             Mach-O 64-bit executable x86_64
+./bin/yaml-bench:                                      Mach-O 64-bit executable x86_64
+./bin/yaml2obj:                                        Mach-O 64-bit executable x86_64
+./libexec/c++-analyzer:                                Perl script text executable
+./libexec/ccc-analyzer:                                Perl script text executable
+./share/clang/clang-format-bbedit.applescript:         ASCII text
+./share/clang/clang-format-diff.py:                    Python script text executable, ASCII text
+./share/clang/clang-format-sublime.py:                 Python script text executable, ASCII text
+./share/clang/clang-format.el:                         Lisp/Scheme program text, UTF-8 Unicode text
+./share/clang/clang-format.py:                         Python script text executable, ASCII text
+./share/clang/clang-include-fixer.el:                  Lisp/Scheme program text, UTF-8 Unicode text
+./share/clang/clang-include-fixer.py:                  Python script text executable, ASCII text
+./share/clang/clang-rename.el:                         Lisp/Scheme program text, UTF-8 Unicode text
+./share/clang/clang-rename.py:                         c program text, ASCII text
+./share/clang/clang-tidy-diff.py:                      Python script text executable, ASCII text
+./share/clang/run-clang-tidy.py:                       Python script text executable, ASCII text
+./share/clang/run-find-all-symbols.py:                 Python script text executable, ASCII text
+./share/clang/tools/scan-build/bin/scan-build:         Perl script text executable
+./share/clang/tools/scan-build/bin/set-xcode-analyzer: Python script text executable, ASCII text
+./share/clang/tools/scan-build/libexec/c++-analyzer:   Perl script text executable
+./share/clang/tools/scan-build/libexec/ccc-analyzer:   Perl script text executable
+./share/clang/tools/scan-view/bin/scan-view:           Python script text executable, ASCII text
