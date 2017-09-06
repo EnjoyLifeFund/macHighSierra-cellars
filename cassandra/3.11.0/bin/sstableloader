@@ -1,0 +1,2 @@
+#!/bin/bash
+exec "/usr/local/Cellar/cassandra/3.11.0/libexec/bin/sstableloader" "$@"
