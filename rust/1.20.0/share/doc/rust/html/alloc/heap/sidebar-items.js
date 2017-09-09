@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["EMPTY","An arbitrary non-null address to represent zero-size allocations."]],"struct":[["Heap",""]]});
