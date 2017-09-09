@@ -362,7 +362,7 @@ significant.
   parameter:
 
   ``
-    using python : : /usr/local/python-2.6-beta/bin/python ;
+    using python : : @@HOMEBREW_PREFIX@@/python-2.6-beta/bin/python ;
   ``
 
 * If you have a separate build of Python for use with a particular

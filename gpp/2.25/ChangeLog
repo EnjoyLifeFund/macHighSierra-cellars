@@ -1,0 +1,254 @@
+2016-12-27  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Add release notes for 2.25
+
+	Fix identifiers in spec file
+
+	Include man page in distribution
+
+	Add Makefile for documentation; update RPM spec for OBS
+
+2016-09-18  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Closes #11. Bump MAXINCL to 128.
+
+2016-09-09  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Merge pull request #12 from gavanderhoorn/unused_var
+	Remove unused variable from DoInclude().
+
+2016-09-09  gavanderhoorn  <g.a.vanderhoorn@tudelft.nl>
+
+	No issue: remove unused variable from DoInclude().
+
+2016-07-02  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	No issue. Remove unused assignment.
+
+2016-06-29  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Fixes #4. Rename functions to avoid reserved names.
+
+2016-06-25  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Bump version number and copyright year; update contact details
+
+	Issue #8. Reformat source code.
+
+	Fixes #10. Remove Subversion keywords.
+
+	Fixes #9. Relicense under LGPL v3.
+
+	Migrate BUGS to GitHub issue tracker
+
+	Migrate TODO to GitHub issue tracker
+
+	Update references to README.md
+
+	Reformat and revise README
+
+2004-12-20  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Renamed RPM package to genpp to avoid conflicts with obsolete GCC package of the same name.
+
+2004-12-04  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	*** empty log message ***
+
+2004-10-06  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Multiple -I options are permitted
+
+2004-10-02  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Typo
+
+	Fixed double quotes (I hope)
+
+	Fixed quote marks
+
+2004-09-19  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Added #date meta-macro
+
+2004-07-11  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Upgrade version number
+
+	*** empty log message ***
+
+	Downgraded version number
+
+	Bug report from Richard M. Myers
+
+	More wishlist items from users
+
+	Roll back changes to 2004-07-05
+
+	Roll back changes to 2004-07-05
+
+	Added gettext patch from Lucas Wall <kthulhu@usa.net>
+
+2004-07-05  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Fixed bug where #error/#warning inside an #if block was always executed (even in the false branch)
+
+2004-06-22  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Debian package
+
+2004-02-14  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Added --include option
+
+2004-02-07  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Misc updates
+
+	Updated copyright notice.
+
+	Simplified installation instructions into Unix and non-Unix varieties.
+
+	Documentation for #error and #warning
+
+	Changes for 2.21
+
+	Added #error and #warning meta-macros
+
+	Bump version number
+
+2004-01-17  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Describes new features in 2.20
+
+	Adding globbing and elif support
+
+	Added documentation for globbing and elif
+
+	Now checks for fnmatch.h
+
+	*** empty log message ***
+
+	Fixed line number bug
+
+	*** empty log message ***
+
+	Removed MALLOC/REALLOC checks (we never malloc(0) anyway AFAIK)
+
+2004-01-16  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Fixed crash bug, added #line and #file macros, updated licence for documentation
+
+	*** empty log message ***
+
+2004-01-08  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Moved www directory to nir project
+
+2003-12-31  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	*** empty log message ***
+
+	Updated for v2.13
+
+	Replaced tar.gz files with tar.bz2 files
+
+	Added BUGS, TODO to distribution
+
+	Autoconfiscated plus various bugfixes and updates; see NEWS for details
+
+2003-11-23  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Added version 2.0
+
+	*** empty log message ***
+
+	*** empty log message ***
+
+	*** empty log message ***
+
+	Changed licence
+
+	*** empty log message ***
+
+	Initial import
+
+	*** empty log message ***
+
+2003-11-22  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	*** empty log message ***
+
+	*** empty log message ***
+
+	*** empty log message ***
+
+	*** empty log message ***
+
+	Added CVS Id string
+
+	Licence
+
+	Added to to-do list
+
+	Changed copyright notices
+
+	Added CVS Id string
+
+	*** empty log message ***
+
+	Added documentation for long options
+
+	Added long option variants
+
+	Documentation for -h, --help, --version
+
+	Added -help, -version arguments
+
+	*** empty log message ***
+
+	Fixed grammar, spelling, typography, typos
+
+2003-11-21  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	Changed copyright notices
+
+	*** empty log message ***
+
+	Updated version number
+
+	*** empty log message ***
+
+	Added const qualifiers where appropriate (may not have caught them all, though)
+
+	Removed casting to calloc() calls, sizeof(char)
+
+	Removed casting to realloc() calls
+
+	Removed casting in memcpy()
+
+	Many instances of () -> (void)
+
+	ProcessContext() -> ProcessContext(void)
+
+	Removed malloc() casting
+
+2003-10-04  Tristan Miller  <psychonaut@nothingisreal.com>
+
+	LGPL
+
+	Wrong licence; should be LGPL
+
+	Adding GNU licence
+
+	Added nothingisreal.com home page
+
+	Misc authorship changes and C code niceties
+
+	Fixed bugs in author attribution
+
+	Deleted space before /> in example
+
+	Initial release of 2.11
+
+	Initial import into CVS
