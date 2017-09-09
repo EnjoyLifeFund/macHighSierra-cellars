@@ -1,0 +1,13 @@
+prefix=/usr/local/Cellar/qt/5.9.1
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+
+Name: Qt5 Charts
+Description: Qt Charts module
+Version: 5.9.1
+Libs: -F${libdir} -framework QtCharts 
+Cflags: -I${includedir}/QtCharts -I${includedir}
+Requires: Qt5Core Qt5Gui Qt5Widgets
+

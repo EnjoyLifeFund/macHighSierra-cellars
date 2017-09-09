@@ -1,0 +1,11 @@
+prefix=/usr/local/Cellar/util-linux/2.30
+exec_prefix=/usr/local/Cellar/util-linux/2.30
+libdir=/usr/local/Cellar/util-linux/2.30/lib
+includedir=/usr/local/Cellar/util-linux/2.30/include
+
+Name: uuid
+Description: Universally unique id library
+Version: 2.30.435
+Requires:
+Cflags: -I${includedir}/uuid
+Libs: -L${libdir} -luuid

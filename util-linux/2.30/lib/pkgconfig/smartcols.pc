@@ -1,0 +1,10 @@
+prefix=/usr/local/Cellar/util-linux/2.30
+exec_prefix=/usr/local/Cellar/util-linux/2.30
+libdir=/usr/local/Cellar/util-linux/2.30/lib
+includedir=/usr/local/Cellar/util-linux/2.30/include
+
+Name: smartcols
+Description: table or tree library
+Version: 2.30.435
+Cflags: -I${includedir}/libsmartcols
+Libs: -L${libdir} -lsmartcols

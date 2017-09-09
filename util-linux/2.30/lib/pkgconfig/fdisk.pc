@@ -1,0 +1,11 @@
+prefix=/usr/local/Cellar/util-linux/2.30
+exec_prefix=/usr/local/Cellar/util-linux/2.30
+libdir=/usr/local/Cellar/util-linux/2.30/lib
+includedir=/usr/local/Cellar/util-linux/2.30/include
+
+Name: fdisk
+Description: fdisk library
+Version: 2.30.435
+Requires.private: uuid blkid
+Cflags: -I${includedir}/libfdisk
+Libs: -L${libdir} -lfdisk

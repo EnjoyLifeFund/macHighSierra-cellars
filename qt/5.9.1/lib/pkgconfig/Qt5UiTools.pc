@@ -1,0 +1,14 @@
+prefix=/usr/local/Cellar/qt/5.9.1
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+
+Name: Qt5 UiTools
+Description: Qt UiTools module
+Version: 5.9.1
+Libs: -L${libdir} -lQt5UiTools 
+Libs.private: -F/usr/local/Cellar/qt/5.9.1/lib -F/usr/local/Cellar/qt/5.9.1/lib -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtWidgets -F/usr/local/Cellar/qt/5.9.1/lib -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework OpenGL -framework AGL 
+Cflags: -I${includedir}/QtUiTools -I${includedir}
+Requires: Qt5Core Qt5Gui Qt5Widgets
+
