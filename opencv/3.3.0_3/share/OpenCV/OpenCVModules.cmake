@@ -16,7 +16,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_targetsDefined)
 set(_targetsNotDefined)
 set(_expectedTargets)
-foreach(_expectedTarget opencv_core opencv_flann opencv_hdf opencv_imgproc opencv_ml opencv_objdetect opencv_phase_unwrapping opencv_photo opencv_plot opencv_reg opencv_surface_matching opencv_video opencv_xphoto opencv_bgsegm opencv_dnn opencv_face opencv_fuzzy opencv_img_hash opencv_imgcodecs opencv_shape opencv_videoio opencv_xobjdetect opencv_highgui opencv_superres opencv_bioinspired opencv_dpm opencv_features2d opencv_line_descriptor opencv_saliency opencv_text opencv_calib3d opencv_ccalib opencv_datasets opencv_rgbd opencv_stereo opencv_structured_light opencv_tracking opencv_videostab opencv_xfeatures2d opencv_ximgproc opencv_aruco opencv_optflow opencv_sfm correspondence multiview numeric opencv_stitching)
+foreach(_expectedTarget opencv_core opencv_flann opencv_hdf opencv_imgproc opencv_ml opencv_objdetect opencv_phase_unwrapping opencv_photo opencv_plot opencv_reg opencv_surface_matching opencv_video opencv_xphoto opencv_bgsegm opencv_dnn opencv_face opencv_freetype opencv_fuzzy opencv_img_hash opencv_imgcodecs opencv_shape opencv_videoio opencv_xobjdetect opencv_highgui opencv_superres opencv_bioinspired opencv_dpm opencv_features2d opencv_line_descriptor opencv_text opencv_calib3d opencv_ccalib opencv_datasets opencv_rgbd opencv_stereo opencv_structured_light opencv_tracking opencv_videostab opencv_xfeatures2d opencv_ximgproc opencv_aruco opencv_optflow opencv_sfm correspondence multiview numeric opencv_stitching)
   list(APPEND _expectedTargets ${_expectedTarget})
   if(NOT TARGET ${_expectedTarget})
     list(APPEND _targetsNotDefined ${_expectedTarget})
@@ -97,6 +97,9 @@ add_library(opencv_dnn SHARED IMPORTED)
 # Create imported target opencv_face
 add_library(opencv_face SHARED IMPORTED)
 
+# Create imported target opencv_freetype
+add_library(opencv_freetype SHARED IMPORTED)
+
 # Create imported target opencv_fuzzy
 add_library(opencv_fuzzy SHARED IMPORTED)
 
@@ -132,9 +135,6 @@ add_library(opencv_features2d SHARED IMPORTED)
 
 # Create imported target opencv_line_descriptor
 add_library(opencv_line_descriptor SHARED IMPORTED)
-
-# Create imported target opencv_saliency
-add_library(opencv_saliency SHARED IMPORTED)
 
 # Create imported target opencv_text
 add_library(opencv_text SHARED IMPORTED)

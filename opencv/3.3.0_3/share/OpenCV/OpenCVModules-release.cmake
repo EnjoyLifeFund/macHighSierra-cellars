@@ -181,6 +181,17 @@ set_target_properties(opencv_face PROPERTIES
 list(APPEND _IMPORT_CHECK_TARGETS opencv_face )
 list(APPEND _IMPORT_CHECK_FILES_FOR_opencv_face "${_IMPORT_PREFIX}/lib/libopencv_face.3.3.0.dylib" )
 
+# Import target "opencv_freetype" for configuration "Release"
+set_property(TARGET opencv_freetype APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+set_target_properties(opencv_freetype PROPERTIES
+  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "opencv_core;opencv_imgproc"
+  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/lib/libopencv_freetype.3.3.0.dylib"
+  IMPORTED_SONAME_RELEASE "@rpath/libopencv_freetype.3.3.dylib"
+  )
+
+list(APPEND _IMPORT_CHECK_TARGETS opencv_freetype )
+list(APPEND _IMPORT_CHECK_FILES_FOR_opencv_freetype "${_IMPORT_PREFIX}/lib/libopencv_freetype.3.3.0.dylib" )
+
 # Import target "opencv_fuzzy" for configuration "Release"
 set_property(TARGET opencv_fuzzy APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(opencv_fuzzy PROPERTIES
@@ -315,17 +326,6 @@ set_target_properties(opencv_line_descriptor PROPERTIES
 
 list(APPEND _IMPORT_CHECK_TARGETS opencv_line_descriptor )
 list(APPEND _IMPORT_CHECK_FILES_FOR_opencv_line_descriptor "${_IMPORT_PREFIX}/lib/libopencv_line_descriptor.3.3.0.dylib" )
-
-# Import target "opencv_saliency" for configuration "Release"
-set_property(TARGET opencv_saliency APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(opencv_saliency PROPERTIES
-  IMPORTED_LINK_INTERFACE_LIBRARIES_RELEASE "opencv_core;opencv_flann;opencv_imgproc;opencv_imgcodecs;opencv_videoio;opencv_highgui;opencv_features2d"
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/lib/libopencv_saliency.3.3.0.dylib"
-  IMPORTED_SONAME_RELEASE "@rpath/libopencv_saliency.3.3.dylib"
-  )
-
-list(APPEND _IMPORT_CHECK_TARGETS opencv_saliency )
-list(APPEND _IMPORT_CHECK_FILES_FOR_opencv_saliency "${_IMPORT_PREFIX}/lib/libopencv_saliency.3.3.0.dylib" )
 
 # Import target "opencv_text" for configuration "Release"
 set_property(TARGET opencv_text APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
