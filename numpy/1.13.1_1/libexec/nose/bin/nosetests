@@ -1,4 +1,4 @@
-#!/usr/local/opt/python3/bin/python3.6
+#!/usr/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'nose==1.3.7','console_scripts','nosetests'
 __requires__ = 'nose==1.3.7'
 import re

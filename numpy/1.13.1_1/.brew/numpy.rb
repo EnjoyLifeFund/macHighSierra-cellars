@@ -16,9 +16,9 @@ class Numpy < Formula
 
   option "without-python", "Build without python2 support"
 
-  depends_on :fortran => :build
-  depends_on :python => :recommended if MacOS.version <= :snow_leopard
-  depends_on :python3 => :recommended
+#  depends_on :fortran => :build
+#  depends_on :python => :recommended if MacOS.version <= :snow_leopard
+#  depends_on :python3 => :recommended
 
   resource "nose" do
     url "https://files.pythonhosted.org/packages/58/a5/0dc93c3ec33f4e281849523a5a913fa1eea9a3068acfa754d44d88107a44/nose-1.3.7.tar.gz"
@@ -44,7 +44,7 @@ class Numpy < Formula
       end
 
       system python, "setup.py",
-        "build", "--fcompiler=gnu95", "--parallel=#{ENV.make_jobs}",
+        "build", "--parallel=#{ENV.make_jobs}",
         "install", "--prefix=#{prefix}",
         "--single-version-externally-managed", "--record=installed.txt"
     end
