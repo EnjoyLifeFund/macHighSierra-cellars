@@ -3,3 +3,4 @@ mesos
 bazel
 llvm-x86_64
 *.pyc
+./gdal/1.11.5_3/lib/libgdal.a

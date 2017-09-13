@@ -1,0 +1,68 @@
+#!/bin/sh
+CONFIG_LIBS="-L/usr/local/Cellar/gdal/1.11.5_3/lib -lgdal"
+CONFIG_DEP_LIBS=" -march=native -L/usr/local/lib -lproj -ljson-c -L/usr/local/opt/json-c/lib -L/usr/local/lib -lfreexl -L/usr/local/Cellar/geos/3.6.2/lib -lgeos_c -L/usr/local/lib -lwebp -L/usr/local/lib -lepsilon -L/usr/local -L/usr/local/lib -lodbc -lodbcinst -lexpat -L/usr/local/lib -lxerces-c -lpthread -L/usr/local -L/usr/local/lib -ljasper -L/usr/local/Cellar/netcdf/4.4.1.1_6/lib -lnetcdf -lhdf5_hl -lhdf5 -lsz -lz -ldl -lm -lcurl -L/usr/local/lib -lhdf5  -L/usr/local -L/usr/local/lib -lgif -L/usr/local/lib -lgeotiff -L/usr/local/lib -ltiff -L/usr/local/opt/libpng -L/usr/local/opt/libpng/lib -lpng -L/usr/local -L/usr/local/lib -lcfitsio -llzma -lz -L/usr -L/usr/lib -lpthread -ldl  -L/usr/local/Cellar/gdal/1.11.5_3/lib -L/usr/local/Cellar/libdap/3.19.0_1/lib64 -L/usr/local/Cellar/libdap/3.19.0_1/lib -ldap -ldapserver -ldapclient -lcurl -L/usr/local/opt/libxml2/lib -lxml2 -lpthread   -L/usr/local/lib -lspatialite -lsqlite3 -lpcre   -lcurl           -liconv  -L/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/lib -lxml2 -lz -lpthread -licucore -lm "
+CONFIG_PREFIX="/usr/local/Cellar/gdal/1.11.5_3"
+CONFIG_CFLAGS="-I/usr/local/Cellar/gdal/1.11.5_3/include"
+CONFIG_DATA="/usr/local/Cellar/gdal/1.11.5_3/share/gdal"
+CONFIG_VERSION="1.11.5"
+CONFIG_OGR_ENABLED=yes
+CONFIG_FORMATS="gxf gtiff hfa aigrid aaigrid ceos ceos2 iso8211 xpm sdts raw dted mem jdem envisat elas fit vrt usgsdem l1b nitf bmp pcidsk airsar rs2 ilwis rmf leveller sgi srtmhgt idrisi gsg ingr ers jaxapalsar dimap gff cosar pds adrg coasp tsx terragen blx msgn til r northwood saga xyz hf2 kmlsuperoverlay ctg e00grid zmap ngsgeoid iris map webp epsilon wcs wms dods grib bsb jpeg2000 netcdf hdf5 gif png pcraster fits  rik ozi pdf rasterlite mbtiles arg"
+usage()
+{
+	cat <<EOF
+Usage: gdal-config [OPTIONS]
+Options:
+	[--prefix[=DIR]]
+	[--libs]
+	[--dep-libs]
+	[--cflags]
+	[--datadir]
+	[--version]
+	[--ogr-enabled]
+	[--formats]
+EOF
+	exit $1
+}
+
+if test $# -eq 0; then
+	usage 1 1>&2
+fi
+
+case $1 in 
+  --libs)
+    echo $CONFIG_LIBS
+    ;;
+
+  --dep-libs)
+    echo $CONFIG_DEP_LIBS
+    ;;
+
+  --cflags)
+    echo $CONFIG_CFLAGS
+    ;;
+
+  --datadir)
+    echo $CONFIG_DATA
+    ;;
+
+  --prefix)
+    echo $CONFIG_PREFIX
+    ;;
+
+  --version)
+    echo $CONFIG_VERSION
+    ;;
+
+  --ogr-enabled)
+    echo $CONFIG_OGR_ENABLED
+    ;;
+
+  --formats)
+    echo $CONFIG_FORMATS
+    ;;
+
+  *)
+    usage 1 1>&2
+    ;;
+
+esac
