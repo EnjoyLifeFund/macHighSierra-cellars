@@ -4,12 +4,12 @@
 General Information:
 -------------------
                    HDF5 Version: 1.10.1
-                  Configured on: Sun Aug 27 12:21:06 PDT 2017
+                  Configured on: Wed Sep 13 00:08:03 PDT 2017
                   Configured by: dojo@dojos-MacBook-Pro.local
                     Host system: x86_64-apple-darwin17.0.0
-              Uname information: Darwin dojos-MacBook-Pro.local 17.0.0 Darwin Kernel Version 17.0.0: Wed Aug 16 20:06:51 PDT 2017; root:xnu-4570.1.45~23/RELEASE_X86_64 x86_64 i386 MacBookPro8,1 Darwin
+              Uname information: Darwin dojos-MacBook-Pro.local 17.0.0 Darwin Kernel Version 17.0.0: Thu Aug 24 22:01:05 PDT 2017; root:xnu-4570.1.46~3/RELEASE_X86_64 x86_64
                        Byte sex: little-endian
-             Installation point: /usr/local/Cellar/hdf5/1.10.1
+             Installation point: /usr/local/Cellar/hdf5/1.10.1_2
 
 Compiling Options:
 ------------------
@@ -23,28 +23,34 @@ Linking Options:
 ----------------
                       Libraries: static, shared
   Statically Linked Executables: 
-                        LDFLAGS: -L/usr/local/opt/openblas/lib -L/usr/local/opt/llvm/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/openssl@1.1/lib -L/usr/local/opt/portable-expat/lib 
+                        LDFLAGS: 
                      H5_LDFLAGS: 
-                     AM_LDFLAGS: 
-                Extra libraries: -lz -ldl -lm 
+                     AM_LDFLAGS:  -L/usr/local/opt/szip/lib
+                Extra libraries: -lsz -lz -ldl -lm 
                        Archiver: ar
                          Ranlib: ranlib
 
 Languages:
 ----------
                               C: yes
-                     C Compiler: /usr/bin/cc
-                       CPPFLAGS: -I/usr/local/opt/openblas/include -I/usr/local/opt/llvm/include -I/usr/local/opt/readline/include -I/usr/local/opt/zlib/include -I/usr/local/opt/openssl@1.1/include -I/usr/local/opt/portable-expat/include 
+                     C Compiler: /usr/local/bin/mpicc
+                       CPPFLAGS: 
                     H5_CPPFLAGS:   -DNDEBUG -UH5_DEBUG_API
-                    AM_CPPFLAGS: 
-                        C Flags: -fomit-frame-pointer -funroll-loops  -ffast-math -Ofast -fno-signed-zeros -ffp-contract=fast -mmmx -msse -flto  
+                    AM_CPPFLAGS:  -I/usr/local/opt/szip/include
+                        C Flags: 
                      H5 C Flags:     
                      AM C Flags: 
                Shared C Library: yes
                Static C Library: yes
 
 
-                        Fortran: no
+                        Fortran: yes
+               Fortran Compiler: /usr/local/bin/mpif90
+                  Fortran Flags: 
+               H5 Fortran Flags:    
+               AM Fortran Flags: 
+         Shared Fortran Library: no
+         Static Fortran Library: yes
 
                             C++: no
 
@@ -53,13 +59,13 @@ Languages:
 
 Features:
 ---------
-                  Parallel HDF5: no
+                  Parallel HDF5: yes
              High-level library: yes
                    Threadsafety: no
             Default API mapping: v110
  With deprecated public symbols: yes
-         I/O filters (external): deflate(zlib)
-                            MPE: no
+         I/O filters (external): deflate(zlib),szip(encoder)
+                            MPE: 
                      Direct VFD: no
                         dmalloc: no
  Packages w/ extra debug output: none

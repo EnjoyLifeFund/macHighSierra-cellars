@@ -25,46 +25,46 @@
 
 /* Define to a macro mangling the given C identifier (in lower and upper
    case), which must not contain underscores, for linking with Fortran. */
-/* #undef H5_FC_FUNC */
+#define H5_FC_FUNC(name,NAME) name ## _
 
 /* As FC_FUNC, but for C identifiers containing underscores. */
-/* #undef H5_FC_FUNC_ */
+#define H5_FC_FUNC_(name,NAME) name ## _
 
 /* Define if Fortran C_LONG_DOUBLE is different from C_DOUBLE */
-/* #undef H5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE */
+#define H5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE 1
 
 /* Define if we have Fortran C_LONG_DOUBLE */
-/* #undef H5_FORTRAN_HAVE_C_LONG_DOUBLE */
+#define H5_FORTRAN_HAVE_C_LONG_DOUBLE 1
 
 /* Define if we have Fortran intrinsic C_SIZEOF */
-/* #undef H5_FORTRAN_HAVE_C_SIZEOF */
+#define H5_FORTRAN_HAVE_C_SIZEOF 1
 
 /* Define if we have Fortran intrinsic SIZEOF */
-/* #undef H5_FORTRAN_HAVE_SIZEOF */
+#define H5_FORTRAN_HAVE_SIZEOF 1
 
 /* Define if we have Fortran intrinsic STORAGE_SIZE */
-/* #undef H5_FORTRAN_HAVE_STORAGE_SIZE */
+#define H5_FORTRAN_HAVE_STORAGE_SIZE 1
 
 /* Determine the size of C long double */
-/* #undef H5_FORTRAN_SIZEOF_LONG_DOUBLE */
+#define H5_FORTRAN_SIZEOF_LONG_DOUBLE "16"
 
 /* Define Fortran compiler ID */
-/* #undef H5_Fortran_COMPILER_ID */
+#define H5_Fortran_COMPILER_ID none
 
 /* Define valid Fortran INTEGER KINDs */
-/* #undef H5_H5CONFIG_F_IKIND */
+#define H5_H5CONFIG_F_IKIND INTEGER, DIMENSION(1:num_ikinds) :: ikind = (/1,2,4,8,16/)
 
 /* Define number of valid Fortran INTEGER KINDs */
-/* #undef H5_H5CONFIG_F_NUM_IKIND */
+#define H5_H5CONFIG_F_NUM_IKIND INTEGER, PARAMETER :: num_ikinds = 5
 
 /* Define number of valid Fortran REAL KINDs */
-/* #undef H5_H5CONFIG_F_NUM_RKIND */
+#define H5_H5CONFIG_F_NUM_RKIND INTEGER, PARAMETER :: num_rkinds = 4
 
 /* Define valid Fortran REAL KINDs */
-/* #undef H5_H5CONFIG_F_RKIND */
+#define H5_H5CONFIG_F_RKIND INTEGER, DIMENSION(1:num_rkinds) :: rkind = (/4,8,10,16/)
 
 /* Define valid Fortran REAL KINDs Sizeof */
-/* #undef H5_H5CONFIG_F_RKIND_SIZEOF */
+#define H5_H5CONFIG_F_RKIND_SIZEOF INTEGER, DIMENSION(1:num_rkinds) :: rkind_sizeof = (/4,8,16,16/)
 
 /* Define to 1 if you have the `alarm' function. */
 #define H5_HAVE_ALARM 1
@@ -119,7 +119,7 @@
 #define H5_HAVE_FILTER_DEFLATE 1
 
 /* Define if support for szip filter is enabled */
-/* #undef H5_HAVE_FILTER_SZIP */
+#define H5_HAVE_FILTER_SZIP 1
 
 /* Determine if __float128 is available */
 /* #undef H5_HAVE_FLOAT128 */
@@ -140,7 +140,7 @@
 #define H5_HAVE_FUNCTION 1
 
 /* Determine if INTEGER*16 is available */
-/* #undef H5_HAVE_Fortran_INTEGER_SIZEOF_16 */
+#define H5_HAVE_Fortran_INTEGER_SIZEOF_16 1
 
 /* Define to 1 if you have the `GetConsoleScreenBufferInfo' function. */
 /* #undef H5_HAVE_GETCONSOLESCREENBUFFERINFO */
@@ -192,7 +192,7 @@
 /* #undef H5_HAVE_LIBPTHREAD */
 
 /* Define to 1 if you have the `sz' library (-lsz). */
-/* #undef H5_HAVE_LIBSZ */
+#define H5_HAVE_LIBSZ 1
 
 /* Define to 1 if you have the `ws2_32' library (-lws2_32). */
 /* #undef H5_HAVE_LIBWS2_32 */
@@ -231,13 +231,13 @@
 /* #undef H5_HAVE_MPE_H */
 
 /* Define if MPI_Comm_c2f and MPI_Comm_f2c exist */
-/* #undef H5_HAVE_MPI_MULTI_LANG_Comm */
+#define H5_HAVE_MPI_MULTI_LANG_Comm 1
 
 /* Define if MPI_Info_c2f and MPI_Info_f2c exist */
-/* #undef H5_HAVE_MPI_MULTI_LANG_Info */
+#define H5_HAVE_MPI_MULTI_LANG_Info 1
 
 /* Define if we have parallel support */
-/* #undef H5_HAVE_PARALLEL */
+#define H5_HAVE_PARALLEL 1
 
 /* Define to 1 if you have the <pthread.h> header file. */
 /* #undef H5_HAVE_PTHREAD_H */
@@ -351,7 +351,7 @@
 #define H5_HAVE_SYS_TYPES_H 1
 
 /* Define to 1 if you have the <szlib.h> header file. */
-/* #undef H5_HAVE_SZLIB_H */
+#define H5_HAVE_SZLIB_H 1
 
 /* Define if we have thread safe support */
 /* #undef H5_HAVE_THREADSAFE */
@@ -463,7 +463,7 @@
 #define H5_PAC_C_MAX_REAL_PRECISION 21
 
 /* Define Fortran Maximum Real Decimal Precision */
-/* #undef H5_PAC_FC_MAX_REAL_PRECISION */
+#define H5_PAC_FC_MAX_REAL_PRECISION 33
 
 /* Width for printf() for type `long long' or `__int64', use `ll' */
 #define H5_PRINTF_LL_WIDTH "l"
