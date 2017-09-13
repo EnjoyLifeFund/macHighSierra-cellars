@@ -1,0 +1,317 @@
+.\"
+.\" $Id: epsilon.1,v 1.10 2011/04/25 14:43:19 simakov Exp $
+.\"
+.TH EPSILON "1" "April 2008" "epsilon" "User Commands"
+.SH NAME
+EPSILON \- powerful Open Source wavelet image compressor
+.SH SYNOPSIS
+.B epsilon
+\fICOMMAND \fR[\fIOPTIONS\fR] \fIFILES\fR...
+.SH DESCRIPTION
+EPSILON is a powerful Open Source wavelet image compressor.
+The project is aimed on parallel and robust image processing.
+EPSILON source package consists of two core parts: portable,
+well-designed, thread-safe library and codec, build on the
+top of the library. The library API is very clean, simple and
+carefully documented.
+
+EPSILON's compression algorithm is based on wavelet transform and
+so called embedded coding. The former is a well-known mathematical
+theory and the latter is a very effective, yet simple method of
+progressive image coding. The actual algorithm employed in EPSILON
+is called SPECK \- Set Partitioned Embedded bloCK coder introduced
+by Asad Islam and William Pearlman.
+
+At the moment, EPSILON supports more than 30 wavelet filters and
+have automated interface for adding new ones. The script called
+.B make_filterbank.pl
+translates XML-files with filter descriptions to the C source
+code suitable for EPSILON. So, the only manual operation is to
+copy-and-paste program's output into the EPSILON's source code.
+After recompilation new filters will be ready to use.
+.B Special note:
+if you succeed in adding new filters, please send them to me.
+They will be included into the main source tree.
+
+EPSILON project follows an old and fruitful UNIX tradition to
+Keep It Simple. For example, EPSILON works with
+.B PPM
+(Portable PixelMap) and
+.B PGM
+(Portable GrayMap) images only. They provide basic functionality
+and serve as a least\-common\-denominator for interchanging truecolor
+and grayscale images between different platforms and operating
+systems. Looking for a converter? Try
+.B Netpbm
+.I (http://netpbm.sourceforge.net/)
+\- perfect Open Source tool-kit with more than 220 handy utilities!
+
+For storing and interchanging compressed images EPSILON defines
+it's own
+.B PSI
+(ePSIlon) file format. The PSI format is designed with simplicity and
+fault-tolerance in mind. A typical PSI file consists of several
+independent blocks. Each block represents a tile from the original
+image and have completely self-contained header. Each block is
+protected with CRC and (actually with two CRCs: one for the header
+and another for the data) separated from other blocks with a special
+unique marker. This simple yet effective technique makes stream
+synchronization and error localization almost trivial. Moreover,
+block headers are saved as a plain text: you can edit them by-hand
+with your favorite text editor. Check it out!
+
+EPSILON have a lot of interesting features. For example, you
+can finely control compression ratio (thank`s to embedded coding),
+manually distribute bit-budget among image channels, switch to
+different encoding and filtering modes and so on. EPSILON also
+supports HUGE files with constant memory and linear time
+complexity.
+
+Another nice feature is multi-threading support. Try to (re)compile
+EPSILON with Pthreads enabled (see INSTALL for more info) and you will
+surely notice significant coding speed-up (assuming you have multicore
+CPU or several CPUs on you computer).
+
+As of release 0.6.1 EPSILON also supports clustering mode. This is
+a very powerful feature if you have several machines linked with a
+high-capacity network, say gigabit ethernet or even faster. To
+build cluster-aware EPSILON version please read INSTALL file.
+
+Although EPSILON have a rich set of special ad-hoc options you
+are not obliged to use them. Defaults are usually just fine.
+EPSILON's command line interface is very friendly and designed
+to be similar to
+.B GZIP
+or
+.B BZIP.
+So,
+.B `epsilon foo.ppm'
+and
+.B `epsilon -d bar.psi'
+is usually enough.
+.SH OPTIONS
+.SS "Commands:"
+.TP
+\fB\-e\fR, \fB\-\-encode\-file\fR
+Encode specified file(s). This is a default action if no command is given.
+.TP
+\fB\-d\fR, \fB\-\-decode\-file\fR
+Decode specified file(s).
+.TP
+\fB\-t\fR, \fB\-\-truncate\-file\fR
+Truncate specified file(s). Due to embedded coding, block truncation
+is equivalent to block re-compression. In other words, truncation
+further compresses PSI-files.
+.TP
+\fB\-s\fR, \fB\-\-start\-node\fR
+Start cluster node. Note: this option is available in cluster-aware
+EPSILON version only and is intended for SLAVE nodes. In other words,
+you should invoke \fIepsilon \-s\fR on each SLAVE node in your cluster.
+Stopping cluster node is even simpler: \fIkillall epsilon\fR.
+
+This command runs a daemon program that accepts TCP connections at
+certain port (2718 by default). For each connection a new child process
+is forked and the main program waits for a next connecton. Encoding
+and decoding statistics is SYSLOG-ed using LOG_DAEMON facility.
+
+If you have DSH (Distributed SHell) installed on MASTER node, you can
+also use two handy scripts, namely \fBstart\_epsilon\_nodes.pl\fR
+and \fBstop\_epsilon\_nodes.pl\fR, for starting and stopping all
+cluster nodes respectively.
+
+Host configuration is taken from so called \fI.epsilon.nodes\fR file.
+By default, program checks \fI.epsilon.nodes\fR in the current directory.
+If there is no such file, program tries \fI.epsilon.nodes\fR in user`s
+home directory. You can also explicitly specify file location as an
+argument to the script. File format is described below.
+.TP
+\fB\-a\fR, \fB\-\-list\-all\-fb\fR
+List all available filterbanks. This command shows ID, NAME and
+orthogonality TYPE for each available filterbank. As of release
+0.8.1 EPSILON also supports lifting implementation of a famous
+Daubechies 9/7 biorthogonal wavelet transform. It works faster
+than generic filter-based counterpart. Default ID is
+.B daub97lift
+.TP
+\fB\-V\fR, \fB\-\-version\fR
+Print program version.
+.SS "Options to use with `--encode-file' command:"
+.TP
+\fB\-f\fR, \fB\-\-filter\-id\fR=\fIID\fR
+Wavelet filterbank ID. See also \fB\-\-list\-all\-fb\fR command.
+.TP
+\fB\-b\fR, \fB\-\-block\-size\fR=\fIVALUE\fR
+Block size to use: 32, 64, 128, 256, 512 or 1024. The default value
+is 256. Using very small blocks as well as using very large blocks is
+not recommended: the former adds substantial header overhead and
+the latter slows down encoding/decoding without any profit in
+image quality. Nevertheless, in some rare circumstances this rule
+is quite opposite.
+.TP
+\fB\-n\fR, \fB\-\-mode\-normal\fR
+Use so called normal processing mode. This mode can be used with the
+both orthogonal and biorthogonal filters. In practice you should
+avoid this parameter unless you are making some research in wavelets.
+.TP
+\fB\-o\fR, \fB\-\-mode\-otlpf\fR
+Use so called OTLPF processing mode. In a few words, OTLPF is some
+kind of hack to reduce boundary artefacts when image is broken into
+several tiles (as usually happens). Due to mathematical constrains
+this method can be applied to biorthogonal filters only. This option
+is turned on by default.
+.TP
+\fB\-r\fR, \fB\-\-ratio\fR=\fIVALUE\fR
+With this parameter you can finely control desired compression
+ratio. This value is not obliged to be integral: for example, the
+value of 34.102 is just fine. For obvious reasons compression
+ratio should be grater than 1. Although EPSILON's bit-allocation
+algorithm is pretty precise, too high compression ratios will
+be clipped due to block headers overhead. On the other hand,
+blank image (e.g. entirely black) surely will be encoded just
+in a couple of hundreds of bytes regardless of compression ratio
+you desire. Nevertheless, for a most real-life images and
+compression ratios (let us say 10..200) actual compression
+ratio will be very close to the value you desire. Default
+compression ratio is 10.
+.TP
+\fB\-2\fR, \fB\-\-two\-pass\fR
+By default EPSILON uses constant bit-rate (CBR) bit-allocation
+algorithm. CBR is pretty fast and usually gives acceptable image
+quality. If image quality is a concern, try two-pass
+variable bit-rate (VBR) bit-allocation algorithm instead.
+VBR gives better results than CBR, but runs about twice slower.
+.TP
+\fB\-N\fR, \fB\-\-node\-list\fR
+File with cluster configuration. Note: this option is available
+in cluster-aware EPSILON version only and is intended for MASTER
+node. Each line in this file should comply with the following
+format:
+
+\fIuser@host:port^number_of_CPUs\fR
+
+All fields are mandatory. No comments, spaces or blank lines are
+allowed here. The second field can be either IP address or host
+name. The last field is actually the number of simultaneous TCP
+connections with a corresponding SLAVE node. Usually it is set to
+the number of CPUs or somewhat larger.
+
+If you omit this option, EPSILON will try \fI.epsilon.nodes\fR
+in the current and home directory (in that order).
+
+Note 1: \'user\' field is used by \fBstart\_epsilon\_nodes.pl\fR
+and \fBstop\_epsilon\_nodes.pl\fR to SSH into the target box.
+
+Note 2: \'port\' is EPSILON node's port not SSH's.
+
+.TP
+\fB\-T\fR, \fB\-\-threads\fR
+Number of encoding threads. Note: this option is available
+in thread-aware EPSILON version only.
+.TP
+\fB\-\-Y\-ratio\fR=\fIVALUE\fR, \fB\-\-Cb\-ratio\fR=\fIVALUE\fR, \fB\-\-Cr\-ratio\fR=\fIVALUE\fR
+Bit\-budget percent for the Y, Cb and Cr channels respectively.
+The values should give 100% altogether. Note that these options
+have sense for truecolor (i.e. PPM) images only. The default
+values are 90-5-5.
+.TP
+\fB\-\-no\-resampling\fR
+By default EPSILON resamples truecolor images using so called 4:2:0
+resampling scheme. This trick essentially speed-ups encoding/decoding
+without sacrificing image quality. Usually there is no reason to
+disable resampling.
+.SS "Options to use with `--decode-file' command:"
+.TP
+\fB\-T\fR, \fB\-\-threads\fR
+Number of decoding threads. Note: this option is available
+in thread-aware EPSILON version only.
+.TP
+\fB\-N\fR, \fB\-\-node\-list\fR
+File with cluster configuration. Note: this option is available
+in cluster-aware EPSILON version only and is intended for MASTER
+node. Each line in this file should comply with the following
+format:
+
+\fIuser@host:port^number_of_CPUs\fR
+
+All fields are mandatory. No comments, spaces or blank lines are
+allowed here. The second field can be either IP address or host
+name. The last field is actually the number of simultaneous TCP
+connections with a corresponding SLAVE node. Usually it is set to
+the number of CPUs or somewhat larger.
+
+If you omit this option, EPSILON will try \fI.epsilon.nodes\fR
+in the current and home directory (in that order).
+.TP
+\fB\-\-ignore\-hdr\-crc\fR
+Ignore header CRC errors.
+.TP
+\fB\-\-ignore\-data\-crc\fR
+Ignore data CRC errors.
+.TP
+\fB\-\-ignore\-format\-err\fR
+Skip over malformed blocks.
+.SS "Options to use with `--truncate-file' command:"
+.TP
+\fB\-r\fR, \fB\-\-ratio\fR=\fIVALUE\fR
+Desired truncation ratio. See also \fB\-\-truncate\-file\fR command.
+.SS "Options to use with `--start-node' command:"
+.TP
+\fB\-P\fR, \fB\-\-port\fR=\fIVALUE\fR
+By default cluster node listens port number 2718.
+With this option you can set another port number.
+.SS "Common options:"
+.TP
+\fB\-H\fR, \fB\-\-halt\-on\-errors\fR
+By default if something fails EPSILON proceeds to the next input
+file. With this option you can change default behaviour: EPSILON
+will halt on first error. Note that in MPI mode this option
+is not available and EPSILON always halts on errors.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+By default EPSILON shows pretty statistics during its operation.
+With this option you can ask EPSILON to be quiet.
+.TP
+\fB\-O\fR, \fB\-\-output\-dir\fR=\fIDIR\fR
+Output directory for encoded, decoded and truncated files.
+If not set, output files will be saved in the same directory
+as input ones.
+.SS "Help options:"
+.TP
+\-?, \fB\-\-help\fR
+Show help message.
+.TP
+\fB\-\-usage\fR
+Display brief usage message.
+.SH EXAMPLES
+Encode all PPM files in current directory with two-pass VBR algorithm:
+
+.I epsilon *.ppm -2
+
+Encode PGM file with 1:100 compression ratio using 4 threads:
+
+.I epsilon -e big.pgm -r 100 -T 4
+
+Decode all files to the /tmp directory, operate quietly:
+
+.I epsilon -dq *.psi -O /tmp
+
+Decode a list of heavily corrupted files:
+
+.I epsilon -d *.psi --ignore-hdr-crc --ignore-data-crc --ignore-format-err
+
+Start cluster node with non-standard port number:
+
+.I epsilon -s -P 1234
+
+Encode files using custom cluster configuration:
+
+.I epsilon *.ppm *.pgm -N /path/to/.epsilon.nodes
+
+Encode file with MPI engine using all available processors:
+
+.I mpirun C epsilon test.ppm
+
+.SH AUTHOR
+Alexander Simakov, \fI<xander@entropyware.info>\fR
+.TP
+Feedback, bug-reports and patches are welcome. Feel free to write!

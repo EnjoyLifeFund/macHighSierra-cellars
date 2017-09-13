@@ -1,0 +1,16 @@
+[About EPSILON]
+
+    EPSILON is a powerful OpenSource wavelet image compressor.
+    Wavelet-driven compressors are know to be much more effective
+    than traditional DCT-based ones (like JPEG). At the moment,
+    the program supports 30+ different wavelet filters, runs
+    in parallel in multi-threaded and MPI environments, can
+    process HUGE images and much more!
+
+    EPSILON web site: http://epsilon-project.sourceforge.net/
+
+[Feedback]
+
+    Your feedback is welcome. Feel free to contact me if you
+    need assistance in building, porting or maintaining EPSILON
+    on your platform.

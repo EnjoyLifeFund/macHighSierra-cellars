@@ -1,0 +1,96 @@
+[2011-05-27] EPSILON 0.9.2 released
+
+    This release adds versioning support to libepsilon and
+    contains updated version of autotools-related files.
+    Source code is not changed.
+
+[2011-04-30] EPSILON 0.9.1 released
+
+    EPSILON 0.9.1 is available for download!
+
+    This version includes automatic verification test suite,
+    portability improvements, bug fixes, HOW-TOs on running
+    EPSILON/Cluster and EPSILON/MPI.
+
+    Also EPSILON has been switched to dual license: GPL-3 and LGPL-3
+
+[2008-04-06] EPSILON 0.8.1 released
+
+    EPSILON 0.8.1 is available for download!
+
+    The main feature of this release is speed improvement.
+    Several performance-critical parts of the library were
+    optimized and now EPSILON runs about 30% faster than
+    previous version.
+
+    Check it out!
+
+[2007-08-31] EPSILON 0.7.1 released
+
+    EPSILON 0.7.1 is available for download!
+
+    The main feature of this release is MPI support. Message
+    Passing Interface is the well-known industry standard for
+    effective and portable parallel programming. Now EPSILON
+    runs full-speed on powerful clusters!
+
+    Enjoy the EPSILON!
+
+[2007-07-22] EPSILON 0.6.1 released
+
+    EPSILON 0.6.1 is available for download!
+
+    The main feature of this release is clustering mode support.
+    Now you can distribute image processing on several machines.
+    With a high-capacity network you will get substantial speed-up!
+
+    As of release 0.5.1, EPSILON offers multi-threading mode.
+    This mode is perfect for multi-core CPUs and SMP machines.
+
+    For a maximum portability you can also build thread- and
+    cluster-unaware EPSILON version.
+
+    Among new features, this release also includes some bug fixes.
+
+    Enjoy the EPSILON, feel the power!
+
+[2007-06-22] EPSILON 0.5.1 released
+
+    Cheers! EPSILON 0.5.1 is available for download!
+    The main feature of this release is multi-threading
+    support. Now EPSILON runs full speed on SMP machines!
+    EPSILON decoder is also improved in terms of fault-tolerance:
+    even heavily-corrupted and malformed images can be
+    synchronized and decoded. This release also includes
+    some bug fixes. So, at every turn EPSILON becomes better,
+    faster and robust!
+
+[2007-06-09] EPSILON 0.4.1 released
+
+    EPSILON 0.4.1 is available for download!
+    The main feature in new release is two-pass variable
+    bit-rate (VBR) encoding mode. VBR mode gives essential
+    image quality boost. Another feature is a command for
+    graceful file truncation. And the last but not the
+    least, we added handy user manual. Enjoy!
+
+[2007-05-30] EPSILON 0.3.1 released
+
+    Cheers! EPSILON 0.3.1 is available for download!
+    There is a number of changes in this release. First of all,
+    a lot of useless code is removed. The program was substantively
+    refactored and now looks much more pretty. New feature in this
+    release is a large file support: now EPSILON can process
+    HUGE images!
+
+[2006-11-01] EPSILON 0.2.1 released
+
+    EPSILON is an OpenSource wavelet compressor. This development
+    release is several times faster than previous one. A lot of
+    complicated code in SPECK encoder is rewritten in much more
+    simple and clean fashion. All library sources now carefully
+    commented.
+
+[2006-09-13] EPSILON 0.1.1 released
+
+    This is a first working version!

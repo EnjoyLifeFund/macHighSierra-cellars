@@ -1,0 +1,10 @@
+prefix=/usr/local/Cellar/podofo/0.9.5_1
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/podofo
+
+Name: PoDoFo
+Description: A C++ library to work with the PDF file format
+Version: 
+Libs: -L${libdir} -lpodofo-0
+Cflags: -I${includedir}

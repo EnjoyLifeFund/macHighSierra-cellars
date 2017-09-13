@@ -1,0 +1,62 @@
+[2011-05-27] EPSILON 0.9.2 released
+
+    * Versioning support to libepsilon is added (Francesco P. Lovergine)
+
+[2011-04-30] EPSILON 0.9.1 released
+
+    * Switch to dual license: GPL-3 and LGPL-3
+    * Automatic verification tests added + HOW-TO on this matter
+    * Bug fixes: remove name clash with zlib & libpng (Alessandro Furieri)
+    * Porting to Windows: MSVC, MinGW (Alessandro Furieri)
+    * Improvements to code portability and fluff removal (Alessandro Furieri)
+    * HOW-TOs on running EPSILON/Cluster and EPSILON/MPI
+
+[2008-04-06] EPSILON 0.8.1 released
+
+    * Set validation is now disabled by default
+    * The most busiest functions are inlined
+    * RGB->YCbCr conversion now uses look-up tables
+    * number_of_bits() now uses look-up table
+    * Core wavelet filtering routines are optimized
+    * Daubechies 9/7 lifting wavelet transform added
+    * Code clean-up
+
+[2007-08-31] EPSILON 0.7.1 released
+
+    * MPI support added
+    * Code clean-up
+
+[2007-07-22] EPSILON 0.6.1 released
+
+    * Clustering support added.
+    * Several bugs are fixed.
+
+[2007-06-22] EPSILON 0.5.1 released
+
+    * Multi-threading support added.
+    * Decoder robustness improved.
+    * Several bugs are fixed.
+
+[2007-06-09] EPSILON 0.4.1 released
+
+    * Two-pass variable bit-rate encoding mode added.
+    * Graceful file truncation added.
+    * Manual page added.
+
+[2007-05-30] EPSILON 0.3.1 released
+
+    * Large file support added.
+    * Substantial code refactoring and clean-up:
+        - No more RAW and COMMENT blocks.
+        - Encryption support is discounted. It is OpenSSL`s job.
+    * Progress indicator and timer are added.
+
+[2006-11-01] EPSILON 0.2.1 released
+
+    * SPECK encoding now runs several times faster.
+    * A lot of useless code is removed.
+    * All library sources now well-commented.
+
+[2006-09-13] EPSILON 0.1.1 released
+
+    * This is a first working version!

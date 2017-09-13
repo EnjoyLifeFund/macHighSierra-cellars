@@ -1,0 +1,17 @@
+[TODO list]
+
+Nearest plans include:
+
+- More extensive testing of platforms other than Linux: *BSD,
+  Solaris, OSX, Windows etc. If you succeed in building EPSILON
+  on these systems please drop me an email.
+
+- Extending test suite. As of release 0.9.1 EPSILON has a flexible
+  testing framework written in Perl. At the moment of writing test
+  suite consists of two tests: complete verification test (all build
+  types, all filters, all block sizes all applicable modes etc.) and
+  quick check.
+
+- Try using CUDA in computation extensive parts.
+
+- Extend documentation, write tutorials.

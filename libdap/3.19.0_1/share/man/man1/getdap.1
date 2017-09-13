@@ -1,0 +1,90 @@
+GETDAP(1)                        User Manuals                        GETDAP(1)
+
+
+
+NAME
+       getdap - test driver for the libdap library
+
+SYNOPSIS
+       getdap [-idaDxXBvVkzsM] [-c expr ] [-m num ] [-p x.y ] url ...
+
+       getdap [-VvksM] file ...
+
+DESCRIPTION
+       getdap  In  the first form of the command, dereference the URL and per-
+       form the requested  operations.  This  includes  routing  the  returned
+       information  through  the  DAP processing library (parsing the returned
+       objects, et c.). If none of a, d, or D are used with a  URL,  then  the
+       DAP  library  routines are NOT used and the URLs contents are dumped to
+       standard output.
+
+       In the second form of the command, assume the files are DataDDS objects
+       (stored  in  files  or  read from pipes) and process them as if -D were
+       given. In this case the information *must* contain valid MIME header in
+       order to be processed.
+
+OPTIONS
+       -i     For each URL, get the server version.
+
+       -d     For each URL, get the the DDS.
+
+       -a     For each URL, get the the DAS.
+
+       -D     For each URL, get the the DataDDS.
+
+       -x     For each URL, get the DDX object. Does not get data.
+
+       -X     Request a DataDDX from the server (the DAP4 data response).
+
+       -B     Build a DDX in getdap using the DDS and DAS.
+
+       -v     Verbose output.
+
+       -V     Version of this client; see 'i' for server version.
+
+       -c expr
+              expr  is a constraint expression. Used with -D/X.  You can use a
+              `?' for the CE also.
+
+       -k     Keep temporary files created by libdap.
+
+       -m num Request the same URL num times
+
+       -z     Ask the server to compress data.
+
+       -s     Print Sequences using numbered rows.
+
+       -M     Assume data read from a file has no MIME headers (the default is
+              to assume the headers are present).
+
+       -p x.y Set DAP protocol to x.y
+
+FILES
+       ~/.dodsrc
+              The  .dodsrc  file  contains  various parameters that affect the
+              runtime behavior for DAP clients.   See  dodsrc(5)  for  further
+              details.
+
+ENVIRONMENT
+       DODS_CONF
+              Specifies an alternate file or directory for the .dodsrc file.
+
+DIAGNOSTICS
+       Various self-explanitory messages may be issued on stderr.
+
+
+BUGS
+       The  command name should have been chosen more carefully to reflect its
+       purpose.
+
+       The dodsrc man page needs to be written.
+
+AUTHOR
+       James Gallagher <jgallagher at opendap.org>
+
+SEE ALSO
+       dodsrc(5)
+
+
+
+Linux                            December 2011                       GETDAP(1)

@@ -1,0 +1,65 @@
+DAP-CONFIG(1)                    User Manuals                    DAP-CONFIG(1)
+
+
+
+NAME
+       dap-config - get information about the libdap library
+
+SYNOPSIS
+       dap-config [OPTIONS]
+
+DESCRIPTION
+       dap-config  Get  information about the libdap library so that it can be
+       easily used in building other software. Option exist to help with build
+       configuration, compilation, linking.
+
+OPTIONS
+       Available values for OPTION include:
+
+
+       --help display a help message and exit
+
+       --cc   C compiler
+
+       --cxx  C++ compiler
+
+       --cflags
+              pre-processor and compiler flags
+
+       --libs library   linking  information  for  libdap  (both  clients  and
+              servers)
+
+       --server-libs
+              libraries for servers
+
+       --client-libs
+              libraries for clients
+
+       --prefix
+              OPeNDAP install prefix
+
+       --version
+              Library version
+
+FILES
+       none
+
+ENVIRONMENT
+       none
+
+DIAGNOSTICS
+       none
+
+BUGS
+       The pkg-config tool provides the same information, although it is some-
+       times not available.
+
+AUTHOR
+       James Gallagher <jgallagher at opendap.org>
+
+SEE ALSO
+       getdap(1)
+
+
+
+Linux                            December 2011                   DAP-CONFIG(1)
