@@ -1,4 +1,4 @@
-#!/usr/local/Cellar/python3/3.6.2_1/Frameworks/Python.framework/Versions/3.6/bin/python3.6
+#!/usr/local/opt/python3/bin/python3.6
 """
 List available PortMidi ports.
 """

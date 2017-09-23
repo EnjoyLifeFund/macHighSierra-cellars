@@ -1,0 +1,4 @@
+#!/usr/local/bin/python3
+# EASY-INSTALL-SCRIPT: 'numpy==1.13.1','f2py3'
+__requires__ = 'numpy==1.13.1'
+__import__('pkg_resources').run_script('numpy==1.13.1', 'f2py3')

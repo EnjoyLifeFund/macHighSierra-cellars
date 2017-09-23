@@ -1,17 +1,18 @@
-#! /usr/bin/perl -w
+#! /usr/local/bin/perl -w
 # -*- perl -*-
 # Generated from autoreconf.in; do not edit by hand.
 
-eval 'case $# in 0) exec /usr/bin/perl -S "$0";; *) exec /usr/bin/perl -S "$0" "$@";; esac'
+eval 'case $# in 0) exec /usr/local/bin/perl -S "$0";; *) exec /usr/local/bin/perl -S "$0" "$@";; esac'
     if 0;
 
 # autoreconf - install the GNU Build System in a directory tree
-# Copyright (C) 1994, 1999-2012 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
+# 2007, 2008, 2009 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,14 +20,16 @@ eval 'case $# in 0) exec /usr/bin/perl -S "$0";; *) exec /usr/bin/perl -S "$0" "
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
 
 # Written by David J. MacKenzie.
 # Extended and rewritten in Perl by Akim Demaille.
 
 BEGIN
 {
-  my $pkgdatadir = $ENV{'autom4te_perllibdir'} || '/usr/local/Cellar/autoconf/2.69/share/autoconf';
+  my $pkgdatadir = $ENV{'autom4te_perllibdir'} || '/usr/local/share/autoconf';
   unshift @INC, $pkgdatadir;
 
   # Override SHELL.  On DJGPP SHELL may not be set to a shell
@@ -55,7 +58,7 @@ use strict;
 $help = "Usage: $0 [OPTION]... [DIRECTORY]...
 
 Run `autoconf' (and `autoheader', `aclocal', `automake', `autopoint'
-(formerly `gettextize'), and `glibtoolize' where appropriate)
+(formerly `gettextize'), and `libtoolize' where appropriate)
 repeatedly to remake the GNU Build System files in specified
 DIRECTORIES and their subdirectories (defaulting to `.').
 
@@ -85,8 +88,8 @@ Library directories:
   -B, --prepend-include=DIR  prepend directory DIR to search path
   -I, --include=DIR          append directory DIR to search path
 
-The environment variables AUTOM4TE, AUTOCONF, AUTOHEADER, AUTOMAKE,
-ACLOCAL, AUTOPOINT, LIBTOOLIZE, M4, and MAKE are honored.
+The environment variables AUTOCONF, AUTOHEADER, AUTOMAKE, ACLOCAL,
+AUTOPOINT, LIBTOOLIZE, M4, and MAKE are honored.
 
 Report bugs to <bug-autoconf\@gnu.org>.
 GNU Autoconf home page: <http://www.gnu.org/software/autoconf/>.
@@ -95,10 +98,10 @@ General help using GNU software: <http://www.gnu.org/gethelp/>.
 
 # $VERSION
 # --------
-$version = "autoreconf (GNU Autoconf) 2.69
-Copyright (C) 2012 Free Software Foundation, Inc.
-License GPLv3+/Autoconf: GNU GPL version 3 or later
-<http://gnu.org/licenses/gpl.html>, <http://gnu.org/licenses/exceptions.html>
+$version = "autoreconf (GNU Autoconf) 2.64
+Copyright (C) 2009 Free Software Foundation, Inc.
+License GPLv2+: GNU GPL version 2 or later
+<http://gnu.org/licenses/old-licenses/gpl-2.0.html>
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 
@@ -106,12 +109,11 @@ Written by David J. MacKenzie and Akim Demaille.
 ";
 
 # Lib files.
-my $autoconf   = $ENV{'AUTOCONF'}   || '/usr/local/Cellar/autoconf/2.69/bin/autoconf';
-my $autoheader = $ENV{'AUTOHEADER'} || '/usr/local/Cellar/autoconf/2.69/bin/autoheader';
-my $autom4te   = $ENV{'AUTOM4TE'}   || '/usr/local/Cellar/autoconf/2.69/bin/autom4te';
+my $autoconf   = $ENV{'AUTOCONF'}   || '/usr/local/bin/autoconf';
+my $autoheader = $ENV{'AUTOHEADER'} || '/usr/local/bin/autoheader';
 my $automake   = $ENV{'AUTOMAKE'}   || 'automake';
 my $aclocal    = $ENV{'ACLOCAL'}    || 'aclocal';
-my $glibtoolize = $ENV{'LIBTOOLIZE'} || 'glibtoolize';
+my $libtoolize = $ENV{'LIBTOOLIZE'} || 'libtoolize';
 my $autopoint  = $ENV{'AUTOPOINT'}  || 'autopoint';
 my $make       = $ENV{'MAKE'}       || 'make';
 
@@ -121,12 +123,8 @@ my $install = 0;
 my $symlink = 0;
 # Does aclocal support --force?
 my $aclocal_supports_force = 0;
-# Does aclocal support -Wfoo?
-my $aclocal_supports_warnings = 0;
 # Does automake support --force-missing?
 my $automake_supports_force_missing = 0;
-# Does automake support -Wfoo?
-my $automake_supports_warnings = 0;
 
 my @prepend_include;
 my @include;
@@ -178,19 +176,15 @@ sub parse_args ()
       for my $prog ($autoconf, $autoheader,
 		    $automake, $aclocal,
 		    $autopoint,
-		    $glibtoolize)
+		    $libtoolize)
 	{
 	  xsystem ("$prog --version | sed 1q >&2");
 	  print STDERR "\n";
 	}
     }
 
-  my $aclocal_help = `$aclocal --help 2>/dev/null`;
-  my $automake_help = `$automake --help 2>/dev/null`;
-  $aclocal_supports_force = $aclocal_help =~ /--force/;
-  $aclocal_supports_warnings = $aclocal_help =~ /--warnings/;
-  $automake_supports_force_missing = $automake_help =~ /--force-missing/;
-  $automake_supports_warnings = $automake_help =~ /--warnings/;
+  $aclocal_supports_force = `$aclocal --help 2>/dev/null` =~ /--force/;
+  $automake_supports_force_missing = `$automake --help 2>/dev/null` =~ /--force-missing/;
 
   # Dispatch autoreconf's option to the tools.
   # --include;
@@ -205,7 +199,7 @@ sub parse_args ()
     {
       $automake   .= ' --add-missing';
       $automake   .= ' --copy' unless $symlink;
-      $glibtoolize .= ' --copy' unless $symlink;
+      $libtoolize .= ' --copy' unless $symlink;
     }
   # --force;
   if ($force)
@@ -217,7 +211,7 @@ sub parse_args ()
       $automake   .= ' --force-missing'
 	if $automake_supports_force_missing;
       $autopoint  .= ' --force';
-      $glibtoolize .= ' --force';
+      $libtoolize .= ' --force';
     }
   else
     {
@@ -240,7 +234,7 @@ sub parse_args ()
     {
       $autoconf   .= ' --debug';
       $autoheader .= ' --debug';
-      $glibtoolize .= ' --debug';
+      $libtoolize .= ' --debug';
     }
   # --warnings;
   if (@warning)
@@ -249,9 +243,7 @@ sub parse_args ()
       $autoconf   .= $warn;
       $autoheader .= $warn;
       $automake   .= $warn
-	if $automake_supports_warnings;
-      $aclocal    .= $warn
-        if $aclocal_supports_warnings;
+	if `$automake --help` =~ /--warnings/;
     }
 }
 
@@ -463,13 +455,12 @@ sub autoreconf_current_directory ()
   verb "$configure_ac: tracing";
   my $traces = new Autom4te::XFile
     ("$autoconf"
-     . join (' ',
-	     map { ' --trace=' . $_ . ':\$n::\${::}%' }
+     . join (' --trace=', '',
 	     # If you change this list, update the
 	     # `Autoreconf-preselections' section of autom4te.in.
-	     'AC_CONFIG_AUX_DIR',
+	     'AC_CONFIG_AUX_DIR:AC_CONFIG_AUX_DIR:\$1',
 	     'AC_CONFIG_HEADERS',
-	     'AC_CONFIG_SUBDIRS',
+	     'AC_CONFIG_SUBDIRS:AC_CONFIG_SUBDIRS:\$1',
 	     'AC_INIT',
 	     'AC_PROG_LIBTOOL',
 	     'LT_INIT',
@@ -480,18 +471,14 @@ sub autoreconf_current_directory ()
      . ' |');
   while ($_ = $traces->getline)
     {
-      chomp;
-      my ($macro, @args) = split (/::/);
-      $aux_dir = $args[0]           if $macro eq "AC_CONFIG_AUX_DIR";
-      $uses_autoconf = 1            if $macro eq "AC_INIT";
-      $uses_gettext_via_traces = 1  if $macro eq "AM_GNU_GETTEXT";
-      $uses_libtool = 1             if $macro eq "AC_PROG_LIBTOOL"
-                                       || $macro eq "LT_INIT";
-      $uses_libltdl = 1             if $macro eq "LT_CONFIG_LTDL_DIR";
-      $uses_autoheader = 1          if $macro eq "AC_CONFIG_HEADERS";
-      $uses_automake = 1            if $macro eq "AM_INIT_AUTOMAKE";
-      push @subdir, split (' ', $args[0])
-                                    if $macro eq "AC_CONFIG_SUBDIRS" && $recursive;
+      $aux_dir = $1                 if /AC_CONFIG_AUX_DIR:(.*)/;
+      $uses_autoconf = 1            if /AC_INIT/;
+      $uses_gettext_via_traces = 1  if /AM_GNU_GETTEXT/;
+      $uses_libtool = 1             if /(AC_PROG_LIBTOOL|LT_INIT)/;
+      $uses_libltdl = 1             if /LT_CONFIG_LTDL_DIR/;
+      $uses_autoheader = 1          if /AC_CONFIG_HEADERS/;
+      $uses_automake = 1            if /AM_INIT_AUTOMAKE/;
+      push @subdir, split (' ', $1) if /AC_CONFIG_SUBDIRS:(.*)/ && $recursive;
     }
 
   # The subdirs are *optional*, they may not exist.
@@ -519,7 +506,7 @@ sub autoreconf_current_directory ()
   # Setting up the source tree.  #
   # ---------------------------- #
 
-  # glibtoolize, automake --add-missing etc. will drop files in the
+  # libtoolize, automake --add-missing etc. will drop files in the
   # $AUX_DIR.  But these tools fail to install these files if the
   # directory itself does not exist, which valid: just imagine a CVS
   # repository with hand written code only (there is not even a need
@@ -534,7 +521,7 @@ sub autoreconf_current_directory ()
 
 
   # -------------------- #
-  # Running glibtoolize.  #
+  # Running libtoolize.  #
   # -------------------- #
 
   if (!$uses_libtool)
@@ -545,14 +532,14 @@ sub autoreconf_current_directory ()
     {
       if ($uses_libltdl)
 	{
-	  $glibtoolize .= " --ltdl";
+	  $libtoolize .= " --ltdl";
 	}
-      xsystem_hint ("glibtoolize is needed because this package uses Libtool", $glibtoolize);
+      xsystem_hint ("libtoolize is needed because this package uses Libtool", $libtoolize);
       $rerun_aclocal = 1;
     }
   else
     {
-      verb "$configure_ac: not running glibtoolize: --install not given";
+      verb "$configure_ac: not running libtoolize: --install not given";
     }
 
 
@@ -692,7 +679,6 @@ parse_args;
 
 # Autoreconf all the given configure.ac.  Unless `--no-recursive' is passed,
 # AC_CONFIG_SUBDIRS will be traversed in &autoreconf_current_directory.
-$ENV{'AUTOM4TE'} = $autom4te;
 for my $directory (@ARGV)
   {
     require_configure_ac ($directory);
