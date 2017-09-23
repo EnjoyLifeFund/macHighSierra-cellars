@@ -1,0 +1,29 @@
+{
+  "name" : "Test::Mock",
+  "api" : null,
+  "identity" : "Test::Mock:ver('1.4')",
+  "support" : { },
+  "source-url" : "git://github.com/jnthn/test-mock.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "864C78BC3F29454BF3EA37CD62DBD8C8DEBD4106",
+  "auth" : null,
+  "Str" : "Test::Mock:ver<1.4>:auth<>:api<>",
+  "depends" : [
+    "OO::Monitors"
+  ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "1.4",
+  "provides" : {
+    "Test::Mock" : {
+      "lib/Test/Mock.pm" : {
+        "cver" : "2017.07",
+        "file" : "9B6580FBF97B7D6DF7DABB09733EAEF8542DC232",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Creation of stub objects using the Arrange, Act, Assert pattern."
+}

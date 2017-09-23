@@ -1,0 +1,33 @@
+{
+  "name" : "Linenoise",
+  "api" : null,
+  "identity" : "Linenoise:ver('0.1.1'):auth('Rob Hoelz')",
+  "support" : { },
+  "source-url" : "https://github.com/hoelzro/p6-linenoise.git",
+  "resources" : [
+    "libraries/linenoise"
+  ],
+  "build-depends" : [
+    "LibraryMake"
+  ],
+  "id" : "91857A0CE92503F53D56DEBB6F633402878D0FF0",
+  "auth" : "Rob Hoelz",
+  "Str" : "Linenoise:ver<0.1.1>:auth<Rob Hoelz>:api<>",
+  "depends" : [ ],
+  "files" : {
+    "resources/libraries/linenoise" : "323767E89F2D0CBE48797015570799E56F6F4FE5.dylib"
+  },
+  "license" : "MIT",
+  "ver" : "0.1.1",
+  "provides" : {
+    "Linenoise" : {
+      "lib/Linenoise.pm6" : {
+        "cver" : "2017.07",
+        "file" : "0BDF8C54D33921FEA066491D8D13C96A7CB144B9",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Bindings to linenoise"
+}

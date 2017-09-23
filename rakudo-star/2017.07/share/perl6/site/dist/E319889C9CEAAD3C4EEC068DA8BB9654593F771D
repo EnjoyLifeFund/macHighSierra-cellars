@@ -1,0 +1,89 @@
+{
+  "name" : "p6doc",
+  "api" : null,
+  "identity" : "p6doc:ver('1.001001')",
+  "support" : { },
+  "source-url" : "git://github.com/perl6/doc.git",
+  "resources" : [ ],
+  "build-depends" : [
+    "File::Find"
+  ],
+  "id" : "E319889C9CEAAD3C4EEC068DA8BB9654593F771D",
+  "auth" : null,
+  "Str" : "p6doc:ver<1.001001>:auth<>:api<>",
+  "depends" : [
+    "URI",
+    "File::Temp",
+    "JSON::Fast",
+    "Pod::To::BigPage",
+    "Pod::To::HTML",
+    "OO::Monitors",
+    "IO::String"
+  ],
+  "files" : {
+    "bin/p6doc" : "A8E27CCDB42DF150602E3F9FB64634462C25F982",
+    "bin/p6doc-index" : "C7283055266ED92674DA08DE6047AF99A99CFC99"
+  },
+  "license" : "Artistic-2.0",
+  "ver" : "1.001001",
+  "provides" : {
+    "Pod::To::SectionFilter" : {
+      "lib/Pod/To/SectionFilter.pm" : {
+        "cver" : "2017.07",
+        "file" : "C3B1395F9476C9A8BF5374502BC329528539EE80",
+        "time" : null
+      }
+    },
+    "Perl6::Documentable" : {
+      "lib/Perl6/Documentable.pm" : {
+        "cver" : "2017.07",
+        "file" : "378BF41F677286E14422A75133FEA2C774D11E58",
+        "time" : null
+      }
+    },
+    "Pod::Htmlify" : {
+      "lib/Pod/Htmlify.pm6" : {
+        "cver" : "2017.07",
+        "file" : "E7BE826718955FB4DF70357B553E4F17408C49EE",
+        "time" : null
+      }
+    },
+    "Perl6::TypeGraph" : {
+      "lib/Perl6/TypeGraph.pm" : {
+        "cver" : "2017.07",
+        "file" : "CBDBFF4E342C8FF249EDFFB45949B325F382B0A7",
+        "time" : null
+      }
+    },
+    "Perl6::TypeGraph::Viz" : {
+      "lib/Perl6/TypeGraph/Viz.pm" : {
+        "cver" : "2017.07",
+        "file" : "3F0223B0147849B378FF2E8014870483641F9754",
+        "time" : null
+      }
+    },
+    "Perl6::Documentable::Registry" : {
+      "lib/Perl6/Documentable/Registry.pm" : {
+        "cver" : "2017.07",
+        "file" : "D915E665B3D881E35AFFF46B2C065FAE180E66AC",
+        "time" : null
+      }
+    },
+    "Pod::Convenience" : {
+      "lib/Pod/Convenience.pm6" : {
+        "cver" : "2017.07",
+        "file" : "22F2E675B5499EFCB5056AE20BC896056796E739",
+        "time" : null
+      }
+    },
+    "Perl6::Type" : {
+      "lib/Perl6/Type.pm" : {
+        "cver" : "2017.07",
+        "file" : "E06F01A7B677D9FAB6704FA54A5528326D5575F6",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Perl 6 documentation (tools and docs)"
+}

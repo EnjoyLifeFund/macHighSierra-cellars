@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/local/Cellar/rakudo-star/2017.07/bin/moar  --execname="$0" --libpath="/usr/local/Cellar/rakudo-star/2017.07/share/nqp/lib" --libpath="/usr/local/Cellar/rakudo-star/2017.07/share/nqp/lib" --libpath="/usr/local/Cellar/rakudo-star/2017.07/share/perl6/lib" --libpath="/usr/local/Cellar/rakudo-star/2017.07/share/perl6/runtime" /usr/local/Cellar/rakudo-star/2017.07/share/perl6/runtime/perl6.moarvm "$@"

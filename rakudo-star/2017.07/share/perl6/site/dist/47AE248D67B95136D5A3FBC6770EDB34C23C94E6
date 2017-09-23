@@ -1,0 +1,48 @@
+{
+  "name" : "JSON::RPC",
+  "api" : null,
+  "identity" : "JSON::RPC:ver('0.17.3'):auth('bbkr')",
+  "support" : { },
+  "source-url" : "git://github.com/bbkr/jsonrpc.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "47AE248D67B95136D5A3FBC6770EDB34C23C94E6",
+  "auth" : "bbkr",
+  "Str" : "JSON::RPC:ver<0.17.3>:auth<bbkr>:api<>",
+  "depends" : [
+    "JSON::Tiny",
+    "URI",
+    "HTTP::Easy",
+    "LWP::Simple"
+  ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "0.17.3",
+  "provides" : {
+    "X::JSON::RPC" : {
+      "lib/X/JSON/RPC.pm6" : {
+        "cver" : "2017.07",
+        "file" : "1B3F8428623CC0C461D47350BE713D77BCE06337",
+        "time" : null
+      }
+    },
+    "JSON::RPC::Client" : {
+      "lib/JSON/RPC/Client.pm6" : {
+        "cver" : "2017.07",
+        "file" : "E5A0FC25787FD8C68544BD05F1CFE039889C48D6",
+        "time" : null
+      }
+    },
+    "JSON::RPC::Server" : {
+      "lib/JSON/RPC/Server.pm6" : {
+        "cver" : "2017.07",
+        "file" : "D5784036C5E234CD187EC608D5B4529F041086A6",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test"
+  ],
+  "description" : "JSON-RPC 2.0 client and server."
+}

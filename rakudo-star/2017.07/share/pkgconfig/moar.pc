@@ -1,0 +1,21 @@
+# pkg-config information for MoarVM 2017.07
+#
+prefix=/usr/local/Cellar/rakudo-star/2017.07
+package=moar
+includedir=/usr/local/Cellar/rakudo-star/2017.07/include
+bindir=/usr/local/Cellar/rakudo-star/2017.07/bin
+libdir=/usr/local/Cellar/rakudo-star/2017.07/lib
+mastdir=/usr/local/Cellar/rakudo-star/2017.07/share/nqp/lib/MAST
+ldopts= -O3 -DNDEBUG -Wl,-rpath,"//usr/local/Cellar/rakudo-star/2017.07/lib"
+exeext=
+version=2017.07
+moar=/usr/local/Cellar/rakudo-star/2017.07/bin/moar
+libs= -O3 -DNDEBUG -Wl,-rpath,"//usr/local/Cellar/rakudo-star/2017.07/lib" -L/usr/local/Cellar/rakudo-star/2017.07/lib -lmoar
+static_libs=
+
+Name:           MoarVM
+Description:    A virtual machine for Rakudo Perl 6 and NQP
+URL:            http://moarvm.org
+Version:        2017.07
+Libs:            -O3 -DNDEBUG -Wl,-rpath,"//usr/local/Cellar/rakudo-star/2017.07/lib" -L/usr/local/Cellar/rakudo-star/2017.07/lib -lmoar
+Cflags:         -I/usr/local/Cellar/rakudo-star/2017.07/include

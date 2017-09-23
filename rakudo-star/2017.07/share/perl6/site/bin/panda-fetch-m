@@ -1,0 +1,4 @@
+#!/usr/bin/env perl6-m
+sub MAIN(:$name is copy, :$auth, :$ver, *@, *%) {
+    CompUnit::RepositoryRegistry.run-script("panda-fetch", :dist-name<panda>, :$name, :$auth, :$ver);
+}

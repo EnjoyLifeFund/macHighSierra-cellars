@@ -1,0 +1,27 @@
+{
+  "name" : "XML::Writer",
+  "api" : null,
+  "identity" : "XML::Writer",
+  "support" : { },
+  "source-url" : "git://github.com/masak/xml-writer.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "92F3CA63513DCE90EBEA174B0F7BB3521F87B376",
+  "auth" : null,
+  "Str" : "XML::Writer:ver<*>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "*",
+  "provides" : {
+    "XML::Writer" : {
+      "lib/XML/Writer.pm" : {
+        "cver" : "2017.07",
+        "file" : "A5F1A6A0B6A4FB216C75471A0A4A1D6D8C85618A",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "A Perl 6 module to generate XML"
+}

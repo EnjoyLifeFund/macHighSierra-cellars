@@ -1,0 +1,27 @@
+{
+  "name" : "HTTP::Status",
+  "api" : null,
+  "identity" : "HTTP::Status",
+  "support" : { },
+  "source-url" : "git://github.com/supernovus/perl6-http-status.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "E6BE6ADDB2A36BDBE66001402C819F0CC7C5FC7D",
+  "auth" : null,
+  "Str" : "HTTP::Status:ver<*>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : null,
+  "ver" : "*",
+  "provides" : {
+    "HTTP::Status" : {
+      "lib/HTTP/Status.pm6" : {
+        "cver" : "2017.07",
+        "file" : "B33F2E3B03C10717E1F06B1FDBD617CEEFD83E06",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Get the text message associated with an HTTP status code"
+}

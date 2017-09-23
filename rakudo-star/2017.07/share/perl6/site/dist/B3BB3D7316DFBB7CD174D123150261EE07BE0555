@@ -1,0 +1,62 @@
+{
+  "name" : "URI",
+  "api" : null,
+  "identity" : "URI:ver('0.1.4')",
+  "support" : { },
+  "source-url" : "git://github.com/perl6-community-modules/uri.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "B3BB3D7316DFBB7CD174D123150261EE07BE0555",
+  "auth" : null,
+  "Str" : "URI:ver<0.1.4>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : null,
+  "ver" : "0.1.4",
+  "provides" : {
+    "URI::DefaultPort" : {
+      "lib/URI/DefaultPort.pm" : {
+        "cver" : "2017.07",
+        "file" : "10C80F9BBD4021D56264E5CDE7C970FAC2FD6BCE",
+        "time" : null
+      }
+    },
+    "URI" : {
+      "lib/URI.pm" : {
+        "cver" : "2017.07",
+        "file" : "791F2CA877C73A01F6D9BE0FAB586D948EA58B54",
+        "time" : null
+      }
+    },
+    "IETF::RFC_Grammar::URI" : {
+      "lib/IETF/RFC_Grammar/URI.pm" : {
+        "cver" : "2017.07",
+        "file" : "FB4E2A615EE883B86FE47D5D5ADB7A14148BF025",
+        "time" : null
+      }
+    },
+    "IETF::RFC_Grammar::IPv6" : {
+      "lib/IETF/RFC_Grammar/IPv6.pm" : {
+        "cver" : "2017.07",
+        "file" : "A2C3E24A588E26BD20C73E421ACEAC8CD0003B82",
+        "time" : null
+      }
+    },
+    "IETF::RFC_Grammar" : {
+      "lib/IETF/RFC_Grammar.pm" : {
+        "cver" : "2017.07",
+        "file" : "CD282E487BA107ED73136692E20035FDAA1CD8CA",
+        "time" : null
+      }
+    },
+    "URI::Escape" : {
+      "lib/URI/Escape.pm" : {
+        "cver" : "2017.07",
+        "file" : "3156FDD28D7D33C3C0F1045A8DA55FDAAB10FF69",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "A URI implementation using Perl 6 grammars to implement RFC 3986 BNF"
+}

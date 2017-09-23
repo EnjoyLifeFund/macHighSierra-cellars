@@ -1,0 +1,32 @@
+{
+  "name" : "Template::Mustache",
+  "api" : null,
+  "identity" : "Template::Mustache:auth('github:softmoth')",
+  "support" : {
+    "bugtracker" : "https://github.com/softmoth/p6-Template-Mustache/issues"
+  },
+  "source-url" : "git://github.com/softmoth/p6-Template-Mustache.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "0440B844549D9FCD5D003D7DC35ED67602C829CA",
+  "auth" : "github:softmoth",
+  "Str" : "Template::Mustache:ver<*>:auth<github:softmoth>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "*",
+  "provides" : {
+    "Template::Mustache" : {
+      "lib/Template/Mustache.pm" : {
+        "cver" : "2017.07",
+        "file" : "519927884D1F03D999B793B24E79F13044D6F2F6",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "JSON::Fast",
+    "Test"
+  ],
+  "description" : "A logic-free, cross-language templating format"
+}

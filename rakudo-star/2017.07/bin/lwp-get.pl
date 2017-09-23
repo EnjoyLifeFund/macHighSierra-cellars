@@ -1,0 +1,1 @@
+../share/perl6/site/bin/lwp-get.pl

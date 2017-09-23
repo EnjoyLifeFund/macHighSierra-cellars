@@ -1,0 +1,35 @@
+{
+  "name" : "LWP::Simple",
+  "api" : null,
+  "identity" : "LWP::Simple:ver('0.091'):auth('Cosimo Streppone')",
+  "support" : { },
+  "source-url" : "git://github.com/perl6/perl6-lwp-simple.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "38C7D65DEF8F941736DFE2F6118C15D6977F059E",
+  "auth" : "Cosimo Streppone",
+  "Str" : "LWP::Simple:ver<0.091>:auth<Cosimo Streppone>:api<>",
+  "depends" : [
+    "MIME::Base64",
+    "URI"
+  ],
+  "files" : {
+    "bin/lwp-download.pl" : "30C1DF35D3F6372D6492C286A7EC0C1114EA814F",
+    "bin/lwp-get.pl" : "22299441D10CF6DCBAD7AB426963F5DF5ED5B66C"
+  },
+  "license" : null,
+  "ver" : "0.091",
+  "provides" : {
+    "LWP::Simple" : {
+      "lib/LWP/Simple.pm" : {
+        "cver" : "2017.07",
+        "file" : "D78849A01D6B88A34DE534022382E1B5D8F211C1",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "JSON::Tiny"
+  ],
+  "description" : "LWP::Simple quick & dirty implementation for Rakudo Perl 6"
+}

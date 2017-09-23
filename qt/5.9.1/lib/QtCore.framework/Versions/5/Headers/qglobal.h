@@ -42,6 +42,7 @@
 #define QGLOBAL_H
 
 #ifdef __cplusplus
+//#  include /usr/include/type_traits.h
 #  include <type_traits>
 #  include <cstddef>
 #  include <utility>

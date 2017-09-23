@@ -1,0 +1,29 @@
+{
+  "name" : "Debugger::UI::CommandLine",
+  "api" : null,
+  "identity" : "Debugger::UI::CommandLine",
+  "support" : { },
+  "source-url" : "git://github.com/jnthn/rakudo-debugger.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "A6DD768CFE355DEB6589660C3EF78A2FAE6BDA5F",
+  "auth" : null,
+  "Str" : "Debugger::UI::CommandLine:ver<*>:auth<>:api<>",
+  "depends" : [
+    "Terminal::ANSIColor"
+  ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "*",
+  "provides" : {
+    "Debugger::UI::CommandLine" : {
+      "lib/Debugger/UI/CommandLine.pm" : {
+        "cver" : "2017.07",
+        "file" : "3E687CA5BFB386524F923BAC2F986CC3C66BD24F",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Command-line debugger frontend for Rakudo"
+}

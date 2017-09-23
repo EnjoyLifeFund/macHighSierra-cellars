@@ -1,0 +1,27 @@
+{
+  "name" : "File::Directory::Tree",
+  "api" : null,
+  "identity" : "File::Directory::Tree:auth('labster')",
+  "support" : { },
+  "source-url" : "git://github.com/labster/p6-file-directory-tree.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "E3976455241922A70D125CF5932F39B2BF6ACC64",
+  "auth" : "labster",
+  "Str" : "File::Directory::Tree:ver<*>:auth<labster>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "*",
+  "provides" : {
+    "File::Directory::Tree" : {
+      "lib/File/Directory/Tree.pm" : {
+        "cver" : "2017.07",
+        "file" : "9348C8241DCB23010628352BB28803635DAB3C87",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Port of File::Path::Tiny - create and delete directory trees"
+}

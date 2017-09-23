@@ -1,0 +1,32 @@
+{
+  "name" : "Terminal::ANSIColor",
+  "api" : null,
+  "identity" : "Terminal::ANSIColor:ver('0.3')",
+  "support" : {
+    "source" : "git://github.com/tadzik/Terminal-ANSIColor.git",
+    "bugtracker" : "https://github.com/tadzik/Terminal-ANSIColor/issues"
+  },
+  "source-url" : "git://github.com/tadzik/Terminal-ANSIColor.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "7FD8A6890EFC4A6188E1EE9240174E857A73C61B",
+  "auth" : null,
+  "Str" : "Terminal::ANSIColor:ver<0.3>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "MIT",
+  "ver" : "0.3",
+  "provides" : {
+    "Terminal::ANSIColor" : {
+      "lib/Terminal/ANSIColor.pm" : {
+        "cver" : "2017.07",
+        "file" : "F4E9ECE4CD7A79CAA06FC8CDC70CEC785B01F6CD",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test"
+  ],
+  "description" : "Colorize terminal output"
+}

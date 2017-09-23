@@ -1,0 +1,34 @@
+=begin pod
+
+=TITLE class Num
+
+=SUBTITLE Floating-point number
+
+    class Num is Cool does Real { }
+
+A C<Num> object stores a floating-point number. It is immutable. On most
+platforms, it's an IEEE 754 64-bit floating point numbers, aka "double
+precision".
+
+=head2 NaN
+
+The value X<C<NaN>|NaN (definition)> is an instance of C<Num> and represents a
+float point not-a-number value. It is defined and boolifies to True. C<NaN> is
+the result of undefined float point number operations and depends on the CPU or
+software implementation of float point numbers on the system running the code.
+
+=head2 method rand
+
+    method rand(Num:D: --> Num)
+
+Returns a pseudo random number between 0 and the invocant.
+
+=head2 sub srand
+
+    sub srand(Int $seed --> Int:D)
+
+Seeds the pseudo random number generator used by L<Num.rand|/type/Num#rand> with
+the provided value. Note that C<srand> is called with a platform dependent
+value when a Perl 6 program is started.
+
+=end pod

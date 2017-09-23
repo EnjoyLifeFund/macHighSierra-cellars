@@ -1,0 +1,71 @@
+{
+  "name" : "CORE",
+  "auth" : "perl",
+  "files" : { },
+  "ver" : "6.c",
+  "provides" : {
+    "NativeCall::Types" : {
+      "lib/NativeCall/Types.pm6" : {
+        "cver" : "2017.07",
+        "file" : "51E302443A2C8FF185ABC10CA1E5520EFEE885A1",
+        "time" : 1500152312
+      }
+    },
+    "Pod::To::Text" : {
+      "lib/Pod/To/Text.pm6" : {
+        "cver" : "2017.07",
+        "file" : "5DD1D8B49C838828E13504545C427D3D157E56EC",
+        "time" : 1500152312
+      }
+    },
+    "experimental" : {
+      "lib/experimental.pm6" : {
+        "cver" : "2017.07",
+        "file" : "AAC61C0EC6F88780427830443A057030CAA33846",
+        "time" : 1500152312
+      }
+    },
+    "newline" : {
+      "lib/newline.pm6" : {
+        "cver" : "2017.07",
+        "file" : "09A0291155A88760B69483D7F27D1FBD8A131A35",
+        "time" : 1500152312
+      }
+    },
+    "NativeCall::Compiler::GNU" : {
+      "lib/NativeCall/Compiler/GNU.pm6" : {
+        "cver" : "2017.07",
+        "file" : "FE7156F9200E802D3DB8FA628CF91AD6B020539B",
+        "time" : 1500152312
+      }
+    },
+    "NativeCall" : {
+      "lib/NativeCall.pm6" : {
+        "cver" : "2017.07",
+        "file" : "24DD121B5B4774C04A7084827BFAD92199756E03",
+        "time" : 1500152312
+      }
+    },
+    "NativeCall::Compiler::MSVC" : {
+      "lib/NativeCall/Compiler/MSVC.pm6" : {
+        "cver" : "2017.07",
+        "file" : "2ACCA56EF5582D3ED623105F00BD76D7449263F7",
+        "time" : 1500152312
+      }
+    },
+    "CompUnit::Repository::Staging" : {
+      "lib/CompUnit/Repository/Staging.pm" : {
+        "cver" : "2017.07",
+        "file" : "C57EBB9F7A3922A4DA48EE8FCF34A4DC55942942",
+        "time" : 1500152312
+      }
+    },
+    "Test" : {
+      "lib/Test.pm6" : {
+        "cver" : "2017.07",
+        "file" : "C712FE6969F786C9380D643DF17E85D06868219E",
+        "time" : 1500152312
+      }
+    }
+  }
+}

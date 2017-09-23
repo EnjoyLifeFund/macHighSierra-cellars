@@ -1,0 +1,27 @@
+{
+  "name" : "IO::String",
+  "api" : null,
+  "identity" : "IO::String:ver('0.1.1'):auth('Rob Hoelz')",
+  "support" : { },
+  "source-url" : "https://github.com/hoelzro/p6-io-string.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "24CB89427F56A21AF44F551C8437C9126968E9AE",
+  "auth" : "Rob Hoelz",
+  "Str" : "IO::String:ver<0.1.1>:auth<Rob Hoelz>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "MIT",
+  "ver" : "0.1.1",
+  "provides" : {
+    "IO::String" : {
+      "lib/IO/String.pm" : {
+        "cver" : "2017.07",
+        "file" : "B23F4BAB00227897C40FC03DA4165AC69F30471C",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Emulate file interface for strings"
+}

@@ -1,0 +1,37 @@
+{
+  "name" : "HTTP::Easy",
+  "api" : null,
+  "identity" : "HTTP::Easy:ver('1.1.0')",
+  "support" : { },
+  "source-url" : "git://github.com/supernovus/perl6-http-easy.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "282389F84A100CF2B91E5DFD03A05DFEFDE720F0",
+  "auth" : null,
+  "Str" : "HTTP::Easy:ver<1.1.0>:auth<>:api<>",
+  "depends" : [
+    "HTTP::Status",
+    "PSGI"
+  ],
+  "files" : { },
+  "license" : null,
+  "ver" : "1.1.0",
+  "provides" : {
+    "HTTP::Easy::PSGI" : {
+      "lib/HTTP/Easy/PSGI.pm6" : {
+        "cver" : "2017.07",
+        "file" : "DC7C76DF1185915F747BB7F062925CE7CDEEC2C5",
+        "time" : null
+      }
+    },
+    "HTTP::Easy" : {
+      "lib/HTTP/Easy.pm6" : {
+        "cver" : "2017.07",
+        "file" : "100A1B43D02574570A9FA5343A0679EF35FBD229",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "HTTP servers made easy, including PSGI"
+}

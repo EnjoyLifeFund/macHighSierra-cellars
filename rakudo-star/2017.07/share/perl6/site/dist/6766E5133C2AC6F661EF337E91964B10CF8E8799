@@ -1,0 +1,37 @@
+{
+  "name" : "Shell::Command",
+  "api" : null,
+  "identity" : "Shell::Command",
+  "support" : {
+    "source" : "git://github.com/tadzik/Shell-Command.git",
+    "bugtracker" : "https://github.com/tadzik/Shell-Command/issues"
+  },
+  "source-url" : "git://github.com/tadzik/Shell-Command.git",
+  "resources" : [ ],
+  "build-depends" : [
+    "File::Find"
+  ],
+  "id" : "6766E5133C2AC6F661EF337E91964B10CF8E8799",
+  "auth" : null,
+  "Str" : "Shell::Command:ver<*>:auth<>:api<>",
+  "depends" : [
+    "File::Which",
+    "File::Find"
+  ],
+  "files" : { },
+  "license" : null,
+  "ver" : "*",
+  "provides" : {
+    "Shell::Command" : {
+      "lib/Shell/Command.pm" : {
+        "cver" : "2017.07",
+        "file" : "A8DEB6B92199DFB3A54F3218FA4BE0FCB99045C0",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test"
+  ],
+  "description" : "Common shell command replacements"
+}

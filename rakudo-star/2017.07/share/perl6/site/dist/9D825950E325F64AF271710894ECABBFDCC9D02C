@@ -1,0 +1,29 @@
+{
+  "name" : "Digest::MD5",
+  "api" : null,
+  "identity" : "Digest::MD5:ver('0.05'):auth('Cosimo Streppone')",
+  "support" : { },
+  "source-url" : "git://github.com/cosimo/perl6-digest-md5.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "9D825950E325F64AF271710894ECABBFDCC9D02C",
+  "auth" : "Cosimo Streppone",
+  "Str" : "Digest::MD5:ver<0.05>:auth<Cosimo Streppone>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : null,
+  "ver" : "0.05",
+  "provides" : {
+    "Digest::MD5" : {
+      "lib/Digest/MD5.pm" : {
+        "cver" : "2017.07",
+        "file" : "1321C8B276AAD066998C9C60A2441ABE34BBF06A",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test"
+  ],
+  "description" : "Perl6 port of Perl5' Digest::MD5 module"
+}

@@ -1,0 +1,112 @@
+{
+  "name" : "panda",
+  "api" : null,
+  "identity" : "panda:ver('2016.02')",
+  "support" : {
+    "source" : "git://github.com/tadzik/panda.git",
+    "bugtracker" : "https://github.com/tadzik/panda/issues"
+  },
+  "source-url" : "git://github.com/tadzik/panda.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "699214D965C847A13471166B59E04A7C9B2CE650",
+  "auth" : null,
+  "Str" : "panda:ver<2016.02>:auth<>:api<>",
+  "depends" : [
+    "File::Find",
+    "Shell::Command",
+    "JSON::Fast",
+    "File::Which"
+  ],
+  "files" : {
+    "bin/panda-build" : "81EDA554BE5BDF5ED940ABCBCDB1297E90D842F8",
+    "bin/panda" : "E0D978079BB5081DE986D058BB8AB08252F05CC8",
+    "bin/panda-cpanize" : "24FE7F8560CF8B0D0E9BCCA79EC28200B01805CD",
+    "bin/panda-test" : "C3E00A3F0C5AE26E30F8ACDFBBD3E8D56DD2E590",
+    "bin/panda-fetch" : "5DDC30412D8895935C42E5DD0D82D2F4D51211CE",
+    "bin/panda-install" : "5851A14B5E8628DE8A5B8DC1578ABDB488C8EF6C"
+  },
+  "license" : "MIT",
+  "ver" : "2016.02",
+  "provides" : {
+    "Panda::Tester" : {
+      "lib/Panda/Tester.pm" : {
+        "cver" : "2017.07",
+        "file" : "48E2EB9144E069353B240AD2D147B48C65F70152",
+        "time" : null
+      }
+    },
+    "Panda::Fetcher" : {
+      "lib/Panda/Fetcher.pm" : {
+        "cver" : "2017.07",
+        "file" : "166081E25A4E2F4B5907911F758E03B22345E36C",
+        "time" : null
+      }
+    },
+    "Panda::Reporter" : {
+      "lib/Panda/Reporter.pm" : {
+        "cver" : "2017.07",
+        "file" : "20E2CF18B6F681ABE0122CFA7978D9FDB4DE97D7",
+        "time" : null
+      }
+    },
+    "Panda::Installer" : {
+      "lib/Panda/Installer.pm" : {
+        "cver" : "2017.07",
+        "file" : "85367160D11E565B2D089507C79BC309215430D6",
+        "time" : null
+      }
+    },
+    "Panda::Ecosystem" : {
+      "lib/Panda/Ecosystem.pm" : {
+        "cver" : "2017.07",
+        "file" : "A1870B677797BB95A44CD4B9000A4C998866C47E",
+        "time" : null
+      }
+    },
+    "Panda::Builder" : {
+      "lib/Panda/Builder.pm" : {
+        "cver" : "2017.07",
+        "file" : "9661E79563A62B3ABD3CB5E61B41BB801509267A",
+        "time" : null
+      }
+    },
+    "Panda::App" : {
+      "lib/Panda/App.pm" : {
+        "cver" : "2017.07",
+        "file" : "37D23B7AC665701718D7F4318F0A88DD75A16136",
+        "time" : null
+      }
+    },
+    "Panda::Bundler" : {
+      "lib/Panda/Bundler.pm" : {
+        "cver" : "2017.07",
+        "file" : "59A561953B2C64A0363F1133A1881A549C2123ED",
+        "time" : null
+      }
+    },
+    "Panda" : {
+      "lib/Panda.pm" : {
+        "cver" : "2017.07",
+        "file" : "582CB7486602954A4601BDCE5A0EAC54B05DA58A",
+        "time" : null
+      }
+    },
+    "Panda::Common" : {
+      "lib/Panda/Common.pm" : {
+        "cver" : "2017.07",
+        "file" : "24811C576EF8F85E7672B26955C802BB2FC94675",
+        "time" : null
+      }
+    },
+    "Panda::Project" : {
+      "lib/Panda/Project.pm" : {
+        "cver" : "2017.07",
+        "file" : "6E055D085F580E3385F291FE21A00BF4454A4D5F",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "A module manager"
+}

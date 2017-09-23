@@ -1,0 +1,4 @@
+#!/usr/bin/env perl6-m
+sub MAIN(:$name is copy, :$auth, :$ver, *@, *%) {
+    CompUnit::RepositoryRegistry.run-script("prove6", :dist-name<TAP::Harness>, :$name, :$auth, :$ver);
+}

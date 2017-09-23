@@ -1,0 +1,29 @@
+{
+  "name" : "SVG",
+  "api" : null,
+  "identity" : "SVG",
+  "support" : { },
+  "source-url" : "git://github.com/moritz/svg.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "E1402D9AD89B0E383B8C7C4E48916E56F4B087F9",
+  "auth" : null,
+  "Str" : "SVG:ver<*>:auth<>:api<>",
+  "depends" : [
+    "XML::Writer"
+  ],
+  "files" : { },
+  "license" : null,
+  "ver" : "*",
+  "provides" : {
+    "SVG" : {
+      "lib/SVG.pm" : {
+        "cver" : "2017.07",
+        "file" : "A82811D3E34196F12B956F15901F062744206B18",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "A Perl 6 module to generate SVG (Scalable Vector Graphics)"
+}

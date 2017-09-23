@@ -1,0 +1,50 @@
+{
+  "name" : "File::Which",
+  "api" : null,
+  "identity" : "File::Which",
+  "support" : { },
+  "source-url" : "git://github.com/azawawi/perl6-file-which.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "3C492362EEB7DF49EB8A32E933C8C18F11A1D393",
+  "auth" : null,
+  "Str" : "File::Which:ver<*>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "MIT",
+  "ver" : "*",
+  "provides" : {
+    "File::Which::Unix" : {
+      "lib/File/Which/Unix.pm6" : {
+        "cver" : "2017.07",
+        "file" : "4D1C577EF68036FA17EA36EA6DD1F737559828BE",
+        "time" : null
+      }
+    },
+    "File::Which::MacOSX" : {
+      "lib/File/Which/MacOSX.pm6" : {
+        "cver" : "2017.07",
+        "file" : "4D8449DAE0F32EC3CB3AF5724CB58295F04B53F7",
+        "time" : null
+      }
+    },
+    "File::Which::Win32" : {
+      "lib/File/Which/Win32.pm6" : {
+        "cver" : "2017.07",
+        "file" : "F127894E9329442F61D9A4B3B67F70220D479F5E",
+        "time" : null
+      }
+    },
+    "File::Which" : {
+      "lib/File/Which.pm6" : {
+        "cver" : "2017.07",
+        "file" : "4641D3B0F93457A455986668EE56D90F908887E8",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test"
+  ],
+  "description" : "Cross platform Perl 6 executable path finder (aka which on UNIX)"
+}

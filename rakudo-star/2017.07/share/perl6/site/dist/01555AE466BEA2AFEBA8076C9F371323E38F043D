@@ -1,0 +1,30 @@
+{
+  "name" : "Template::Mojo",
+  "api" : null,
+  "identity" : "Template::Mojo:ver('0.1')",
+  "support" : {
+    "source" : "git://github.com/tadzik/Template-Mojo.git",
+    "bugtracker" : "https://github.com/tadzik/Template-Mojo/issues"
+  },
+  "source-url" : "git://github.com/tadzik/Template-Mojo.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "01555AE466BEA2AFEBA8076C9F371323E38F043D",
+  "auth" : null,
+  "Str" : "Template::Mojo:ver<0.1>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "MIT",
+  "ver" : "0.1",
+  "provides" : {
+    "Template::Mojo" : {
+      "lib/Template/Mojo.pm" : {
+        "cver" : "2017.07",
+        "file" : "B20C2ACBF58EEF0E180351BE919769A403C6993A",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "A templating system similar to Perl 5's Mojo::Template"
+}

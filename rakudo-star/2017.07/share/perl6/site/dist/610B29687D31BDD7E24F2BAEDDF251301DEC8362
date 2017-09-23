@@ -1,0 +1,278 @@
+{
+  "name" : "zef",
+  "api" : null,
+  "identity" : "zef:ver('0.1.23'):auth('github:ugexe')",
+  "support" : {
+    "bugtracker" : "https://github.com/ugexe/zef/issues"
+  },
+  "source-url" : "git://github.com/ugexe/zef.git",
+  "resources" : [
+    "config.json",
+    "scripts/perl5tar.pl",
+    "scripts/win32http.ps1",
+    "scripts/win32unzip.ps1"
+  ],
+  "build-depends" : [ ],
+  "id" : "610B29687D31BDD7E24F2BAEDDF251301DEC8362",
+  "auth" : "github:ugexe",
+  "Str" : "zef:ver<0.1.23>:auth<github:ugexe>:api<>",
+  "depends" : [ ],
+  "files" : {
+    "bin/zef" : "6182CA1C8C9C6ED5BBB3076B522103070B37DDA4",
+    "resources/config.json" : "19A2963B2642926CB67C7B9B5FB8F4F0F4372FB0.json",
+    "resources/scripts/win32http.ps1" : "657D1961BEE3AD7B8A6A1E5F181EDD124AD20C29.ps1",
+    "resources/scripts/win32unzip.ps1" : "3325A576553A14F9382E9677F8ACF4D003A89094.ps1",
+    "resources/scripts/perl5tar.pl" : "4174D439DE377350597D975EFE29976B1904E2EC.pl"
+  },
+  "license" : "Artistic-2.0",
+  "ver" : "0.1.23",
+  "provides" : {
+    "Zef::Service::Shell::unzip" : {
+      "lib/Zef/Service/Shell/unzip.pm6" : {
+        "cver" : "2017.07",
+        "file" : "50EC35274B2084ABC9B16A0A14189B69A3C2BB62",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::TAP" : {
+      "lib/Zef/Service/TAP.pm6" : {
+        "cver" : "2017.07",
+        "file" : "694FFEC964314E0731D5EB4E1F0278DDB0716343",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::FetchPath" : {
+      "lib/Zef/Service/FetchPath.pm6" : {
+        "cver" : "2017.07",
+        "file" : "D888F29A8FE9CBA0BBC4B621ED5D4A8D3F7A19D5",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Distribution::Local" : {
+      "lib/Zef/Distribution/Local.pm6" : {
+        "cver" : "2017.07",
+        "file" : "13C4073203C8E168F9ACC0628E6312FA412C480D",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::prove" : {
+      "lib/Zef/Service/Shell/prove.pm6" : {
+        "cver" : "2017.07",
+        "file" : "415FC1DF1A228701CE31BB5E6347214B0F2B43EE",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Repository::LocalCache" : {
+      "lib/Zef/Repository/LocalCache.pm6" : {
+        "cver" : "2017.07",
+        "file" : "5D48B5494E3D45511C5058033CAD0D807CAFB679",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Test" : {
+      "lib/Zef/Test.pm6" : {
+        "cver" : "2017.07",
+        "file" : "ED1EF9E788F705371B918836DA460B7B526DA757",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Identity" : {
+      "lib/Zef/Identity.pm6" : {
+        "cver" : "2017.07",
+        "file" : "1917454AC718F07A406ACE6373C5B3F623D6565D",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::p5tar" : {
+      "lib/Zef/Service/Shell/p5tar.pm6" : {
+        "cver" : "2017.07",
+        "file" : "5EDCC7CA526510F83715B788635FF16A4004CF15",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Distribution::DependencySpecification" : {
+      "lib/Zef/Distribution/DependencySpecification.pm6" : {
+        "cver" : "2017.07",
+        "file" : "61F3D0EA04EDC23C0744071CE0EF8EF4207C9515",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Distribution" : {
+      "lib/Zef/Distribution.pm6" : {
+        "cver" : "2017.07",
+        "file" : "8C459CF2854824E080AE9C6535800798F2F63839",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Repository::MetaCPAN" : {
+      "lib/Zef/Repository/MetaCPAN.pm6" : {
+        "cver" : "2017.07",
+        "file" : "9C60B80753D39B3B190CB90CDC4CA69A7E7A0823",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Repository" : {
+      "lib/Zef/Repository.pm6" : {
+        "cver" : "2017.07",
+        "file" : "66F156D9D6AB4154EDE8BB12B35EBB2315A749F9",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Extract" : {
+      "lib/Zef/Extract.pm6" : {
+        "cver" : "2017.07",
+        "file" : "A20270EDF7F9A81C64950C05D5A79B5B310E17BB",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Config" : {
+      "lib/Zef/Config.pm6" : {
+        "cver" : "2017.07",
+        "file" : "2A928C6F9B02AF49EBD04F99E07BE1820A3A1C9F",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Client" : {
+      "lib/Zef/Client.pm6" : {
+        "cver" : "2017.07",
+        "file" : "3393EDA469A9E8925A633FF7A533AB41141495DA",
+        "time" : 1500807621
+      }
+    },
+    "Zef" : {
+      "lib/Zef.pm6" : {
+        "cver" : "2017.07",
+        "file" : "753C022C6673FF5080DDBD58FB8B7901507A192C",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Utils::FileSystem" : {
+      "lib/Zef/Utils/FileSystem.pm6" : {
+        "cver" : "2017.07",
+        "file" : "2CF768E646A40A3684F8039CC5B52B0176535CEB",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::PowerShell::unzip" : {
+      "lib/Zef/Service/Shell/PowerShell/unzip.pm6" : {
+        "cver" : "2017.07",
+        "file" : "6F75AA6AED01DA1146E5E8BF26A10B4ACF270ED2",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::curl" : {
+      "lib/Zef/Service/Shell/curl.pm6" : {
+        "cver" : "2017.07",
+        "file" : "6137B9A654970F214F0CF2A2644BACBB8B39FE36",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Repository::Ecosystems" : {
+      "lib/Zef/Repository/Ecosystems.pm6" : {
+        "cver" : "2017.07",
+        "file" : "1C8E65E6D82673962813E2440B1D654800A1B708",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Report" : {
+      "lib/Zef/Report.pm6" : {
+        "cver" : "2017.07",
+        "file" : "5EF8C4B3C0C2F3E22FA87077763C104441FC7F18",
+        "time" : 1500807621
+      }
+    },
+    "Zef::CLI" : {
+      "lib/Zef/CLI.pm6" : {
+        "cver" : "2017.07",
+        "file" : "ED3033E8712BCF9F6DE53678B14A54705DF211A6",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Build" : {
+      "lib/Zef/Build.pm6" : {
+        "cver" : "2017.07",
+        "file" : "47C531BDFF1C20485EC7B89B3EAB8FAFCABEFE19",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Utils::SystemInfo" : {
+      "lib/Zef/Utils/SystemInfo.pm6" : {
+        "cver" : "2017.07",
+        "file" : "D64CD2A859C86AEC1EEC5ACF2547287E5DF016BA",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::wget" : {
+      "lib/Zef/Service/Shell/wget.pm6" : {
+        "cver" : "2017.07",
+        "file" : "2D34C15AC0CC16E225CC844B6BB4AE17E33ADA42",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::tar" : {
+      "lib/Zef/Service/Shell/tar.pm6" : {
+        "cver" : "2017.07",
+        "file" : "BAF2F3F9E437122480484AEF3676E061E9CD8EE2",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::Test" : {
+      "lib/Zef/Service/Shell/Test.pm6" : {
+        "cver" : "2017.07",
+        "file" : "37A8BED897524BB8BCB8DE40B45B407CC90AA479",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::Build" : {
+      "lib/Zef/Service/Shell/Build.pm6" : {
+        "cver" : "2017.07",
+        "file" : "156B99BD71D6EEB35D8431DEB65AF961CF49FBA0",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Utils::URI" : {
+      "lib/Zef/Utils/URI.pm6" : {
+        "cver" : "2017.07",
+        "file" : "E50969DD30159353A780B6AAE4D27A7B402E1CBD",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::PowerShell::download" : {
+      "lib/Zef/Service/Shell/PowerShell/download.pm6" : {
+        "cver" : "2017.07",
+        "file" : "069C071E6AE5390D0074C1A997CAF28EAC857340",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::PowerShell" : {
+      "lib/Zef/Service/Shell/PowerShell.pm6" : {
+        "cver" : "2017.07",
+        "file" : "FF71884BF35D1CF68355F9F22A4C0EC9AB6AEFD2",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::Shell::git" : {
+      "lib/Zef/Service/Shell/git.pm6" : {
+        "cver" : "2017.07",
+        "file" : "E43E2E20DDE8E74EE83CD4E9D6D190D9AEDF08B9",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Service::P6CReporter" : {
+      "lib/Zef/Service/P6CReporter.pm6" : {
+        "cver" : "2017.07",
+        "file" : "AAEF01E3B773A5CD452C52C88D9AAD5EB21A8947",
+        "time" : 1500807621
+      }
+    },
+    "Zef::Fetch" : {
+      "lib/Zef/Fetch.pm6" : {
+        "cver" : "2017.07",
+        "file" : "94909FBD8C00980098D8F23C05A10CDBD8B752F0",
+        "time" : 1500807621
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "It's like [cpanm] wearing high heels with a tracksuit"
+}

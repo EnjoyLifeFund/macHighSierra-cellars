@@ -1,0 +1,239 @@
+{
+  "name" : "TAP::Harness",
+  "api" : null,
+  "identity" : "TAP::Harness:ver('0.0.2'):auth('Leon Timmermans')",
+  "support" : { },
+  "source-url" : "git://github.com/perl6/tap-harness6.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "F49D42062CD2DA6429EE45780B0D9770E8F54BF6",
+  "auth" : "Leon Timmermans",
+  "Str" : "TAP::Harness:ver<0.0.2>:auth<Leon Timmermans>:api<>",
+  "depends" : [ ],
+  "files" : {
+    "bin/prove6" : "8389B2AA815B3C26E99D3234C3C32C3933098BAF"
+  },
+  "license" : "Artistic-2.0",
+  "ver" : "0.0.2",
+  "provides" : {
+    "TAP::Collector" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "F87A09F1B9FA3CB9A3429905423F3A2F56754B78",
+        "time" : null
+      }
+    },
+    "TAP::Session" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "352E3AE17DA6BBDA6BCC0F4607E6429652B5F9A8",
+        "time" : null
+      }
+    },
+    "TAP::Harness::SourceHandler::Exec" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "F9CB75F192657D66784F3F6B176982F24142C011",
+        "time" : null
+      }
+    },
+    "TAP::Runner::Sync" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "B0F6477CEFB08DAAC0EDA9C8985F7AC87C725F82",
+        "time" : null
+      }
+    },
+    "TAP::Runner::Source::String" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "84E2FE0A52F6D1A2FDE0690175AF7EC144C6984B",
+        "time" : null
+      }
+    },
+    "TAP::Reporter" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "B6D067EEC4EF452E8BF040E403F5AF4423BDE47A",
+        "time" : null
+      }
+    },
+    "TAP::Formatter" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "CE5DAAE0B36362BC0366216C49F935C805B2E89B",
+        "time" : null
+      }
+    },
+    "TAP::Entry::Version" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "9F4C1A50A5512D4BA64CEC0D7D4A4EE13632A8EF",
+        "time" : null
+      }
+    },
+    "TAP::Grammar" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "FA3C32203BC8E6453CD77B1081EBD8CC8FD1FAF7",
+        "time" : null
+      }
+    },
+    "TAP::Result" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "75CCC61442D91897EFAE2FD8D98FDD57322BDC9D",
+        "time" : null
+      }
+    },
+    "TAP::Entry::Unknown" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "A068B5BCF8713ACB15103F9F52237D819A9D0F82",
+        "time" : null
+      }
+    },
+    "TAP::Runner::Async" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "1607893FF3C8D1B3708D61A426A3210C28AB36A9",
+        "time" : null
+      }
+    },
+    "TAP::Runner::Source::Through" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "CE203DF8237300EFB4E8807CBFDE5770E4D6228F",
+        "time" : null
+      }
+    },
+    "TAP::Runner::Source::File" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "7E8AFD5FB82C62A4BAD1AF73BFA16179B6B8DA9F",
+        "time" : null
+      }
+    },
+    "TAP::Reporter::Text" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "41C712717E1D78E1099C2D07AC35F10FA0C82294",
+        "time" : null
+      }
+    },
+    "TAP::Aggregator" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "CEA1CA3FA634DFFDBCF319CAF8E8DA3F8644E37D",
+        "time" : null
+      }
+    },
+    "TAP::Entry::Test" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "D009825C30B9B89AD622C4E4543FD359CB9C34AC",
+        "time" : null
+      }
+    },
+    "TAP::Action" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "3F973A443324E243ACAE7273D8BD54D4AC6ECB01",
+        "time" : null
+      }
+    },
+    "TAP::Entry::Handler" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "8ED04E3FE6CCE24A987D42EF233D7759E2A465D2",
+        "time" : null
+      }
+    },
+    "TAP::Entry::Plan" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "9D3A8C1F951021F73AF4066617A9CE985108AC92",
+        "time" : null
+      }
+    },
+    "TAP::Entry" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "E96778E845F6A8A3256CF569EA3A978E300E7109",
+        "time" : null
+      }
+    },
+    "TAP::Harness::SourceHandler::Perl6" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "6E9A4C0C8FDC71634F7BB6CE0393796A5ABAB53F",
+        "time" : null
+      }
+    },
+    "TAP::Reporter::Console" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "1D17F20B92467BA2D1585869BE0077547715C01B",
+        "time" : null
+      }
+    },
+    "TAP::Entry::YAML" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "095DCF2C25E9C722621A9CBEF521387A17FCE0AC",
+        "time" : null
+      }
+    },
+    "TAP::Entry::Comment" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "11E8C3C48FF5F1F72D92025151D8691C0CAAFC06",
+        "time" : null
+      }
+    },
+    "TAP::Entry::Bailout" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "5EE95D029FADADDEC5D96474710A3A46A9C1EBFB",
+        "time" : null
+      }
+    },
+    "TAP::Entry::Sub-Test" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "311FAD442477D5D91C19648CE6C17389D528B1C0",
+        "time" : null
+      }
+    },
+    "TAP::Harness" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "1DFBBF76FB3BF683BB0E18BBED555701281670E0",
+        "time" : null
+      }
+    },
+    "TAP::Runner::Source::Proc" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "D30E2526F88C6E03B4E3024184D0CCD9334A60F7",
+        "time" : null
+      }
+    },
+    "TAP::Parser" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "CF8B428A9946828ED9F129E89DB45A995B29FB16",
+        "time" : null
+      }
+    },
+    "TAP" : {
+      "lib/TAP.pm" : {
+        "cver" : "2017.07",
+        "file" : "42AB9A76DBDC7CC8FA4D8EAE564C8F0398000167",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "TAP harness for perl6"
+}

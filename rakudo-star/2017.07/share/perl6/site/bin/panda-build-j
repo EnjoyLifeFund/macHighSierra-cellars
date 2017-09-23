@@ -1,0 +1,4 @@
+#!/usr/bin/env perl6-j
+sub MAIN(:$name is copy, :$auth, :$ver, *@, *%) {
+    CompUnit::RepositoryRegistry.run-script("panda-build", :dist-name<panda>, :$name, :$auth, :$ver);
+}

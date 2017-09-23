@@ -1,0 +1,47 @@
+{
+  "name" : "Grammar::Debugger",
+  "api" : null,
+  "identity" : "Grammar::Debugger:ver('1.0.1'):auth('github:jnthn')",
+  "support" : { },
+  "source-url" : "git://github.com/jnthn/grammar-debugger.git",
+  "resources" : [ ],
+  "build-depends" : [
+    "Terminal::ANSIColor"
+  ],
+  "id" : "37AF15BB24FEF3596FEC57954DA7301C746CB30C",
+  "auth" : "github:jnthn",
+  "Str" : "Grammar::Debugger:ver<1.0.1>:auth<github:jnthn>:api<>",
+  "depends" : [
+    "Terminal::ANSIColor"
+  ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "1.0.1",
+  "provides" : {
+    "Grammar::Debugger::WrapCache" : {
+      "lib/Grammar/Debugger/WrapCache.pm6" : {
+        "cver" : "2017.07",
+        "file" : "36694BC122E65CF7ED325B58C0A79AD6AA5D843A",
+        "time" : null
+      }
+    },
+    "Grammar::Debugger" : {
+      "lib/Grammar/Debugger.pm6" : {
+        "cver" : "2017.07",
+        "file" : "0915E37B99013FE906246809B378838A8288E251",
+        "time" : null
+      }
+    },
+    "Grammar::Tracer" : {
+      "lib/Grammar/Tracer.pm6" : {
+        "cver" : "2017.07",
+        "file" : "C0DCFF5AEFDF38901A375AE53AF39C4F12B3F6FC",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test"
+  ],
+  "description" : "Simple tracing and debugging support for Perl 6 grammars"
+}

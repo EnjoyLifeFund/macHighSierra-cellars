@@ -1,0 +1,51 @@
+{
+  "name" : "NativeHelpers::Blob",
+  "api" : null,
+  "identity" : "NativeHelpers::Blob:ver('0.1.10'):auth('github:salortiz')",
+  "support" : {
+    "email" : "sog@msg.com.mx",
+    "source" : "https://github.com/salortiz/NativeHelpers-Blob.git"
+  },
+  "source-url" : "git://github.com/salortiz/NativeHelpers-Blob.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "1C04C54FA55CF3E294ED5F4E23EC34464CCA7F9E",
+  "auth" : "github:salortiz",
+  "Str" : "NativeHelpers::Blob:ver<0.1.10>:auth<github:salortiz>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "0.1.10",
+  "provides" : {
+    "MoarVM::Guts::REPRs" : {
+      "lib/MoarVM/Guts/REPRs.pm6" : {
+        "cver" : "2017.07",
+        "file" : "3E59A3772DDF5A14B45623C842E64842D4177840",
+        "time" : null
+      }
+    },
+    "NativeHelpers::CStruct" : {
+      "lib/NativeHelpers/CStruct.pm6" : {
+        "cver" : "2017.07",
+        "file" : "A8828AF6A99DF57FE989CD10C2711E24FA2CD0DE",
+        "time" : null
+      }
+    },
+    "NativeHelpers::Pointer" : {
+      "lib/NativeHelpers/Pointer.pm6" : {
+        "cver" : "2017.07",
+        "file" : "A501B1519F48B01848D5A1830D0528B921F169D7",
+        "time" : null
+      }
+    },
+    "NativeHelpers::Blob" : {
+      "lib/NativeHelpers/Blob.pm6" : {
+        "cver" : "2017.07",
+        "file" : "958234F6D2CB006EF1BBA48F56D29A3C4CD7C374",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "NativeCall utilities for work with Blob and CArray"
+}

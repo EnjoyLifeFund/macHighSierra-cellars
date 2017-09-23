@@ -1,0 +1,48 @@
+{
+  "name" : "Encode",
+  "api" : null,
+  "identity" : "Encode:ver('0.0.2'):auth('github:sergot')",
+  "support" : { },
+  "source-url" : "git://github.com/sergot/perl6-encode.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "2F1D8EBA2B90169E99F0F242F4F545600512B710",
+  "auth" : "github:sergot",
+  "Str" : "Encode:ver<0.0.2>:auth<github:sergot>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : null,
+  "ver" : "0.0.2",
+  "provides" : {
+    "Encode::Windows1252" : {
+      "lib/Encode/Windows1252.pm6" : {
+        "cver" : "2017.07",
+        "file" : "B849F5C37A6ED5E7D1CF42323A6FF47B71993C0F",
+        "time" : null
+      }
+    },
+    "Encode" : {
+      "lib/Encode.pm6" : {
+        "cver" : "2017.07",
+        "file" : "DDDA9D349B9F5D8183E6F34AF999E9B172EA3211",
+        "time" : null
+      }
+    },
+    "Encode::Latin2" : {
+      "lib/Encode/Latin2.pm6" : {
+        "cver" : "2017.07",
+        "file" : "6459A7E8A8642A6A064BF62A744F8B1D150982C7",
+        "time" : null
+      }
+    },
+    "Encode::Windows1251" : {
+      "lib/Encode/Windows1251.pm6" : {
+        "cver" : "2017.07",
+        "file" : "E38D15AA75B2F9C901F41BF30D11B4394E5FEEF0",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Character encodings in Perl 6"
+}

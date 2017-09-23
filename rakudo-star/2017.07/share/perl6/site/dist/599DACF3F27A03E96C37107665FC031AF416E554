@@ -1,0 +1,211 @@
+{
+  "name" : "DBIish",
+  "api" : null,
+  "identity" : "DBIish:ver('0.5.10')",
+  "support" : { },
+  "source-url" : "git://github.com/perl6/DBIish.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "599DACF3F27A03E96C37107665FC031AF416E554",
+  "auth" : null,
+  "Str" : "DBIish:ver<0.5.10>:auth<>:api<>",
+  "depends" : [
+    "NativeHelpers::Blob"
+  ],
+  "files" : { },
+  "license" : "BSD-2-Clause",
+  "ver" : "0.5.10",
+  "provides" : {
+    "DBDish::Pg::Native" : {
+      "lib/DBDish/Pg/Native.pm6" : {
+        "cver" : "2017.07",
+        "file" : "E08C4490027441468DB331CB12A1AA10B5171183",
+        "time" : null
+      }
+    },
+    "DBDish::Pg::Connection" : {
+      "lib/DBDish/Pg/Connection.pm6" : {
+        "cver" : "2017.07",
+        "file" : "3FB11131DA28254F871FC76BD9A461B482BF9F53",
+        "time" : null
+      }
+    },
+    "DBDish::ErrorHandling" : {
+      "lib/DBDish/ErrorHandling.pm6" : {
+        "cver" : "2017.07",
+        "file" : "9FFD699527C6589C379DDFA0ADF234238BEE2EFA",
+        "time" : null
+      }
+    },
+    "DBIish::Common" : {
+      "lib/DBIish/Common.pm6" : {
+        "cver" : "2017.07",
+        "file" : "271CDB27A2E9F107768C8AE0B0478703E907D25B",
+        "time" : null
+      }
+    },
+    "DBDish::SQLite" : {
+      "lib/DBDish/SQLite.pm6" : {
+        "cver" : "2017.07",
+        "file" : "469083B241F79DB6B5CE0F8A43E4B17DD0EA9B5B",
+        "time" : null
+      }
+    },
+    "DBDish::Oracle" : {
+      "lib/DBDish/Oracle.pm6" : {
+        "cver" : "2017.07",
+        "file" : "4D549C13F8D146D08D3D3BD0EDEED5EA15CC8833",
+        "time" : null
+      }
+    },
+    "DBDish::mysql::Native" : {
+      "lib/DBDish/mysql/Native.pm6" : {
+        "cver" : "2017.07",
+        "file" : "4AC2B2490C5004AC37B710EF9240DBA21B048857",
+        "time" : null
+      }
+    },
+    "DBDish" : {
+      "lib/DBDish.pm6" : {
+        "cver" : "2017.07",
+        "file" : "626CCF3D64EE988AA3CA0623F1B871A105EC6C6D",
+        "time" : null
+      }
+    },
+    "DBDish::Oracle::Native" : {
+      "lib/DBDish/Oracle/Native.pm6" : {
+        "cver" : "2017.07",
+        "file" : "605C11D8B5217796A0BB9A84459113B9B7105259",
+        "time" : null
+      }
+    },
+    "DBDish::TestMock" : {
+      "lib/DBDish/TestMock.pm6" : {
+        "cver" : "2017.07",
+        "file" : "9D273997E5AA52F1FF5EAACF73A37A7760A9DA56",
+        "time" : null
+      }
+    },
+    "DBIish::CommonTesting" : {
+      "lib/DBIish/CommonTesting.pm6" : {
+        "cver" : "2017.07",
+        "file" : "D477BC6FD56C201EBF6DCAC6F1D7C587F0A9935E",
+        "time" : null
+      }
+    },
+    "DBDish::SQLite::StatementHandle" : {
+      "lib/DBDish/SQLite/StatementHandle.pm6" : {
+        "cver" : "2017.07",
+        "file" : "FD87482F3E867C70BB6A06C8493AFDA335AE5313",
+        "time" : null
+      }
+    },
+    "DBDish::Oracle::StatementHandle" : {
+      "lib/DBDish/Oracle/StatementHandle.pm6" : {
+        "cver" : "2017.07",
+        "file" : "AD224A4DE5A2EA55334C8414A436CD07BC567C67",
+        "time" : null
+      }
+    },
+    "DBDish::mysql::StatementHandle" : {
+      "lib/DBDish/mysql/StatementHandle.pm6" : {
+        "cver" : "2017.07",
+        "file" : "C603D7CD3EC424F4D0C8E2134A5FD6DA08FEEB42",
+        "time" : null
+      }
+    },
+    "NativeLibs" : {
+      "lib/NativeLibs.pm6" : {
+        "cver" : "2017.07",
+        "file" : "81158C45D121914E51452D7C50EC689527CA41F0",
+        "time" : null
+      }
+    },
+    "DBDish::SQLite::Native" : {
+      "lib/DBDish/SQLite/Native.pm6" : {
+        "cver" : "2017.07",
+        "file" : "E21E0FE0DC19B5E4EA614D35DEEB881A9CD772E7",
+        "time" : null
+      }
+    },
+    "DBDish::SQLite::Connection" : {
+      "lib/DBDish/SQLite/Connection.pm6" : {
+        "cver" : "2017.07",
+        "file" : "4769381268B0D6F58811B3F7F14C81900BB376B3",
+        "time" : null
+      }
+    },
+    "DBDish::Pg" : {
+      "lib/DBDish/Pg.pm6" : {
+        "cver" : "2017.07",
+        "file" : "427713B7849DBB07C018B724AFC2710F4F17E80F",
+        "time" : null
+      }
+    },
+    "DBDish::Oracle::Connection" : {
+      "lib/DBDish/Oracle/Connection.pm6" : {
+        "cver" : "2017.07",
+        "file" : "5512C498D1A9F11F2E60B299CAEF631ADDA3A54D",
+        "time" : null
+      }
+    },
+    "DBDish::TestMock::StatementHandle" : {
+      "lib/DBDish/TestMock/StatementHandle.pm6" : {
+        "cver" : "2017.07",
+        "file" : "1F59F2CB4F2CA536540B9FD4389FC2FE68DE8FA7",
+        "time" : null
+      }
+    },
+    "DBDish::StatementHandle" : {
+      "lib/DBDish/StatementHandle.pm6" : {
+        "cver" : "2017.07",
+        "file" : "A6A1D5C03BA066AE8A819A9D3ACC5ED24165B28B",
+        "time" : null
+      }
+    },
+    "DBDish::Connection" : {
+      "lib/DBDish/Connection.pm6" : {
+        "cver" : "2017.07",
+        "file" : "BC0C8193467F89B45A7F9635D5583B5C4476D4A0",
+        "time" : null
+      }
+    },
+    "DBDish::TestMock::Connection" : {
+      "lib/DBDish/TestMock/Connection.pm6" : {
+        "cver" : "2017.07",
+        "file" : "280FA0FA2941EC1360000966A5F42E6CA380810D",
+        "time" : null
+      }
+    },
+    "DBDish::mysql::Connection" : {
+      "lib/DBDish/mysql/Connection.pm6" : {
+        "cver" : "2017.07",
+        "file" : "34CFFE95AC96F456CAC15D5929C71AC7BE6FC6CC",
+        "time" : null
+      }
+    },
+    "DBIish" : {
+      "lib/DBIish.pm6" : {
+        "cver" : "2017.07",
+        "file" : "F18EA8A0FD337C840672427703CC68FA0720FEDF",
+        "time" : null
+      }
+    },
+    "DBDish::Pg::StatementHandle" : {
+      "lib/DBDish/Pg/StatementHandle.pm6" : {
+        "cver" : "2017.07",
+        "file" : "68E260878AFC3A8E0C64B71F94EEC40FB1FA691C",
+        "time" : null
+      }
+    },
+    "DBDish::mysql" : {
+      "lib/DBDish/mysql.pm6" : {
+        "cver" : "2017.07",
+        "file" : "7BCC767F8D58AA568A0D0D6205E0DDD1C0347CE4",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Database connectivity for Perl 6"
+}

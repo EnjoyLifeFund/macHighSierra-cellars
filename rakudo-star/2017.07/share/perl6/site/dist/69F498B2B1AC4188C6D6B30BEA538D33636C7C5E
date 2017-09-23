@@ -1,0 +1,33 @@
+{
+  "name" : "Grammar::Profiler::Simple",
+  "api" : null,
+  "identity" : "Grammar::Profiler::Simple:ver('0.02')",
+  "support" : {
+    "email" : "duff@pobox.com",
+    "source" : "https://github.com/perlpilot/Grammar-Profiler-Simple.git",
+    "bugtracker" : "https://github.com/perlpilot/Grammar-Profiler-Simple/issues"
+  },
+  "source-url" : "git://github.com/perlpilot/Grammar-Profiler-Simple.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "69F498B2B1AC4188C6D6B30BEA538D33636C7C5E",
+  "auth" : null,
+  "Str" : "Grammar::Profiler::Simple:ver<0.02>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "0.02",
+  "provides" : {
+    "Grammar::Profiler::Simple" : {
+      "lib/Grammar/Profiler/Simple.pm" : {
+        "cver" : "2017.07",
+        "file" : "7F6A239C755295C77812FC0B18516DE68A79A546",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test"
+  ],
+  "description" : "Simple rule profiling for Perl 6 grammars"
+}

@@ -1,0 +1,29 @@
+{
+  "name" : "Pod::To::HTML",
+  "api" : null,
+  "identity" : "Pod::To::HTML:ver('0.3.7')",
+  "support" : { },
+  "source-url" : "git://github.com/perl6/Pod-To-HTML.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "90093C62ADFE8A245C16E7BF2E5F059CBC2191D4",
+  "auth" : null,
+  "Str" : "Pod::To::HTML:ver<0.3.7>:auth<>:api<>",
+  "depends" : [
+    "URI"
+  ],
+  "files" : { },
+  "license" : null,
+  "ver" : "0.3.7",
+  "provides" : {
+    "Pod::To::HTML" : {
+      "lib/Pod/To/HTML.pm" : {
+        "cver" : "2017.07",
+        "file" : "793FBAAB879A3C1EA5E5755DB904281DB2A076CD",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "Convert Perl 6 Pod to HTML"
+}

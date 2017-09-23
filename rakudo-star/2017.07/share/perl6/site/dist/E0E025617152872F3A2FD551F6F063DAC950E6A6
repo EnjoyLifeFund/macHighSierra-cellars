@@ -1,0 +1,41 @@
+{
+  "name" : "JSON::Tiny",
+  "api" : null,
+  "identity" : "JSON::Tiny",
+  "support" : { },
+  "source-url" : "git://github.com/moritz/json.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "E0E025617152872F3A2FD551F6F063DAC950E6A6",
+  "auth" : null,
+  "Str" : "JSON::Tiny:ver<*>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "*",
+  "provides" : {
+    "JSON::Tiny::Actions" : {
+      "lib/JSON/Tiny/Actions.pm" : {
+        "cver" : "2017.07",
+        "file" : "E796CB0CB7DEAEAFA56E8558AD18241417AC328A",
+        "time" : null
+      }
+    },
+    "JSON::Tiny" : {
+      "lib/JSON/Tiny.pm" : {
+        "cver" : "2017.07",
+        "file" : "9B467EEF9267A777BB53BAA2F19BE2C9D756BEED",
+        "time" : null
+      }
+    },
+    "JSON::Tiny::Grammar" : {
+      "lib/JSON/Tiny/Grammar.pm" : {
+        "cver" : "2017.07",
+        "file" : "7C734D5DD25632F40E0515854A6BDC15230CCBEF",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "A minimal JSON (de)serializer"
+}

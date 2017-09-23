@@ -1,0 +1,37 @@
+{
+  "name" : "Pod::To::BigPage",
+  "api" : null,
+  "identity" : "Pod::To::BigPage:ver('0.2.1'):auth('Wenzel P. P. Peppmeyer')",
+  "support" : {
+    "source" : "https://github.com/gfldex/perl6-pod-to-bigpage"
+  },
+  "source-url" : "git://github.com/gfldex/perl6-pod-to-bigpage.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "8FB1019D99746F5F5ECDC6CFC83842EBA64FC6ED",
+  "auth" : "Wenzel P. P. Peppmeyer",
+  "Str" : "Pod::To::BigPage:ver<0.2.1>:auth<Wenzel P. P. Peppmeyer>:api<>",
+  "depends" : [
+    "IO::Socket::SSL",
+    "LWP::Simple"
+  ],
+  "files" : {
+    "bin/pod2onepage" : "822A1D701244B8FFF391EE5CDDF4A0BDD977AB7C"
+  },
+  "license" : "Artistic-2.0",
+  "ver" : "0.2.1",
+  "provides" : {
+    "Pod::To::BigPage" : {
+      "lib/Pod/To/BigPage.pm6" : {
+        "cver" : "2017.07",
+        "file" : "60A6C5DA9398A985D6D93CD27D3294B3C938E579",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test",
+    "Test::When"
+  ],
+  "description" : "Render many pod6-files into one (big) html-file."
+}

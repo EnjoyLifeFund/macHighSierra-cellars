@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/local/Cellar/rakudo-star/2017.07/bin/moar --libpath=/usr/local/Cellar/rakudo-star/2017.07/share/nqp/lib /usr/local/Cellar/rakudo-star/2017.07/share/nqp/lib/nqp.moarvm "$@"

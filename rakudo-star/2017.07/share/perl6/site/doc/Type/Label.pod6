@@ -1,0 +1,56 @@
+=begin pod
+
+=TITLE class Label
+
+=SUBTITLE Tagged location in the source code
+
+    class Label {}
+
+In Perl 6, you can give for example loops a label, and use it to control that
+loop (instead of the inner-most loop).
+
+=begin code :skip-test
+USERS:          # the label
+for @users -> $u {
+    for $u.pets -> $pet {
+        # usage of a label
+        next USERS if $pet.barks;
+    }
+    say "None of {$u}'s pets barks";
+}
+say USERS.^name;        # OUTPUT: «Label␤»
+=end code
+
+Those label are objects of type C<Label>.
+
+=head1 Methods
+
+=head2 method next
+
+Defined as:
+
+    method next(Label:)
+
+Begin the next iteration of the loop associated with the label.
+
+    MY-LABEL:
+    for 1..10 {
+        next MY-LABEL if $_ > 5; # does 5 iteration and then 5 empty iteration
+        say $_;
+    }
+
+=head2 method last
+
+Defined as:
+
+    method last(Label:)
+
+Terminate the execution of the loop associated with the label.
+
+    MY-LABEL:
+    for 1..10 {
+        last MY-LABEL if $_ > 5; # does only 5 iteration
+        say $_;
+    }
+
+=end pod

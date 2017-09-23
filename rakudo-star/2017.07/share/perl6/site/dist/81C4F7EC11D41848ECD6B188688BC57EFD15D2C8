@@ -1,0 +1,30 @@
+{
+  "name" : "File::Find",
+  "api" : null,
+  "identity" : "File::Find:ver('0.1')",
+  "support" : {
+    "source" : "git://github.com/tadzik/File-Find.git",
+    "bugtracker" : "https://github.com/tadzik/File-Find/issues"
+  },
+  "source-url" : "git://github.com/tadzik/File-Find.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "81C4F7EC11D41848ECD6B188688BC57EFD15D2C8",
+  "auth" : null,
+  "Str" : "File::Find:ver<0.1>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "MIT",
+  "ver" : "0.1",
+  "provides" : {
+    "File::Find" : {
+      "lib/File/Find.pm" : {
+        "cver" : "2017.07",
+        "file" : "338438A16791DC5A3816B1052C78248FFDAFFEAB",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "File::Find for Perl 6"
+}

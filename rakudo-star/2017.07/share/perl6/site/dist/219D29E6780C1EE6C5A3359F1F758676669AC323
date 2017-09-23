@@ -1,0 +1,29 @@
+{
+  "name" : "PSGI",
+  "api" : null,
+  "identity" : "PSGI:ver('1.2.0')",
+  "support" : { },
+  "source-url" : "git://github.com/supernovus/perl6-psgi.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "219D29E6780C1EE6C5A3359F1F758676669AC323",
+  "auth" : null,
+  "Str" : "PSGI:ver<1.2.0>:auth<>:api<>",
+  "depends" : [
+    "HTTP::Status"
+  ],
+  "files" : { },
+  "license" : null,
+  "ver" : "1.2.0",
+  "provides" : {
+    "PSGI" : {
+      "lib/PSGI.pm6" : {
+        "cver" : "2017.07",
+        "file" : "C3577325076AA02263D770AD0F22D36E14F81568",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [ ],
+  "description" : "A PSGI helper library."
+}

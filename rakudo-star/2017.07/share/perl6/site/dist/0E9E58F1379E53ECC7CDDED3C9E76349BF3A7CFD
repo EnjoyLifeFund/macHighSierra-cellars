@@ -1,0 +1,29 @@
+{
+  "name" : "Test::When",
+  "api" : null,
+  "identity" : "Test::When:ver('1.001008')",
+  "support" : { },
+  "source-url" : "git://github.com/zoffixznet/perl6-Test-When.git",
+  "resources" : [ ],
+  "build-depends" : [ ],
+  "id" : "0E9E58F1379E53ECC7CDDED3C9E76349BF3A7CFD",
+  "auth" : null,
+  "Str" : "Test::When:ver<1.001008>:auth<>:api<>",
+  "depends" : [ ],
+  "files" : { },
+  "license" : "Artistic-2.0",
+  "ver" : "1.001008",
+  "provides" : {
+    "Test::When" : {
+      "lib/Test/When.pm6" : {
+        "cver" : "2017.07",
+        "file" : "8C5EDBFC1F8E86B0D7FFD11B0DCBD25141A1465E",
+        "time" : null
+      }
+    }
+  },
+  "test-depends" : [
+    "Test"
+  ],
+  "description" : "Selectively run tests based on the environment and installed modules and libs"
+}
