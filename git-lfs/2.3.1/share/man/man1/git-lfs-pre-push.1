@@ -1,0 +1,32 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-PRE\-PUSH" "1" "September 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-pre\-push\fR \- Git pre\-push hook implementation
+.
+.SH "SYNOPSIS"
+\fBgit lfs pre\-push\fR \fIremote\fR [remoteurl]
+.
+.SH "DESCRIPTION"
+Responds to Git pre\-hook events\. It reads the range of commits from STDIN, in the following format:
+.
+.IP "" 4
+.
+.nf
+
+<local\-ref> SP <local\-sha1> SP <remote\-ref> SP <remote\-sha1> \en
+.
+.fi
+.
+.IP "" 0
+.
+.P
+It also takes the remote name and URL as arguments\.
+.
+.SH "SEE ALSO"
+git\-lfs\-clean(1), git\-lfs\-push(1)\.
+.
+.P
+Part of the git\-lfs(1) suite\.

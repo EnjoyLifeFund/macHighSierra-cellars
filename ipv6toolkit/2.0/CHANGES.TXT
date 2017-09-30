@@ -1,0 +1,197 @@
+SI6 Networks IPv6 Toolkit v2.0 (Guille)
+   * path6: New tool
+     Added a fully-IPv6-capable traceroute tool, named path6.
+
+   * script6: New tool
+     Added a new tool which incorporates new functionality and also provides
+     a shortcut to other existing tools.
+
+   * blackhole6: New tool
+     Added a new tool isolates IPv6 blackholes.
+
+   * udp6: New tool
+     Added a new tool that can send arbirary UDP/IPv6 packets.
+
+   * All: Fix bug when reading packets
+     lipcap "internals" together with select() would cause (at times)
+     delays when reading packets.
+
+   * All: Add support for Solaris
+     Solaris is now a supported platform.
+
+   * All: Fix bug in next hop determination
+     A bug caused, in some scenarios, the tools to fail with "cannot find
+     next hop".
+
+   * All: Fix support for loopback interface
+     The tools failed to set the "virtual" "Ether Proto" for packets sent
+     on the loopback interface, and hence they were discarded.
+
+   * All: Add support for domain names
+     All tools now support domain names in their "-d" options.
+
+   * addr6: Fix bug in address scope filtering
+     A bug caused address scope filters to behave incorrectly.
+
+   * addr6: Fix error in manual page
+     Some of the long-option names were incorrect.
+
+   * scan6: Fixes bug in address range computation
+     Prefixes that were not multiple of 16 resulted in bogus address ranges.
+
+   * scan6: Add support for port scanning
+     scan6 now implements several techniques for TCP and UDP port scanning.
+
+   * scan6: Add support for heuristic host scanning
+     scan6 can now automatically infer the IID type of a target and reduce
+     the search space accordingly (just "-d example.com/64" or 
+     "-d IPV6ADDRESS/64".
+
+   * tcp6: Add TCP probe mode
+     Probe mode allows you to employ tcp6 for simple probing (e.g.,
+     port scanning)
+
+   * tcp6: Add "--open-mode" and "--close-mode" options
+     These two options allow you to cause a TCP connection at a remote
+     node to transition to any specific state (and hene perform e.g.,
+     FIN-WAIT-2 floods)
+
+   * tcp6: Add "--data" option
+     This options allows to set a specific TCP payload from the
+     command-line (e.g., an HTTP "GET" command).
+
+   * script6: Fix bug in get-aaaa, get-ns, and get-mx
+     Domains that had a CNAME would be skipped.
+
+   * frag6: Fix bug in Frag ID assessment
+     Probes are now sent every 10ms rather than in batches, to minimize packet
+     reordering.
+
+
+SI6 Networks IPv6 Toolkit v1.5.3
+
+   * All: Fix packet size issues
+     Many tools were using a (sometimes non-initialized) max_packet_size
+     variable, instead of the corresponding member of the idata structure.
+
+   * All: Add support for some Mac OS version
+     The toolkit would not compile on Lion (10.7.5) or Snow Leopard (10.6.8),
+     as a result of inconsistencies of how BYTE_ORDER-related constants were
+     (not) set in those versions of Mac OS.
+
+SI6 Networks IPv6 Toolkit v1.5.2
+
+   * All: Add support for GNU Debian/kfreebsd
+     The toolkit would not build on GNU Debian/kfreebsd before this release.
+
+   * tcp6: Add support for TCP/IPv6 probes
+     tcp6 can now send TCP/IPv6 packets ("--probe-mode" option), and read the 
+     TCP response packets, if any. This can be leveraged for port scans, and
+     miscellaneous measurements.
+
+SI6 Networks IPv6 Toolkit v1.5.1
+   * Fix Mac OS breakage
+     libipv6.h had incorrect definitions for "struct tcp_hdr".
+
+SI6 Networks IPv6 Toolkit v1.5
+
+   * All: Improved the next-hop determination
+     Since the toolkit employs libpcap (as there is no portable way to forge
+     IPv6 addresses and do other tricks), it was relying on the user specifying
+     a network interface ("-i" was mandatory for all tools) and that routers
+     would send Router Advertisements on the local links. This not only was 
+     rather inconvenient for users (specifying a network interface was not 
+     warranted), but also meant that in setups where RAs where not available
+     (e.g., manual configuration), the tools would fail. The toolkit now
+     employs routing sockets (in BSDs) or Netlink (in Linux), and only uses
+     "sending RAs" as a fall-back in case of failure (IPv6 not configured on
+     the local host).
+
+   * All: Improved source address selection
+     This is closely related to the previous bullet.
+
+   * All: More code moved to libipv6
+     More and more code was moved to libipv6 and removed to the individual tool
+     source files. As with some of the above, this was painful and
+     time-consuming, but was necessary -- and in the long run it will make
+     code maintenance easier.
+
+   * All: libipv6 used throughout all tools
+     This was rather painful and non-exciting, but necessary.
+
+
+SI6 Networks' IPv6 Toolkit v1.4.1
+
+   * frag6: Fixed bug that prevented Ethernet header from being filled
+     A bug in the code caused Ethernet frames to go on the wire without any of
+     their header fields completed.
+
+   * All: Use of library to avoid code replication
+     An "libipv6" library was created, such that common functions do not need
+     to be replicated for each tool. ni6, ns6, rs6, and tcp6 now employ such
+     library.
+
+
+SI6 Networks' IPv6 Toolkit v1.4 release
+
+   * frag6: Fixed the flooding option
+     Fixed the fragment size used when employing the flooding option. It was 
+     previously sending fragment sizes that where not a multiple of eight, and
+     hence these fragments were dropped.
+
+   * scan6: Added support for 64-bit encoding of IPv4 addresses
+     Option "--tgt-ipv4" was augmented to support both encodings (32 bit
+     and 64 bit) of embedded IPv4 addresses.
+
+   * tcp6: Fixed response to Neighbor Solicitations
+     tcp6 was not responding to incoming Neighbor Solicitations. Hence, when
+     packets were sent from spoofed addresses, tcp6 would never receive the
+     response packets, because the NSs sent by the local router or target node
+     would never be responded.
+
+   * tcp6: Added support for TCP Window-based attacks
+     tcp6 can now close the window after sending an app-layer command, and
+     also "modulate" the TCP window to circumvent trivial mitigations for these
+     attacks ("--window-mode" and "--win-modulate" options).
+
+   * tcp6: Support for multiple connection-establishment types
+     tcp6 can now cause e.g. TCP simultaneous opens (see the "--open-mode"
+     option).
+
+   * tcp6: Support for multiple connection-termination types
+     tcp6 can now perform multiple connection-termination types (see the
+     "--close-mode" option).
+
+   * tcp6: Support for sending application layer requests
+     tcp6 can now send application-layer requests with the "--data" option.
+
+   * Many improvements to the manual pages.
+     Fixed the troff encoding of many manual pages. Added ipv6toolkit(7), that
+     describes a general description of the toolkit.
+
+   * All: Fixed bug in link-layer destination address selection
+     Tools now try to find a local router or perform Neighbor Discovery only
+     when necessary (i.e., underlying link-layer is *not* loopback or tunnel,
+     destination address is *not* link-local, and a link-layer destination
+     address has *not* been specified).
+
+   * All: Fixed bug in option handling
+     Incorrect data type was used for the return value of getopt_long(), thus 
+     leading to problems in some architectures.
+
+   * All: Fixed a number of issues with pcap_next_ex()
+     The timeout parameter of pcap_next_ex() is now based on the platform (the
+     previous constant value had different semantics in different platforms).
+     Additionally, handle the case where pcap_next_ex() returns no packets.
+
+   * All: General improvements and clean-up
+     The development process now includes building the toolkit with the clang
+     compiler (in addition to gcc), which has lead to the identification of a
+     number of issues.
+
+   * All: Improved support for building the toolkit.
+     The toolkit now contains one makefile for pmake, and another for GNU make.
+     Added support for the DESTDIR variable. Appropriate paths are selected
+     based on the value of a number of variables. Configuration file is
+     dynamically generated, with the right path to the oui.txt file.
+

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>git-lfs-migrate(1) - Migrate history to or from git-lfs</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#SYNOPSIS">SYNOPSIS</a>
+    <a href="#MODES">MODES</a>
+    <a href="#OPTIONS">OPTIONS</a>
+    <a href="#INCLUDE-AND-EXCLUDE">INCLUDE AND EXCLUDE</a>
+    <a href="#INCLUDE-AND-EXCLUDE-REFS-">INCLUDE AND EXCLUDE (REFS)</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+  </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>git-lfs-migrate(1)</li>
+    <li class='tc'></li>
+    <li class='tr'>git-lfs-migrate(1)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>git-lfs-migrate</code> - <span class="man-whatis">Migrate history to or from git-lfs</span>
+</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>git lfs migrate</code> <var>mode</var> [options] [--] [branch ...]</p>
+
+<h2 id="MODES">MODES</h2>
+
+<ul>
+<li><p><code>info</code>
+  Show information about repository size.</p></li>
+<li><p><code>import</code>
+  Convert large Git objects to LFS pointers.</p></li>
+</ul>
+
+
+<h2 id="OPTIONS">OPTIONS</h2>
+
+<dl>
+<dt><code>-I</code> <var>paths</var> <code>--include=</code><var>paths</var></dt><dd><p>  See <a href="#INCLUDE-AND-EXCLUDE" title="INCLUDE AND EXCLUDE" data-bare-link="true">INCLUDE AND EXCLUDE</a>.</p></dd>
+<dt><code>-X</code> <var>paths</var> <code>--exclude=</code><var>paths</var></dt><dd><p>  See <a href="#INCLUDE-AND-EXCLUDE" title="INCLUDE AND EXCLUDE" data-bare-link="true">INCLUDE AND EXCLUDE</a>.</p></dd>
+<dt><code>--include-ref</code>=<var>refname</var></dt><dd><p>  See [INCLUDE AND EXCLUDE (REFS)].</p></dd>
+<dt><code>--exclude-ref</code>=<var>refname</var></dt><dd><p>  See [INCLUDE AND EXCLUDE (REFS)].</p></dd>
+<dt><code>--everything</code></dt><dd><p>  See [INCLUDE AND EXCLUDE (REFS)].</p></dd>
+<dt>[branch ...]</dt><dd><p>  Migrate only the set of branches listed. If not given, <code>git-lfs-migrate(1)</code>
+  will migrate the currently checked out branch.</p>
+
+<p>  If any of <code>--include-ref</code> or <code>--exclude-ref</code> are given, the checked out
+  branch will not be appended, but branches given explicitly will be appended.</p></dd>
+</dl>
+
+
+<h3 id="INFO">INFO</h3>
+
+<p>The 'info' mode has these additional options:</p>
+
+<ul>
+<li><p><code>--above=&lt;size></code>
+  Only count files whose individual filesize is above the given size. 'size'
+  may be specified as a number of bytes, or a number followed by a storage
+  unit, e.g., "1b", "20 MB", "3 TiB", etc.</p>
+
+<p>  If a set of files sharing a common extension has no files in that set whose
+  individual size is above the given <code>--above</code> no files no entry for that set
+  will be shown.</p></li>
+<li><p><code>--top=&lt;n></code>
+  Only include the top 'n' entries, ordered by how many total files match the
+  given pathspec.</p></li>
+<li><p><code>--unit=&lt;unit></code>
+  Format the number of bytes in each entry as a quantity of the storage unit
+  provided. Valid units include:</p>
+
+<pre><code>* b, kib, mib, gib, tib, pib - for IEC storage units
+* b, kb, mb, gb, tb, pb - for SI storage units
+</code></pre>
+
+<p>  If a --unit is not specified, the largest unit that can fit the number of
+  counted bytes as a whole number quantity is chosen.</p></li>
+</ul>
+
+
+<h3 id="IMPORT">IMPORT</h3>
+
+<p>The 'import' mode migrates large objects present in the Git history to pointer
+files tracked and stored with Git LFS. It supports all the core 'migrate'
+options and these additional ones:</p>
+
+<ul>
+<li><code>--verbose</code>
+  Print the commit oid and filename of migrated files to STDOUT.</li>
+</ul>
+
+
+<p>If <code>--include</code> or <code>--exclude</code> (<code>-I</code>, <code>-X</code>, respectively) are given, the
+.gitattributes will be modified to include any new filepath patterns as given by
+those flags.</p>
+
+<p>If neither of those flags are given, the gitattributes will be incrementally
+modified to include new filepath extensions as they are rewritten in history.</p>
+
+<h2 id="INCLUDE-AND-EXCLUDE">INCLUDE AND EXCLUDE</h2>
+
+<p>You can configure Git LFS to only migrate tree entries whose pathspec matches
+the include glob and does not match the exclude glob, to reduce total migration
+time or to only migrate part of your repo. Specify multiple patterns using the
+comma as the delimiter.</p>
+
+<p>Pattern matching is done as given to be functionally equivalent to pattern
+matching as in .gitattributes.</p>
+
+<h2 id="INCLUDE-AND-EXCLUDE-REFS-">INCLUDE AND EXCLUDE (REFS)</h2>
+
+<p>You can configure Git LFS to only migrate commits reachable by references
+include by <code>--include-ref</code> and not reachable by <code>--exclude-ref</code>.</p>
+
+<pre><code>    D---E---F
+   /         \
+</code></pre>
+
+<p>  A---B------C    refs/heads/my-feature
+   \          \
+    \          refs/heads/master
+     \
+      refs/remotes/origin/master</p>
+
+<p>In the above configuration, the following commits are reachable by each ref:</p>
+
+<p>refs/heads/master:         C, B, A
+refs/heads/my-feature:     F, E, D, B, A
+refs/remote/origin/master: A</p>
+
+<p>The following configuration:</p>
+
+<p>  --include-ref=refs/heads/my-feature
+  --include-ref=refs/heads/master
+  --exclude-ref=refs/remotes/origin/master</p>
+
+<p>Would, therefore, include commits: F, E, D, C, B, but exclude commit A.</p>
+
+<p>The presence of flag <code>--everything</code> indicates that all local references should be
+migrated.</p>
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<h3 id="Migrate-unpushed-commits">Migrate unpushed commits</h3>
+
+<p>The migrate command's most common use case is to convert large git objects to
+LFS before pushing your commits. By default, it only scans commits that don't
+exist on any remote.</p>
+
+<p>First, run <code>git lfs migrate info</code> to list the file types taking up the most
+space in your repository.</p>
+
+<pre><code>$ git lfs migrate info
+migrate: Fetching remote refs: ..., done
+migrate: Sorting commits: ..., done
+migrate: Examining commits: 100% (1/1), done
+*.mp3   284 MB    1/1 files(s)  100%
+*.pdf   42 MB     8/8 files(s)  100%
+*.psd   9.8 MB  15/15 files(s)  100%
+*.ipynb 6.9 MB    6/6 files(s)  100%
+*.csv   5.8 MB    2/2 files(s)  100%
+</code></pre>
+
+<p>Now, you can run <code>git lfs migrate import</code> to convert some file types to LFS:</p>
+
+<pre><code>$ git lfs migrate import --include="*.mp3,*.psd"
+migrate: Fetching remote refs: ..., done
+migrate: Sorting commits: ..., done
+migrate: Rewriting commits: 100% (1/1), done
+  master    d2b959babd099fe70da1c1512e2475e8a24de163 -&gt; 136e706bf1ae79643915c134e17a6c933fd53c61
+migrate: Updating refs: ..., done
+</code></pre>
+
+<h3 id="Migrate-local-history">Migrate local history</h3>
+
+<p>You can also migrate the entire history of your repository:</p>
+
+<pre><code># Check for large files in your local master branch
+$ git lfs migrate info --include-ref=master
+
+# Check for large files in every branch
+$ git lfs migrate info --everything
+</code></pre>
+
+<p>The same flags will work in <code>import</code> mode:</p>
+
+<pre><code># Convert all zip files in your master branch
+$ git lfs migrate import --include-ref=master --include="*.zip"
+
+# Convert all zip files in every local branch
+$ git lfs migrate import --everything --include="*.zip"
+</code></pre>
+
+<p>Note: This will require a force push to any existing Git remotes.</p>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p>Part of the <a class="man-ref" href="git-lfs.1.html">git-lfs<span class="s">(1)</span></a> suite.</p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'></li>
+    <li class='tc'>September 2017</li>
+    <li class='tr'>git-lfs-migrate(1)</li>
+  </ol>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-PUSH" "1" "September 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-push\fR \- Push queued large files to the Git LFS endpoint
+.
+.SH "SYNOPSIS"
+\fBgit lfs push\fR \fIoptions\fR \fIremote\fR [\fIref\fR\.\.\.]
+.
+.br
+\fBgit lfs push\fR \fIremote\fR [\fIref\fR\.\.\.]
+.
+.br
+\fBgit lfs push\fR \-\-object\-id \fIremote\fR [\fIoid\fR\.\.\.]
+.
+.SH "DESCRIPTION"
+Upload Git LFS files to the configured endpoint for the current Git remote\. By default, it filters out objects that are already referenced by the local clone of the remote\.
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-\-dry\-run\fR
+Print the files that would be pushed, without actually pushing them\.
+.
+.TP
+\fB\-\-all\fR
+This pushes all objects to the remote that are referenced by any commit reachable from the refs provided as arguments\. If no refs are provided, then all refs are pushed\.
+.
+.TP
+\fB\-\-object\-id\fR
+This pushes only the object OIDs listed at the end of the command, separated by spaces\.
+.
+.SH "SEE ALSO"
+git\-lfs\-pre\-push(1)\.
+.
+.P
+Part of the git\-lfs(1) suite\.

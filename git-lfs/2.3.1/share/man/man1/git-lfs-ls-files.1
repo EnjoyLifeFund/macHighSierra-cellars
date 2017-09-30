@@ -1,0 +1,29 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-LS\-FILES" "1" "September 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-ls\-files\fR \- Show information about Git LFS files in the index and working tree
+.
+.SH "SYNOPSIS"
+\fBgit lfs ls\-files\fR [\fIref\fR]
+.
+.SH "DESCRIPTION"
+Display paths of Git LFS files that are found in the tree at the given reference\. If no reference is given, scan the currently checked\-out branch\.
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-l\fR \fB\-\-long\fR
+Show the entire 64 character OID, instead of just first 10\.
+.
+.TP
+\-d \-\-debug
+Show as much information as possible about a LFS file\. This is intended for manual inspection; the exact format may change at any time\.
+.
+.SH "SEE ALSO"
+git\-lfs\-status(1)\.
+.
+.P
+Part of the git\-lfs(1) suite\.

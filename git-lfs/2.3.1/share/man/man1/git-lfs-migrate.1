@@ -1,0 +1,219 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-MIGRATE" "1" "September 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-migrate\fR \- Migrate history to or from git\-lfs
+.
+.SH "SYNOPSIS"
+\fBgit lfs migrate\fR \fImode\fR [options] [\-\-] [branch \.\.\.]
+.
+.SH "MODES"
+.
+.IP "\(bu" 4
+\fBinfo\fR Show information about repository size\.
+.
+.IP "\(bu" 4
+\fBimport\fR Convert large Git objects to LFS pointers\.
+.
+.IP "" 0
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-I\fR \fIpaths\fR \fB\-\-include=\fR\fIpaths\fR
+See \fIINCLUDE AND EXCLUDE\fR\.
+.
+.TP
+\fB\-X\fR \fIpaths\fR \fB\-\-exclude=\fR\fIpaths\fR
+See \fIINCLUDE AND EXCLUDE\fR\.
+.
+.TP
+\fB\-\-include\-ref\fR=\fIrefname\fR
+See [INCLUDE AND EXCLUDE (REFS)]\.
+.
+.TP
+\fB\-\-exclude\-ref\fR=\fIrefname\fR
+See [INCLUDE AND EXCLUDE (REFS)]\.
+.
+.TP
+\fB\-\-everything\fR
+See [INCLUDE AND EXCLUDE (REFS)]\.
+.
+.TP
+[branch \.\.\.]
+Migrate only the set of branches listed\. If not given, \fBgit\-lfs\-migrate(1)\fR will migrate the currently checked out branch\.
+.
+.IP
+If any of \fB\-\-include\-ref\fR or \fB\-\-exclude\-ref\fR are given, the checked out branch will not be appended, but branches given explicitly will be appended\.
+.
+.SS "INFO"
+The \'info\' mode has these additional options:
+.
+.IP "\(bu" 4
+\fB\-\-above=<size>\fR Only count files whose individual filesize is above the given size\. \'size\' may be specified as a number of bytes, or a number followed by a storage unit, e\.g\., "1b", "20 MB", "3 TiB", etc\.
+.
+.IP
+If a set of files sharing a common extension has no files in that set whose individual size is above the given \fB\-\-above\fR no files no entry for that set will be shown\.
+.
+.IP "\(bu" 4
+\fB\-\-top=<n>\fR Only include the top \'n\' entries, ordered by how many total files match the given pathspec\.
+.
+.IP "\(bu" 4
+\fB\-\-unit=<unit>\fR Format the number of bytes in each entry as a quantity of the storage unit provided\. Valid units include:
+.
+.IP "" 4
+.
+.nf
+
+* b, kib, mib, gib, tib, pib \- for IEC storage units
+* b, kb, mb, gb, tb, pb \- for SI storage units
+.
+.fi
+.
+.IP "" 0
+.
+.IP
+If a \-\-unit is not specified, the largest unit that can fit the number of counted bytes as a whole number quantity is chosen\.
+.
+.IP "" 0
+.
+.SS "IMPORT"
+The \'import\' mode migrates large objects present in the Git history to pointer files tracked and stored with Git LFS\. It supports all the core \'migrate\' options and these additional ones:
+.
+.IP "\(bu" 4
+\fB\-\-verbose\fR Print the commit oid and filename of migrated files to STDOUT\.
+.
+.IP "" 0
+.
+.P
+If \fB\-\-include\fR or \fB\-\-exclude\fR (\fB\-I\fR, \fB\-X\fR, respectively) are given, the \.gitattributes will be modified to include any new filepath patterns as given by those flags\.
+.
+.P
+If neither of those flags are given, the gitattributes will be incrementally modified to include new filepath extensions as they are rewritten in history\.
+.
+.SH "INCLUDE AND EXCLUDE"
+You can configure Git LFS to only migrate tree entries whose pathspec matches the include glob and does not match the exclude glob, to reduce total migration time or to only migrate part of your repo\. Specify multiple patterns using the comma as the delimiter\.
+.
+.P
+Pattern matching is done as given to be functionally equivalent to pattern matching as in \.gitattributes\.
+.
+.SH "INCLUDE AND EXCLUDE (REFS)"
+You can configure Git LFS to only migrate commits reachable by references include by \fB\-\-include\-ref\fR and not reachable by \fB\-\-exclude\-ref\fR\.
+.
+.IP "" 4
+.
+.nf
+
+    D\-\-\-E\-\-\-F
+   /         \e
+.
+.fi
+.
+.IP "" 0
+.
+.P
+A\-\-\-B\-\-\-\-\-\-C refs/heads/my\-feature \e \e \e refs/heads/master \e refs/remotes/origin/master
+.
+.P
+In the above configuration, the following commits are reachable by each ref:
+.
+.P
+refs/heads/master: C, B, A refs/heads/my\-feature: F, E, D, B, A refs/remote/origin/master: A
+.
+.P
+The following configuration:
+.
+.P
+\-\-include\-ref=refs/heads/my\-feature \-\-include\-ref=refs/heads/master \-\-exclude\-ref=refs/remotes/origin/master
+.
+.P
+Would, therefore, include commits: F, E, D, C, B, but exclude commit A\.
+.
+.P
+The presence of flag \fB\-\-everything\fR indicates that all local references should be migrated\.
+.
+.SH "EXAMPLES"
+.
+.SS "Migrate unpushed commits"
+The migrate command\'s most common use case is to convert large git objects to LFS before pushing your commits\. By default, it only scans commits that don\'t exist on any remote\.
+.
+.P
+First, run \fBgit lfs migrate info\fR to list the file types taking up the most space in your repository\.
+.
+.IP "" 4
+.
+.nf
+
+$ git lfs migrate info
+migrate: Fetching remote refs: \.\.\., done
+migrate: Sorting commits: \.\.\., done
+migrate: Examining commits: 100% (1/1), done
+*\.mp3   284 MB    1/1 files(s)  100%
+*\.pdf   42 MB     8/8 files(s)  100%
+*\.psd   9\.8 MB  15/15 files(s)  100%
+*\.ipynb 6\.9 MB    6/6 files(s)  100%
+*\.csv   5\.8 MB    2/2 files(s)  100%
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Now, you can run \fBgit lfs migrate import\fR to convert some file types to LFS:
+.
+.IP "" 4
+.
+.nf
+
+$ git lfs migrate import \-\-include="*\.mp3,*\.psd"
+migrate: Fetching remote refs: \.\.\., done
+migrate: Sorting commits: \.\.\., done
+migrate: Rewriting commits: 100% (1/1), done
+  master    d2b959babd099fe70da1c1512e2475e8a24de163 \-> 136e706bf1ae79643915c134e17a6c933fd53c61
+migrate: Updating refs: \.\.\., done
+.
+.fi
+.
+.IP "" 0
+.
+.SS "Migrate local history"
+You can also migrate the entire history of your repository:
+.
+.IP "" 4
+.
+.nf
+
+# Check for large files in your local master branch
+$ git lfs migrate info \-\-include\-ref=master
+
+# Check for large files in every branch
+$ git lfs migrate info \-\-everything
+.
+.fi
+.
+.IP "" 0
+.
+.P
+The same flags will work in \fBimport\fR mode:
+.
+.IP "" 4
+.
+.nf
+
+# Convert all zip files in your master branch
+$ git lfs migrate import \-\-include\-ref=master \-\-include="*\.zip"
+
+# Convert all zip files in every local branch
+$ git lfs migrate import \-\-everything \-\-include="*\.zip"
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Note: This will require a force push to any existing Git remotes\.
+.
+.SH "SEE ALSO"
+Part of the git\-lfs(1) suite\.

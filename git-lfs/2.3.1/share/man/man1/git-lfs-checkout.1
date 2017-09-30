@@ -1,0 +1,41 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-CHECKOUT" "1" "September 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-checkout\fR \- Update working copy with file content if available
+.
+.SH "SYNOPSIS"
+\fBgit lfs checkout\fR \fIfilespec\fR\.\.\.
+.
+.SH "DESCRIPTION"
+Try to ensure that the working copy contains file content for Git LFS objects for the current ref, if the object data is available\. Does not download any content, see git\-lfs\-fetch(1) for that\.
+.
+.P
+Checkout scans the current ref for all LFS objects that would be required, then where a file is either missing in the working copy, or contains placeholder pointer content with the same SHA, the real file content is written, provided we have it in the local store\. Modified files are never overwritten\.
+.
+.P
+Filespecs can be provided as arguments to restrict the files which are updated\.
+.
+.SH "EXAMPLES"
+.
+.IP "\(bu" 4
+Checkout all files that are missing or placeholders
+.
+.IP
+\fBgit lfs checkout\fR
+.
+.IP "\(bu" 4
+Checkout a specific couple of files
+.
+.IP
+\fBgit lfs checkout path/to/file1\.png path/to\.file2\.png\fR
+.
+.IP "" 0
+.
+.SH "SEE ALSO"
+git\-lfs\-fetch(1), git\-lfs\-pull(1)\.
+.
+.P
+Part of the git\-lfs(1) suite\.
