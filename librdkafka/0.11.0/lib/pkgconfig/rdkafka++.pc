@@ -1,0 +1,10 @@
+prefix=/usr/local/Cellar/librdkafka/0.11.0
+libdir=/usr/local/Cellar/librdkafka/0.11.0/lib
+includedir=/usr/local/Cellar/librdkafka/0.11.0/include
+
+Name: librdkafka++
+Description: The Apache Kafka C/C++ library
+Version: 0.11.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lrdkafka++
+Libs.private: -lrdkafka -lstdc++

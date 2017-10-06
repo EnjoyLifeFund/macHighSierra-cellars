@@ -1,0 +1,14 @@
+prefix=/usr/local/Cellar/libav/12.2
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libavcodec
+Description: Libav codec library
+Version: 57.25.0
+Requires: libavresample >= 3.0.0, libavutil >= 55.20.0
+Requires.private: 
+Conflicts:
+Libs: -L${libdir} -lavcodec -framework CoreFoundation -framework VideoDecodeAcceleration -framework QuartzCore -framework Foundation -framework AVFoundation -framework CoreVideo -framework CoreMedia -lxvidcore -L/usr/local/Cellar/x264/r2795/lib -lx264 -L/usr/local/Cellar/libvpx/1.6.1/lib -lvpx -lm -lvorbisenc -lvorbis -logg -L/usr/local/Cellar/opus/1.2.1/lib -lopus -lmp3lame -L/usr/local/opt/freetype/lib -lfreetype -L/usr/local/Cellar/fdk-aac/0.1.5/lib -lfdk-aac -lfaac -lm -lbz2 -lz -pthread
+Libs.private: 
+Cflags: -I${includedir}
