@@ -1,0 +1,3 @@
+azure-cli-core
+pip
+wheel

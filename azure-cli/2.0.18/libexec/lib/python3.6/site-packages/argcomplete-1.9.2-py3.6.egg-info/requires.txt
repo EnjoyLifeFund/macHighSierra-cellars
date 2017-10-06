@@ -1,0 +1,6 @@
+
+[test]
+coverage
+flake8
+pexpect
+wheel

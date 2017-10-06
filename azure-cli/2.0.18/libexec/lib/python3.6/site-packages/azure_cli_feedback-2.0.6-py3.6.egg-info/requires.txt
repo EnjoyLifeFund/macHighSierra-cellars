@@ -1,0 +1,2 @@
+applicationinsights
+azure-cli-core

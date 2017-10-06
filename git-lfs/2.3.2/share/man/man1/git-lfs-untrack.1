@@ -1,0 +1,27 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-UNTRACK" "1" "October 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-untrack\fR \- Remove Git LFS paths from Git Attributes
+.
+.SH "SYNOPSIS"
+\fBgit lfs untrack\fR \fIpath\fR\.\.\.
+.
+.SH "DESCRIPTION"
+Stop tracking the given path(s) through Git LFS\. The \fIpath\fR argument can be a glob pattern or a file path\.
+.
+.SH "EXAMPLES"
+.
+.TP
+Configure Git LFS to stop tracking GIF files:
+.
+.IP
+\fBgit lfs untrack "*\.gif"\fR
+.
+.SH "SEE ALSO"
+git\-lfs\-track(1), git\-lfs\-install(1), gitattributes(5)\.
+.
+.P
+Part of the git\-lfs(1) suite\.

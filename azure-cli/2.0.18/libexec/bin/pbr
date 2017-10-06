@@ -1,0 +1,10 @@
+#!/usr/local/opt/python3/bin/python3
+# PBR Generated from 'console_scripts'
+
+import sys
+
+from pbr.cmd.main import main
+
+
+if __name__ == "__main__":
+    sys.exit(main())

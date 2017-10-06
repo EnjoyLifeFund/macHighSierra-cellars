@@ -1,0 +1,6 @@
+applicationinsights
+azure-cli-core
+jmespath
+prompt_toolkit
+pyyaml
+six

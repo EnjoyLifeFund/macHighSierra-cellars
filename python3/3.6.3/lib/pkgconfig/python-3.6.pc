@@ -1,0 +1,1 @@
+../../Frameworks/Python.framework/Versions/3.6/lib/pkgconfig/python-3.6.pc

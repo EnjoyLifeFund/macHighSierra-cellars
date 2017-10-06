@@ -1,0 +1,15 @@
+prefix=/usr/local/Cellar/libdap/3.19.1
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+ccompiler=clang
+cppcompiler=clang++
+
+Name: libdap
+Description: Common items for the OPeNDAP C++ implementation of the Data Access Protocol
+Version: 3.19.1
+Libs: -L${libdir} -ldap
+Libs.private:   -lpthread
+Requires.private: libxml-2.0 >= 2.7.0
+Cflags: -I${includedir}/libdap
+

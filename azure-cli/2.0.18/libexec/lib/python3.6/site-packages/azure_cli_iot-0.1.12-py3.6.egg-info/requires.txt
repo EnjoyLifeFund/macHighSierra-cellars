@@ -1,0 +1,3 @@
+azure-mgmt-iothub==0.2.2
+pyOpenSSL
+azure-cli-core

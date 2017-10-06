@@ -1,0 +1,2 @@
+msrestazure~=0.4.7
+azure-common~=1.1.5

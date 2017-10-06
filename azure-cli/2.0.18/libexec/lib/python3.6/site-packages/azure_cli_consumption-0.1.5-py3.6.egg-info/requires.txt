@@ -1,0 +1,2 @@
+azure-mgmt-consumption==0.1.0
+azure-cli-core

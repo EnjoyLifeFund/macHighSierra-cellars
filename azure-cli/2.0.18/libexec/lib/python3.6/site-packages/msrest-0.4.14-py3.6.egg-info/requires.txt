@@ -1,0 +1,7 @@
+requests~=2.14
+requests_oauthlib>=0.5.0
+isodate>=0.5.4
+certifi>=2017.4.17
+
+[:python_version<'3.4']
+enum34>=1.0.4

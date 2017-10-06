@@ -1,0 +1,4 @@
+continuous_delivery
+vsts_accounts
+vsts_cd_manager
+vsts_info_provider

@@ -1,0 +1,43 @@
+Metadata-Version: 1.1
+Name: azure-cli-extension
+Version: 0.0.3
+Summary: Microsoft Azure Command-Line Tools Extension Command Module
+Home-page: https://github.com/Azure/azure-cli
+Author: Microsoft Corporation
+Author-email: azpycli@microsoft.com
+License: MIT
+Description-Content-Type: UNKNOWN
+Description: Microsoft Azure CLI 'extension' Command Module
+        ==============================================
+        
+        This package is for the 'extension' module.
+        i.e. 'az extension'
+        
+        
+        
+        
+        .. :changelog:
+        
+        Release History
+        ===============
+        0.0.3 (2017-09-22)
+        ++++++++++++++++++
+        * minor fixes
+        
+        0.0.2 (2017-09-11)
+        ++++++++++++++++++
+        
+        * Initial Release.
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: License :: OSI Approved :: MIT License

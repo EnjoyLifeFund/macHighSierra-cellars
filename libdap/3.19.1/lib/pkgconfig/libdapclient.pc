@@ -1,0 +1,16 @@
+prefix=/usr/local/Cellar/libdap/3.19.1
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+ccompiler=clang
+cppcompiler=clang++
+
+Name: libdapclient
+Description: Client side of the OPeNDAP C++ implementation of the Data Access Protocol
+Version: 3.19.1
+Requires: libdap
+Libs: -L${libdir} -ldapclient
+Libs.private: 
+Requires.private: libcurl >= 7.19.0
+Cflags: -I${includedir}/libdap
+

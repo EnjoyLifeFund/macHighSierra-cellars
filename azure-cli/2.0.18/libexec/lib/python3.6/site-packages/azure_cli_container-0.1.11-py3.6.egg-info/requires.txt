@@ -1,0 +1,3 @@
+azure-mgmt-containerinstance
+azure-cli-core
+pyyaml

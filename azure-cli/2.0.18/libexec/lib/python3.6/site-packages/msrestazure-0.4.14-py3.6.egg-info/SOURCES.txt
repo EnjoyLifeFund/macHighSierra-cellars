@@ -1,0 +1,17 @@
+MANIFEST.in
+README.rst
+setup.cfg
+setup.py
+msrestazure/__init__.py
+msrestazure/azure_active_directory.py
+msrestazure/azure_cloud.py
+msrestazure/azure_configuration.py
+msrestazure/azure_exceptions.py
+msrestazure/azure_operation.py
+msrestazure/tools.py
+msrestazure/version.py
+msrestazure.egg-info/PKG-INFO
+msrestazure.egg-info/SOURCES.txt
+msrestazure.egg-info/dependency_links.txt
+msrestazure.egg-info/requires.txt
+msrestazure.egg-info/top_level.txt

@@ -1,0 +1,2 @@
+azure-mgmt-billing==0.1.0
+azure-cli-core

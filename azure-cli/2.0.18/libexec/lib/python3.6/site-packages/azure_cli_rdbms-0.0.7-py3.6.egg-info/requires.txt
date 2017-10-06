@@ -1,0 +1,3 @@
+azure-cli-core
+azure-mgmt-rdbms==0.1.0
+six

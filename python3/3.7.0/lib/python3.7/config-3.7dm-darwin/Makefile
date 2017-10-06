@@ -30,16 +30,15 @@ MODLIBS=           $(LOCALMODLIBS) $(BASEMODLIBS)
 VERSION=	3.7
 srcdir=		.
 
-abs_srcdir=	/Users/dojo/work/py/cpython
-abs_builddir=	/Users/dojo/work/py/cpython
+abs_srcdir=	/Users/ralic/work/py/cpython
+abs_builddir=	/Users/ralic/work/py/cpython
 
 
-CC=		mpicc
-CXX=		mpicxx
+CC=		cc
+CXX=		c++
 MAINCC=		$(CC)
 LINKCC=		$(PURIFY) $(MAINCC)
 AR=		ar
-RANLIB=		ranlib
 READELF=	:
 SOABI=		cpython-37dm-darwin
 LDVERSION=	$(VERSION)$(ABIFLAGS)
@@ -47,10 +46,8 @@ GITVERSION=	git -C $(srcdir) rev-parse --short HEAD
 GITTAG=		git -C $(srcdir) describe --all --always --dirty
 GITBRANCH=	git -C $(srcdir) name-rev --name-only HEAD
 PGO_PROF_GEN_FLAG=
-#-prof-gen
 PGO_PROF_USE_FLAG=
-#-prof-use
-LLVM_PROF_MERGER=true
+LLVM_PROF_MERGER=
 LLVM_PROF_FILE=
 LLVM_PROF_ERR=no
 DTRACE=         
@@ -84,14 +81,13 @@ MAKESETUP=      $(srcdir)/Modules/makesetup
 OPT=		-DDYNAMIC_ANNOTATIONS_ENABLED=1 -g -O0 -Wall -Wstrict-prototypes
 BASECFLAGS=	 -fno-strict-aliasing -Wsign-compare
 BASECPPFLAGS=	
-CONFIGURE_CFLAGS=	-fomit-frame-pointer -funroll-loops  -ffast-math -Ofast -fno-signed-zeros -ffp-contract=fast -mmmx -msse -flto -maes -march=native    
+CONFIGURE_CFLAGS=	-fomit-frame-pointer -funroll-loops  -ffast-math -Ofast -fno-signed-zeros -ffp-contract=fast -mmmx  -msse -maes -march=native   -isystem /usr/include -isystem /usr/local/include  
 # CFLAGS_NODIST is used for building the interpreter and stdlib C extensions.
 # Use it when a compiler flag should _not_ be part of the distutils CFLAGS
 # once Python is installed (Issue #21121).
-CONFIGURE_CFLAGS_NODIST= -std=c99 -Werror=implicit-function-declaration 
-#-fp-model strict
-CONFIGURE_CPPFLAGS=	-I/usr/local/opt/cython/include -I/usr/local/opt/suitesparse/include -I/usr/local/opt/tbb/include -I/usr/local/opt/grt/include -I/usr/local/opt/bison/include -I/usr/local/opt/gettext/include -I/usr/local/opt/zlib/include -I/usr/local/opt/openblas/include -I/usr/local/opt/openssl@1.1/include -I/usr/local/opt/sqlite/include -I/usr/local/opt/readline/include -I/usr/local/opt/lapack/include -I/usr/local/opt/open-mpi/include -I/usr/local/opt/binutils/include -I/usr/local/opt/boost-python/include -I/usr/local/opt/boost-mpi/include -I/usr/local/opt/boost/include -I/usr/local/opt/llvm/include -I$/opt/X11/include -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7/gcc/x86_64-apple-darwin17.0.0/7.2.0/include  -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7  -L/usr/local/cuda/lib -L/usr/local/cuda/nvvm/lib 
-CONFIGURE_LDFLAGS=	-L/usr/local/opt/cython/lib -L/usr/local/opt/suitesparse/lib -L/usr/local/opt/tbb/lib -L/usr/local/opt/grt/lib -L/usr/local/opt/bison/lib -L/usr/local/opt/gettext/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/openblas/lib -L/usr/local/opt/openssl@1.1/lib -L/usr/local/opt/sqlite/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/lapack/lib -L/usr/local/opt/open-mpi/lib -L/usr/local/opt/binutils/lib -L/usr/local/opt/boost-python/lib -L/usr/local/opt/boost-mpi/lib -L/usr/local/opt/boost/lib -L/usr/local/opt/llvm/lib -L/opt/X11/lib -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7  -L/usr/local/cuda/lib -L/usr/local/cuda/nvvm/lib  
+CONFIGURE_CFLAGS_NODIST= -std=c99 -Werror=implicit-function-declaration
+CONFIGURE_CPPFLAGS=	-I/usr/local/opt/libmetalink/include -I/usr/local/opt/rtmpdump/include -I/usr/local/opt/python3/include -I/usr/local/opt/aws-sdk-cpp/include -I/usr/local/opt/valgrind/include -I/usr/local/opt/suite-sparse/include -I/usr/local/opt/grt/include -I/usr/local/opt/opencl/include -I/usr/local/opt/libarchive/include -I/usr/local/opt/thrift/include -I/usr/local/opt/icu4c/include -I/usr/local/opt/sqlite/include -I/usr/local/opt/binutils/include -I/usr/local/opt/libiconv/include -I/usr/local/opt/libunistring/include -I/usr/local/opt/libtool/include -I/usr/local/opt/libkml/include -I/usr/local/opt/openblas/include -I/usr/local/opt/lapack/include -I/usr/local/opt/gettext/include -I/usr/local/opt/tbb/include -I/usr/local/opt/open-mpi/include -I/usr/local/opt/boost-python/include -I/usr/local/opt/boost-mpi/include -I/usr/local/opt/boost/include -I/usr/local/opt/ncurses/include -I/usr/local/opt/llvm/include -I/usr/local/opt/mpfr/include -I/usr/local/opt/gmp/include -I/usr/local/opt/bison/include -I/usr/local/opt/zlib/include -I/usr/local/opt/xz/include -I/usr/local/opt/openssl@1.1/include -I/usr/local/opt/openssl/include -I/usr/local/opt/gcc/include -I$/opt/X11/include -I/usr/local/Cellar/gcc/7.2.0/lib/gcc/7/gcc/x86_64-apple-darwin17.0.0/7.2.0/include  -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7  -L/usr/local/opt/python3/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/cuda/lib -L/usr/local/cuda/nvvm/lib 
+CONFIGURE_LDFLAGS=	-L/usr/local/opt/libmetalink/lib -L/usr/local/opt/rtmpdump/lib -L/usr/local/opt/python3/lib -L/usr/local/opt/aws-sdk-cpp/lib -L/usr/local/opt/valgrind/lib -L/usr/local/opt/suite-sparse/lib -L/usr/local/opt/grt/lib -L/usr/local/opt/opencl/lib -L/usr/local/opt/libarchive/lib -L/usr/local/opt/thrift/lib -L/usr/local/opt/icu4c/lib -L/usr/local/opt/sqlite/lib -L/usr/local/opt/binutils/lib -L/usr/local/opt/libiconv/lib -L/usr/local/opt/libunistring/lib -L/usr/local/opt/libtool/lib -L/usr/local/opt/libkml/lib -L/usr/local/opt/openblas/lib -L/usr/local/opt/lapack/lib -L/usr/local/opt/gettext/lib -L/usr/local/opt/tbb/lib -L/usr/local/opt/open-mpi/lib -L/usr/local/opt/boost-python/lib -L/usr/local/opt/boost-mpi/lib -L/usr/local/opt/boost/lib -L/usr/local/opt/ncurses/lib -L/usr/local/opt/llvm/lib -L/usr/local/opt/mpfr/lib -L/usr/local/opt/gmp/lib -L/usr/local/opt/bison/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/xz/lib -L/usr/local/opt/openssl@1.1/lib -L/usr/local/opt/openssl/lib -L/usr/local/opt/gcc/lib -L/opt/X11/lib -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7  -L/usr/local/opt/python3/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/cuda/lib -L/usr/local/cuda/nvvm/lib  
 # Avoid assigning CFLAGS, LDFLAGS, etc. so users can use them on the
 # command line to append to these values without stomping the pre-set
 # values.
@@ -107,7 +103,7 @@ LDLAST=
 SGI_ABI=	@SGI_ABI@
 CCSHARED=	
 LINKFORSHARED=	-Wl,-stack_size,1000000  -framework CoreFoundation
-ARFLAGS=	rc
+ARFLAGS=	rcs
 # Extra C flags added for building the interpreter object files.
 CFLAGSFORSHARED=$(CCSHARED)
 # C flags used for building the interpreter object files
@@ -181,7 +177,7 @@ LIPO_32BIT_FLAGS=
 OTHER_LIBTOOL_OPT=
 
 # Environment to run shared python without installed libraries
-RUNSHARED=       DYLD_LIBRARY_PATH=/Users/dojo/work/py/cpython
+RUNSHARED=       DYLD_LIBRARY_PATH=/Users/ralic/work/py/cpython
 
 # ensurepip options
 ENSUREPIP=      upgrade
@@ -193,7 +189,7 @@ EXEMODE=	755
 FILEMODE=	644
 
 # configure script arguments
-CONFIG_ARGS=	 '--enable-shared' '--enable-ipv6' '--enable-optimizations' '--enable-loadable-sqlite-extensions' '--with-ensurepip=upgrade' '--with-threads' '--with-valgrind' '--with-lto' '--with-pydebug' '--with-assertions' '--without-gcc' '--without-icc' '--datarootdir=/usr/local/Cellar/python3/3.7.0/share' '--datadir=/usr/local/Cellar/python3/3.7.0/share' '--prefix=/usr/local/Cellar/python3/3.7.0' 'CC=mpicc' 'CFLAGS=-fomit-frame-pointer -funroll-loops  -ffast-math -Ofast -fno-signed-zeros -ffp-contract=fast -mmmx -msse -flto -maes -march=native   ' 'LDFLAGS=-L/usr/local/opt/cython/lib -L/usr/local/opt/suitesparse/lib -L/usr/local/opt/tbb/lib -L/usr/local/opt/grt/lib -L/usr/local/opt/bison/lib -L/usr/local/opt/gettext/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/openblas/lib -L/usr/local/opt/openssl@1.1/lib -L/usr/local/opt/sqlite/lib -L/usr/local/opt/readline/lib -L/usr/local/opt/lapack/lib -L/usr/local/opt/open-mpi/lib -L/usr/local/opt/binutils/lib -L/usr/local/opt/boost-python/lib -L/usr/local/opt/boost-mpi/lib -L/usr/local/opt/boost/lib -L/usr/local/opt/llvm/lib -L/opt/X11/lib -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7  -L/usr/local/cuda/lib -L/usr/local/cuda/nvvm/lib ' 'CPPFLAGS=-I/usr/local/opt/cython/include -I/usr/local/opt/suitesparse/include -I/usr/local/opt/tbb/include -I/usr/local/opt/grt/include -I/usr/local/opt/bison/include -I/usr/local/opt/gettext/include -I/usr/local/opt/zlib/include -I/usr/local/opt/openblas/include -I/usr/local/opt/openssl@1.1/include -I/usr/local/opt/sqlite/include -I/usr/local/opt/readline/include -I/usr/local/opt/lapack/include -I/usr/local/opt/open-mpi/include -I/usr/local/opt/binutils/include -I/usr/local/opt/boost-python/include -I/usr/local/opt/boost-mpi/include -I/usr/local/opt/boost/include -I/usr/local/opt/llvm/include -I$/opt/X11/include -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7/gcc/x86_64-apple-darwin17.0.0/7.2.0/include  -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7  -L/usr/local/cuda/lib -L/usr/local/cuda/nvvm/lib ' 'CPP=mpicc -E'
+CONFIG_ARGS=	 '--enable-shared' '--enable-ipv6' '--enable-optimizations' '--enable-loadable-sqlite-extensions' '--with-ensurepip=upgrade' '--with-threads' '--with-valgrind' '--with-lto' '--with-pydebug' '--with-assertions' '--without-gcc' '--without-icc' '--datarootdir=/usr/local/Cellar/python3/3.7.0/share' '--datadir=/usr/local/Cellar/python3/3.7.0/share' '--prefix=/usr/local/Cellar/python3/3.7.0' 'CFLAGS=-fomit-frame-pointer -funroll-loops  -ffast-math -Ofast -fno-signed-zeros -ffp-contract=fast -mmmx  -msse -maes -march=native   -isystem /usr/include -isystem /usr/local/include ' 'LDFLAGS=-L/usr/local/opt/libmetalink/lib -L/usr/local/opt/rtmpdump/lib -L/usr/local/opt/python3/lib -L/usr/local/opt/aws-sdk-cpp/lib -L/usr/local/opt/valgrind/lib -L/usr/local/opt/suite-sparse/lib -L/usr/local/opt/grt/lib -L/usr/local/opt/opencl/lib -L/usr/local/opt/libarchive/lib -L/usr/local/opt/thrift/lib -L/usr/local/opt/icu4c/lib -L/usr/local/opt/sqlite/lib -L/usr/local/opt/binutils/lib -L/usr/local/opt/libiconv/lib -L/usr/local/opt/libunistring/lib -L/usr/local/opt/libtool/lib -L/usr/local/opt/libkml/lib -L/usr/local/opt/openblas/lib -L/usr/local/opt/lapack/lib -L/usr/local/opt/gettext/lib -L/usr/local/opt/tbb/lib -L/usr/local/opt/open-mpi/lib -L/usr/local/opt/boost-python/lib -L/usr/local/opt/boost-mpi/lib -L/usr/local/opt/boost/lib -L/usr/local/opt/ncurses/lib -L/usr/local/opt/llvm/lib -L/usr/local/opt/mpfr/lib -L/usr/local/opt/gmp/lib -L/usr/local/opt/bison/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/xz/lib -L/usr/local/opt/openssl@1.1/lib -L/usr/local/opt/openssl/lib -L/usr/local/opt/gcc/lib -L/opt/X11/lib -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7  -L/usr/local/opt/python3/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/cuda/lib -L/usr/local/cuda/nvvm/lib ' 'CPPFLAGS=-I/usr/local/opt/libmetalink/include -I/usr/local/opt/rtmpdump/include -I/usr/local/opt/python3/include -I/usr/local/opt/aws-sdk-cpp/include -I/usr/local/opt/valgrind/include -I/usr/local/opt/suite-sparse/include -I/usr/local/opt/grt/include -I/usr/local/opt/opencl/include -I/usr/local/opt/libarchive/include -I/usr/local/opt/thrift/include -I/usr/local/opt/icu4c/include -I/usr/local/opt/sqlite/include -I/usr/local/opt/binutils/include -I/usr/local/opt/libiconv/include -I/usr/local/opt/libunistring/include -I/usr/local/opt/libtool/include -I/usr/local/opt/libkml/include -I/usr/local/opt/openblas/include -I/usr/local/opt/lapack/include -I/usr/local/opt/gettext/include -I/usr/local/opt/tbb/include -I/usr/local/opt/open-mpi/include -I/usr/local/opt/boost-python/include -I/usr/local/opt/boost-mpi/include -I/usr/local/opt/boost/include -I/usr/local/opt/ncurses/include -I/usr/local/opt/llvm/include -I/usr/local/opt/mpfr/include -I/usr/local/opt/gmp/include -I/usr/local/opt/bison/include -I/usr/local/opt/zlib/include -I/usr/local/opt/xz/include -I/usr/local/opt/openssl@1.1/include -I/usr/local/opt/openssl/include -I/usr/local/opt/gcc/include -I$/opt/X11/include -I/usr/local/Cellar/gcc/7.2.0/lib/gcc/7/gcc/x86_64-apple-darwin17.0.0/7.2.0/include  -L/usr/local/Cellar/gcc/7.2.0/lib/gcc/7  -L/usr/local/opt/python3/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/cuda/lib -L/usr/local/cuda/nvvm/lib ' 'PKG_CONFIG_PATH=/usr/local/opt/libmetalink/lib/pkgconfig:/usr/local/opt/rtmpdump/lib/pkgconfig:/usr/local/opt/python3/lib/pkgconfig:/usr/local/opt/aws-sdk-cpp/lib/pkgconfig:/usr/local/opt/valgrind/lib/pkgconfig:/usr/local/opt/suite-sparse/lib/pkgconfig:/usr/local/opt/grt/lib/pkgconfig:/usr/local/opt/opencl/lib/pkgconfig:/usr/local/opt/libarchive/lib/pkgconfig:/usr/local/opt/thrift/lib/pkgconfig:/usr/local/opt/icu4c/lib/pkgconfig:/usr/local/opt/sqlite/lib/pkgconfig:/usr/local/opt/binutils/lib/pkgconfig:/usr/local/opt/libiconv/lib/pkgconfig:/usr/local/opt/libunistring/lib/pkgconfig:/usr/local/opt/libtool/lib/pkgconfig:/usr/local/opt/libkml/lib/pkgconfig:/usr/local/opt/openblas/lib/pkgconfig:/usr/local/opt/lapack/lib/pkgconfig:/usr/local/opt/gettext/lib/pkgconfig:/usr/local/opt/tbb/lib/pkgconfig:/usr/local/opt/open-mpi/lib/pkgconfig:/usr/local/opt/boost-python/lib/pkgconfig:/usr/local/opt/boost-mpi/lib/pkgconfig:/usr/local/opt/boost/lib/pkgconfig:/usr/local/opt/ncurses/lib/pkgconfig:/usr/local/opt/llvm/lib/pkgconfig:/usr/local/opt/mpfr/lib/pkgconfig:/usr/local/opt/gmp/lib/pkgconfig:/usr/local/opt/bison/lib/pkgconfig:/usr/local/opt/zlib/lib/pkgconfig:/usr/local/opt/xz/lib/pkgconfig:/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/openssl/lib/pkgconfig:/usr/local/opt/gcc/lib/pkgconfig:'
 
 
 # Subdirectories with code
@@ -234,6 +230,7 @@ PYTHON=		python$(EXE)
 BUILDPYTHON=	python$(BUILDEXE)
 
 PYTHON_FOR_REGEN=python3
+UPDATE_FILE=python3 $(srcdir)/Tools/scripts/update_file.py
 PYTHON_FOR_BUILD=./$(BUILDPYTHON) -E
 _PYTHON_HOST_PLATFORM=
 BUILD_GNU_TYPE=	x86_64-apple-darwin17.0.0
@@ -593,16 +590,9 @@ sharedmods: $(BUILDPYTHON) pybuilddir.txt Modules/_math.o
 
 
 # Build static library
-# avoid long command lines, same as LIBRARY_OBJS
 $(LIBRARY): $(LIBRARY_OBJS)
 	-rm -f $@
-	$(AR) $(ARFLAGS) $@ Modules/getbuildinfo.o
-	$(AR) $(ARFLAGS) $@ $(PARSER_OBJS)
-	$(AR) $(ARFLAGS) $@ $(OBJECT_OBJS)
-	$(AR) $(ARFLAGS) $@ $(PYTHON_OBJS) Python/frozen.o
-	$(AR) $(ARFLAGS) $@ $(MODULE_OBJS)
-	$(AR) $(ARFLAGS) $@ $(MODOBJS)
-	$(RANLIB) $@
+	$(AR) $(ARFLAGS) $@ $(LIBRARY_OBJS)
 
 libpython$(LDVERSION).so: $(LIBRARY_OBJS)
 	if test $(INSTSONAME) != $(LDLIBRARY); then \
@@ -708,12 +698,14 @@ regen-importlib: Programs/_freeze_importlib
 	# from Lib/importlib/_bootstrap_external.py using _freeze_importlib
 	./Programs/_freeze_importlib \
 	    $(srcdir)/Lib/importlib/_bootstrap_external.py \
-	    $(srcdir)/Python/importlib_external.h
+	    $(srcdir)/Python/importlib_external.h.new
+	$(UPDATE_FILE) $(srcdir)/Python/importlib_external.h $(srcdir)/Python/importlib_external.h.new
 	# Regenerate Python/importlib.h from Lib/importlib/_bootstrap.py
 	# using _freeze_importlib
 	./Programs/_freeze_importlib \
 	    $(srcdir)/Lib/importlib/_bootstrap.py \
-	    $(srcdir)/Python/importlib.h
+	    $(srcdir)/Python/importlib.h.new
+	$(UPDATE_FILE) $(srcdir)/Python/importlib.h $(srcdir)/Python/importlib.h.new
 
 
 ############################################################################
@@ -787,8 +779,10 @@ regen-grammar: $(PGEN)
 	# from Grammar/Grammar using pgen
 	@$(MKDIR_P) Include
 	$(PGEN) $(srcdir)/Grammar/Grammar \
-		$(srcdir)/Include/graminit.h \
-		$(srcdir)/Python/graminit.c
+		$(srcdir)/Include/graminit.h.new \
+		$(srcdir)/Python/graminit.c.new
+	$(UPDATE_FILE) $(srcdir)/Include/graminit.h $(srcdir)/Include/graminit.h.new
+	$(UPDATE_FILE) $(srcdir)/Python/graminit.c $(srcdir)/Python/graminit.c.new
 
 Parser/grammar.o:	$(srcdir)/Parser/grammar.c \
 				$(srcdir)/Include/token.h \
@@ -806,13 +800,15 @@ regen-ast:
 	# Regenerate Include/Python-ast.h using Parser/asdl_c.py -h
 	$(MKDIR_P) $(srcdir)/Include
 	$(PYTHON_FOR_REGEN) $(srcdir)/Parser/asdl_c.py \
-		-h $(srcdir)/Include \
+		-h $(srcdir)/Include/Python-ast.h.new \
 		$(srcdir)/Parser/Python.asdl
+	$(UPDATE_FILE) $(srcdir)/Include/Python-ast.h $(srcdir)/Include/Python-ast.h.new
 	# Regenerate Python/Python-ast.c using Parser/asdl_c.py -c
 	$(MKDIR_P) $(srcdir)/Python
 	$(PYTHON_FOR_REGEN) $(srcdir)/Parser/asdl_c.py \
-		-c $(srcdir)/Python \
+		-c $(srcdir)/Python/Python-ast.c.new \
 		$(srcdir)/Parser/Python.asdl
+	$(UPDATE_FILE) $(srcdir)/Python/Python-ast.c $(srcdir)/Python/Python-ast.c.new
 
 .PHONY: regen-opcode
 regen-opcode:
@@ -820,7 +816,8 @@ regen-opcode:
 	# using Tools/scripts/generate_opcode_h.py
 	$(PYTHON_FOR_REGEN) $(srcdir)/Tools/scripts/generate_opcode_h.py \
 		$(srcdir)/Lib/opcode.py \
-		$(srcdir)/Include/opcode.h
+		$(srcdir)/Include/opcode.h.new
+	$(UPDATE_FILE) $(srcdir)/Include/opcode.h $(srcdir)/Include/opcode.h.new
 
 Python/compile.o Python/symtable.o Python/ast.o: $(srcdir)/Include/graminit.h $(srcdir)/Include/Python-ast.h
 
@@ -877,7 +874,8 @@ regen-opcode-targets:
 	# Regenerate Python/opcode_targets.h from Lib/opcode.py
 	# using Python/makeopcodetargets.py
 	$(PYTHON_FOR_REGEN) $(srcdir)/Python/makeopcodetargets.py \
-		$(srcdir)/Python/opcode_targets.h
+		$(srcdir)/Python/opcode_targets.h.new
+	$(UPDATE_FILE) $(srcdir)/Python/opcode_targets.h $(srcdir)/Python/opcode_targets.h.new
 
 Python/ceval.o: $(srcdir)/Python/opcode_targets.h $(srcdir)/Python/ceval_gil.h
 
@@ -904,7 +902,8 @@ regen-typeslots:
 	# using Objects/typeslots.py
 	$(PYTHON_FOR_REGEN) $(srcdir)/Objects/typeslots.py \
 		< $(srcdir)/Include/typeslots.h \
-		$(srcdir)/Objects/typeslots.inc
+		$(srcdir)/Objects/typeslots.inc.new
+	$(UPDATE_FILE) $(srcdir)/Objects/typeslots.inc $(srcdir)/Objects/typeslots.inc.new
 
 ############################################################################
 # Header files
@@ -1429,7 +1428,6 @@ libainstall:	build_all python-config
 				$(INSTALL_DATA) $(LDLIBRARY) $(DESTDIR)$(LIBPL) ; \
 			else \
 				$(INSTALL_DATA) $(LIBRARY) $(DESTDIR)$(LIBPL)/$(LIBRARY) ; \
-				$(RANLIB) $(DESTDIR)$(LIBPL)/$(LIBRARY) ; \
 			fi; \
 		else \
 			echo Skip install of $(LIBRARY) - use make frameworkinstall; \

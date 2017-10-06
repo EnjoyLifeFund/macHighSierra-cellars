@@ -1,0 +1,1 @@
+azure-nspkg>=2.0.0

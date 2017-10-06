@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+export PYTHONPATH="/usr/local/Cellar/azure-cli/2.0.18/libexec/lib/python3.6/site-packages"
+if command -v python3.6 >/dev/null 2>&1; then
+  python3.6 -m azure.cli "$@"
+else
+  python3 -m azure.cli "$@"
+fi

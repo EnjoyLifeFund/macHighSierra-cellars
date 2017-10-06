@@ -1,0 +1,36 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "GIT\-LFS\-POINTER" "1" "October 2017" "" ""
+.
+.SH "NAME"
+\fBgit\-lfs\-pointer\fR \- Build and compare pointers
+.
+.SH "SYNOPSIS"
+\fBgit lfs pointer \-\-file=path/to/file\fR
+.
+.br
+\fBgit lfs pointer \-\-file=path/to/file \-\-pointer=path/to/pointer\fR
+.
+.br
+\fBgit lfs pointer \-\-file=path/to/file \-\-stdin\fR
+.
+.SH "Description"
+Builds and optionally compares generated pointer files to ensure consistency between different Git LFS implementations\.
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-\-file\fR
+A local file to build the pointer from\.
+.
+.TP
+\fB\-\-pointer\fR
+A local file including the contents of a pointer generated from another implementation\. This is compared to the pointer generated from \fB\-\-file\fR\.
+.
+.TP
+\fB\-\-stdin\fR
+Reads the pointer from STDIN to compare with the pointer generated from \fB\-\-file\fR\.
+.
+.SH "SEE ALSO"
+Part of the git\-lfs(1) suite\.

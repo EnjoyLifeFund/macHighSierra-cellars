@@ -1,0 +1,11 @@
+LICENSE.txt
+MANIFEST.in
+README.rst
+scp.py
+setup.cfg
+setup.py
+scp.egg-info/PKG-INFO
+scp.egg-info/SOURCES.txt
+scp.egg-info/dependency_links.txt
+scp.egg-info/requires.txt
+scp.egg-info/top_level.txt
