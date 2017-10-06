@@ -179,7 +179,7 @@ def fullmatch(pattern, string, flags=0):
 def search(pattern, string, flags=0):
     """Scan through string looking for a match to the pattern, returning
     a match object, or None if no match was found."""
-    return _compile(pattern, flags).search(string)
+    return _compile(pattern, flags).search(str(string))
 
 def sub(pattern, repl, string, count=0, flags=0):
     """Return the string obtained by replacing the leftmost

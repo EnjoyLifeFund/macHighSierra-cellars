@@ -1,0 +1,2 @@
+#!/bin/bash
+PYTHONPATH="/usr/local/opt/libxml2/lib/python2.7/site-packages" exec "/usr/local/Cellar/itstool/2.0.3/libexec/bin/itstool" "$@"
