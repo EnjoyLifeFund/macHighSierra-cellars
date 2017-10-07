@@ -146,7 +146,7 @@ def _get_swig_version(env, swig):
     match = re.search('SWIG Version\s+(\S+).*', out, re.MULTILINE)
     if match:
         if verbose: print("Version is:%s"%match.group(1))
-        return match.group(1)
+        return str(match.group(1))
     else:
         if verbose: print("Unable to detect version: [%s]"%out)
 
@@ -171,6 +171,7 @@ def generate(env):
 
     if 'SWIG' not in env:
         env['SWIG'] = env.Detect(swigs) or swigs[0]
+   
     env['SWIGVERSION']       = _get_swig_version(env, env['SWIG'])
     env['SWIGFLAGS']         = SCons.Util.CLVar('')
     env['SWIGDIRECTORSUFFIX'] = '_wrap.h'
