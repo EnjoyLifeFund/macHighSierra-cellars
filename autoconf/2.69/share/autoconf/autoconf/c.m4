@@ -1,50 +1,27 @@
 # This file is part of Autoconf.			-*- Autoconf -*-
 # Programming languages support.
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009
-# Free Software Foundation, Inc.
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# Copyright (C) 2001-2012 Free Software Foundation, Inc.
+
+# This file is part of Autoconf.  This program is free
+# software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
+# Under Section 7 of GPL version 3, you are granted additional
+# permissions described in the Autoconf Configure Script Exception,
+# version 3.0, as published by the Free Software Foundation.
+#
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
-# As a special exception, the Free Software Foundation gives unlimited
-# permission to copy, distribute and modify the configure scripts that
-# are the output of Autoconf.  You need not follow the terms of the GNU
-# General Public License when using or distributing such scripts, even
-# though portions of the text of Autoconf appear in them.  The GNU
-# General Public License (GPL) does govern all other use of the material
-# that constitutes the Autoconf program.
-#
-# Certain portions of the Autoconf source text are designed to be copied
-# (in certain cases, depending on the input) into the output of
-# Autoconf.  We call these the "data" portions.  The rest of the Autoconf
-# source text consists of comments plus executable code that decides which
-# of the data portions to output in any given case.  We call these
-# comments and executable code the "non-data" portions.  Autoconf never
-# copies any of the non-data portions into its output.
-#
-# This special exception to the GPL applies to versions of Autoconf
-# released by the Free Software Foundation.  When you make and
-# distribute a modified version of Autoconf, you may extend this special
-# exception to the GPL to apply to your modified version as well, *unless*
-# your modified version has the potential to copy into its output some
-# of the text that was the non-data portion of the version that you started
-# with.  (In other words, unless your change moves or copies text from
-# the non-data portions to the data portions.)  If your modification has
-# such potential, you must delete any notice of this special exception
-# to the GPL from your modified version.
-#
+# and a copy of the Autoconf Configure Script Exception along with
+# this program; see the files COPYINGv3 and COPYING.EXCEPTION
+# respectively.  If not, see <http://www.gnu.org/licenses/>.
+
 # Written by David MacKenzie, with help from
 # Akim Demaille, Paul Eggert,
 # Franc,ois Pinard, Karl Berry, Richard Pixley, Ian Lance Taylor,
@@ -58,10 +35,11 @@
 #      1a. C   2a. C
 #      1b. C++
 #      1c. Objective C
+#      1d. Objective C++
 #
 # 3. Looking for a compiler
 #    And possibly the associated preprocessor.
-#      3a. C   3b. C++   3c. Objective C
+#      3a. C   3b. C++   3c. Objective C   3d. Objective C++
 #
 # 4. Compilers' characteristics.
 #      4a. C
@@ -80,7 +58,7 @@
 # AC_LANG(C)
 # ----------
 # CFLAGS is not in ac_cpp because -g, -O, etc. are not valid cpp options.
-AC_LANG_DEFINE([C], [c], [C], [],
+AC_LANG_DEFINE([C], [c], [C], [CC], [],
 [ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&AS_MESSAGE_LOG_FD'
@@ -100,7 +78,7 @@ AU_DEFUN([AC_LANG_C], [AC_LANG(C)])
 
 
 # AC_LANG_CONFTEST(C)(BODY)
-# -----------------------
+# -------------------------
 # We can't use '#line $LINENO "configure"' here, since
 # Sun c89 (Sun WorkShop 6 update 2 C 5.3 Patch 111679-08 2002/05/09)
 # rejects $LINENO greater than 32767, and some configure scripts
@@ -212,7 +190,8 @@ choke me
 # errors with `-W error'.
 m4_define([AC_LANG_BOOL_COMPILE_TRY(C)],
 [AC_LANG_PROGRAM([$1], [static int test_array @<:@1 - 2 * !($2)@:>@;
-test_array @<:@0@:>@ = 0
+test_array @<:@0@:>@ = 0;
+return test_array @<:@0@:>@;
 ])])
 
 
@@ -259,7 +238,7 @@ static unsigned long int ulongval () { return $2; }
 # AC_LANG(C++)
 # ------------
 # CXXFLAGS is not in ac_cpp because -g, -O, etc. are not valid cpp options.
-AC_LANG_DEFINE([C++], [cxx], [CXX], [C],
+AC_LANG_DEFINE([C++], [cxx], [CXX], [CXX], [C],
 [ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&AS_MESSAGE_LOG_FD'
@@ -281,7 +260,7 @@ AU_DEFUN([AC_LANG_CPLUSPLUS], [AC_LANG(C++)])
 
 # AC_LANG(Objective C)
 # --------------------
-AC_LANG_DEFINE([Objective C], [objc], [OBJC], [C],
+AC_LANG_DEFINE([Objective C], [objc], [OBJC], [OBJC], [C],
 [ac_ext=m
 ac_cpp='$OBJCPP $CPPFLAGS'
 ac_compile='$OBJC -c $OBJCFLAGS $CPPFLAGS conftest.$ac_ext >&AS_MESSAGE_LOG_FD'
@@ -293,6 +272,23 @@ ac_compiler_gnu=$ac_cv_objc_compiler_gnu
 # AC_LANG_OBJC
 # ------------
 AU_DEFUN([AC_LANG_OBJC], [AC_LANG(Objective C)])
+
+
+
+## -------------------------------- ##
+## 1d. The Objective C++ language.  ##
+## -------------------------------- ##
+
+
+# AC_LANG(Objective C++)
+# ----------------------
+AC_LANG_DEFINE([Objective C++], [objcxx], [OBJCXX], [OBJCXX], [C++],
+[ac_ext=mm
+ac_cpp='$OBJCXXCPP $CPPFLAGS'
+ac_compile='$OBJCXX -c $OBJCXXFLAGS $CPPFLAGS conftest.$ac_ext >&AS_MESSAGE_LOG_FD'
+ac_link='$OBJCXX -o conftest$ac_exeext $OBJCXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&AS_MESSAGE_LOG_FD'
+ac_compiler_gnu=$ac_cv_objcxx_compiler_gnu
+])
 
 
 
@@ -308,17 +304,17 @@ AU_DEFUN([AC_LANG_OBJC], [AC_LANG(Objective C)])
 # _AC_ARG_VAR_CPPFLAGS
 # --------------------
 # Document and register CPPFLAGS, which is used by
-# AC_PROG_{CC, CPP, CXX, CXXCPP, OBJC, OBJCPP}.
+# AC_PROG_{CC, CPP, CXX, CXXCPP, OBJC, OBJCPP, OBJCXX, OBJCXXCPP}.
 AC_DEFUN([_AC_ARG_VAR_CPPFLAGS],
 [AC_ARG_VAR([CPPFLAGS],
-	    [C/C++/Objective C preprocessor flags, e.g. -I<include dir>
+	    [(Objective) C/C++ preprocessor flags, e.g. -I<include dir>
 	     if you have headers in a nonstandard directory <include dir>])])
 
 
 # _AC_ARG_VAR_LDFLAGS
 # -------------------
 # Document and register LDFLAGS, which is used by
-# AC_PROG_{CC, CXX, F77, FC, OBJC}.
+# AC_PROG_{CC, CXX, F77, FC, OBJC, OBJCXX}.
 AC_DEFUN([_AC_ARG_VAR_LDFLAGS],
 [AC_ARG_VAR([LDFLAGS],
 	    [linker flags, e.g. -L<lib dir> if you have libraries in a
@@ -328,14 +324,14 @@ AC_DEFUN([_AC_ARG_VAR_LDFLAGS],
 # _AC_ARG_VAR_LIBS
 # ----------------
 # Document and register LIBS, which is used by
-# AC_PROG_{CC, CXX, F77, FC, OBJS}.
+# AC_PROG_{CC, CXX, F77, FC, OBJC, OBJCXX}.
 AC_DEFUN([_AC_ARG_VAR_LIBS],
 [AC_ARG_VAR([LIBS],
 	    [libraries to pass to the linker, e.g. -l<library>])])
 
 
 # AC_LANG_PREPROC(C)
-# -------------------
+# ------------------
 # Find the C preprocessor.  Must be AC_DEFUN'd to be AC_REQUIRE'able.
 AC_DEFUN([AC_LANG_PREPROC(C)],
 [AC_REQUIRE([AC_PROG_CPP])])
@@ -377,7 +373,7 @@ break])
 
 done
 # Because of `break', _AC_PREPROC_IFELSE's cleaning code was skipped.
-rm -f conftest.err conftest.$ac_ext
+rm -f conftest.i conftest.err conftest.$ac_ext
 AS_IF([$ac_preproc_ok], [$1], [$2])
 ])# _AC_PROG_PREPROC_WORKS_IFELSE
 
@@ -626,7 +622,7 @@ fi
 
 
 # AC_LANG_PREPROC(C++)
-# ---------------------
+# --------------------
 # Find the C++ preprocessor.  Must be AC_DEFUN'd to be AC_REQUIRE'able.
 AC_DEFUN([AC_LANG_PREPROC(C++)],
 [AC_REQUIRE([AC_PROG_CXXCPP])])
@@ -947,6 +943,145 @@ fi[]dnl
 
 
 
+# -------------------------------- #
+# 3d. The Objective C++ compiler.  #
+# -------------------------------- #
+
+
+# AC_LANG_PREPROC(Objective C++)
+# ------------------------------
+# Find the Objective C++ preprocessor.  Must be AC_DEFUN'd to be AC_REQUIRE'able.
+AC_DEFUN([AC_LANG_PREPROC(Objective C++)],
+[AC_REQUIRE([AC_PROG_OBJCXXCPP])])
+
+
+# AC_PROG_OBJCXXCPP
+# -----------------
+# Find a working Objective C++ preprocessor.
+AC_DEFUN([AC_PROG_OBJCXXCPP],
+[AC_REQUIRE([AC_PROG_OBJCXX])dnl
+AC_ARG_VAR([OBJCXXCPP],   [Objective C++ preprocessor])dnl
+_AC_ARG_VAR_CPPFLAGS()dnl
+AC_LANG_PUSH(Objective C++)dnl
+AC_MSG_CHECKING([how to run the Objective C++ preprocessor])
+if test -z "$OBJCXXCPP"; then
+  AC_CACHE_VAL(ac_cv_prog_OBJCXXCPP,
+  [dnl
+    # Double quotes because OBJCXXCPP needs to be expanded
+    for OBJCXXCPP in "$OBJCXX -E" "/lib/cpp"
+    do
+      _AC_PROG_PREPROC_WORKS_IFELSE([break])
+    done
+    ac_cv_prog_OBJCXXCPP=$OBJCXXCPP
+  ])dnl
+  OBJCXXCPP=$ac_cv_prog_OBJCXXCPP
+else
+  ac_cv_prog_OBJCXXCPP=$OBJCXXCPP
+fi
+AC_MSG_RESULT([$OBJCXXCPP])
+_AC_PROG_PREPROC_WORKS_IFELSE([],
+	  [AC_MSG_FAILURE([Objective C++ preprocessor "$OBJCXXCPP" fails sanity check])])
+AC_SUBST(OBJCXXCPP)dnl
+AC_LANG_POP(Objective C++)dnl
+])# AC_PROG_OBJCXXCPP
+
+
+# AC_LANG_COMPILER(Objective C++)
+# -------------------------------
+# Find the Objective C++ compiler.  Must be AC_DEFUN'd to be AC_REQUIRE'able.
+AC_DEFUN([AC_LANG_COMPILER(Objective C++)],
+[AC_REQUIRE([AC_PROG_OBJCXX])])
+
+
+
+# AC_PROG_OBJCXX([LIST-OF-COMPILERS])
+# -----------------------------------
+# LIST-OF-COMPILERS is a space separated list of Objective C++ compilers to
+# search for (if not specified, a default list is used).  This just gives
+# the user an opportunity to specify an alternative search list for the
+# Objective C++ compiler.
+# FIXME: this list is pure guesswork
+# objc++ StepStone Objective-C++ compiler (also "standard" name for OBJCXX)
+# objcxx David Stes' POC.  If you installed this, you likely want it.
+# c++    Native C++ compiler (for instance, Apple).
+# CXX    You never know.
+AN_MAKEVAR([OBJCXX],  [AC_PROG_OBJCXX])
+AN_PROGRAM([objcxx],  [AC_PROG_OBJCXX])
+AC_DEFUN([AC_PROG_OBJCXX],
+[AC_LANG_PUSH(Objective C++)dnl
+AC_ARG_VAR([OBJCXX],      [Objective C++ compiler command])dnl
+AC_ARG_VAR([OBJCXXFLAGS], [Objective C++ compiler flags])dnl
+_AC_ARG_VAR_LDFLAGS()dnl
+_AC_ARG_VAR_LIBS()dnl
+_AC_ARG_VAR_CPPFLAGS()dnl
+_AC_ARG_VAR_PRECIOUS([OBJCXX])dnl
+AC_CHECK_TOOLS(OBJCXX,
+	       [m4_default([$1], [g++ objc++ objcxx c++ CXX])],
+	       g++)
+# Provide some information about the compiler.
+_AS_ECHO_LOG([checking for _AC_LANG compiler version])
+set X $ac_compile
+ac_compiler=$[2]
+for ac_option in --version -v -V -qversion; do
+  _AC_DO_LIMIT([$ac_compiler $ac_option >&AS_MESSAGE_LOG_FD])
+done
+
+m4_expand_once([_AC_COMPILER_EXEEXT])[]dnl
+m4_expand_once([_AC_COMPILER_OBJEXT])[]dnl
+_AC_LANG_COMPILER_GNU
+if test $ac_compiler_gnu = yes; then
+  GOBJCXX=yes
+else
+  GOBJCXX=
+fi
+_AC_PROG_OBJCXX_G
+AC_LANG_POP(Objective C++)dnl
+])# AC_PROG_OBJCXX
+
+
+# _AC_PROG_OBJCXX_G
+# -----------------
+# Check whether -g works, even if OBJCFLAGS is set, in case the package
+# plays around with OBJCFLAGS (such as to build both debugging and
+# normal versions of a library), tasteless as that idea is.
+# Don't consider -g to work if it generates warnings when plain compiles don't.
+m4_define([_AC_PROG_OBJCXX_G],
+[ac_test_OBJCXXFLAGS=${OBJCXXFLAGS+set}
+ac_save_OBJCXXFLAGS=$OBJCXXFLAGS
+AC_CACHE_CHECK(whether $OBJCXX accepts -g, ac_cv_prog_objcxx_g,
+  [ac_save_objcxx_werror_flag=$ac_objcxx_werror_flag
+   ac_objcxx_werror_flag=yes
+   ac_cv_prog_objcxx_g=no
+   OBJCXXFLAGS="-g"
+   _AC_COMPILE_IFELSE([AC_LANG_PROGRAM()],
+     [ac_cv_prog_objcxx_g=yes],
+     [OBJCXXFLAGS=""
+      _AC_COMPILE_IFELSE([AC_LANG_PROGRAM()],
+	[],
+	[ac_objcxx_werror_flag=$ac_save_objcxx_werror_flag
+	 OBJCXXFLAGS="-g"
+	 _AC_COMPILE_IFELSE([AC_LANG_PROGRAM()],
+	   [ac_cv_prog_objcxx_g=yes])])])
+   ac_objcxx_werror_flag=$ac_save_objcx_werror_flag])
+if test "$ac_test_OBJCXXFLAGS" = set; then
+  OBJCXXFLAGS=$ac_save_OBJCXXFLAGS
+elif test $ac_cv_prog_objcxx_g = yes; then
+  if test "$GOBJCXX" = yes; then
+    OBJCXXFLAGS="-g -O2"
+  else
+    OBJCXXFLAGS="-g"
+  fi
+else
+  if test "$GOBJCXX" = yes; then
+    OBJCXXFLAGS="-O2"
+  else
+    OBJCXXFLAGS=
+  fi
+fi[]dnl
+])# _AC_PROG_OBJCXX_G
+
+
+
 ## ------------------------------- ##
 ## 4. Compilers' characteristics.  ##
 ## ------------------------------- ##
@@ -967,8 +1102,7 @@ AC_DEFUN([_AC_PROG_CC_C89],
 [_AC_C_STD_TRY([c89],
 [[#include <stdarg.h>
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+struct stat;
 /* Most of the following tests are stolen from RCS 5.7's src/conf.sh.  */
 struct buf { int x; };
 FILE * (*rcsopen) (struct buf *, struct stat *, int);
@@ -1206,11 +1340,20 @@ dnl AIX		-qlanglvl=extc99 (unused restrictive mode: -qlanglvl=stdc99)
 dnl HP cc	-AC99
 dnl Intel ICC	-std=c99, -c99 (deprecated)
 dnl IRIX	-c99
-dnl Solaris	-xc99=all (Forte Developer 7 C mishandles -xc99 on Solaris 9,
-dnl		as it incorrectly assumes C99 semantics for library functions)
+dnl Solaris	-D_STDC_C99=
+dnl		cc's -xc99 option uses linker magic to define the external
+dnl		symbol __xpg4 as if by "int __xpg4 = 1;", which enables C99
+dnl		behavior for C library functions.  This is not wanted here,
+dnl		because it means that a single module compiled with -xc99
+dnl		alters C runtime behavior for the entire program, not for
+dnl		just the module.  Instead, define the (private) symbol
+dnl		_STDC_C99, which suppresses a bogus failure in <stdbool.h>.
+dnl		The resulting compiler passes the test case here, and that's
+dnl		good enough.  For more, please see the thread starting at:
+dnl            http://lists.gnu.org/archive/html/autoconf/2010-12/msg00059.html
 dnl Tru64	-c99
 dnl with extended modes being tried first.
-[[-std=gnu99 -std=c99 -c99 -AC99 -xc99=all -qlanglvl=extc99]], [$1], [$2])[]dnl
+[[-std=gnu99 -std=c99 -c99 -AC99 -D_STDC_C99= -qlanglvl=extc99]], [$1], [$2])[]dnl
 ])# _AC_PROG_CC_C99
 
 
@@ -1518,11 +1661,11 @@ esac
 AC_DEFUN([AC_C_CONST],
 [AC_CACHE_CHECK([for an ANSI C-conforming const], ac_cv_c_const,
 [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],
-[[/* FIXME: Include the comments suggested by Paul. */
+[[
 #ifndef __cplusplus
-  /* Ultrix mips cc rejects this.  */
+  /* Ultrix mips cc rejects this sort of thing.  */
   typedef int charset[2];
-  const charset cs;
+  const charset cs = { 0, 0 };
   /* SunOS 4.1.1 cc rejects this.  */
   char const *const *pcpcc;
   char **ppc;
@@ -1539,8 +1682,9 @@ AC_DEFUN([AC_C_CONST],
   ++pcpcc;
   ppc = (char**) pcpcc;
   pcpcc = (char const *const *) ppc;
-  { /* SCO 3.2v4 cc rejects this.  */
-    char *t;
+  { /* SCO 3.2v4 cc rejects this sort of thing.  */
+    char tx;
+    char *t = &tx;
     char const *s = 0 ? (char *) 0 : (char const *) 0;
 
     *t++ = 0;
@@ -1556,10 +1700,10 @@ AC_DEFUN([AC_C_CONST],
     iptr p = 0;
     ++p;
   }
-  { /* AIX XL C 1.02.0.0 rejects this saying
+  { /* AIX XL C 1.02.0.0 rejects this sort of thing, saying
        "k.c", line 2.27: 1506-025 (S) Operand must be a modifiable lvalue. */
-    struct s { int j; const int *ap[3]; };
-    struct s *b; b->j = 5;
+    struct s { int j; const int *ap[3]; } bx;
+    struct s *b = &bx; b->j = 5;
   }
   { /* ULTRIX-32 V3.1 (Rev 9) vcc rejects this */
     const int foo = 10;
@@ -1795,7 +1939,7 @@ AC_DEFUN([AC_C_TYPEOF],
 # Expands to some language dependent source code for testing the presence of
 # OpenMP.
 AC_DEFUN([_AC_LANG_OPENMP],
-[_AC_LANG_DISPATCH([$0], _AC_LANG, $@)])
+[AC_LANG_SOURCE([_AC_LANG_DISPATCH([$0], _AC_LANG, $@)])])
 
 # _AC_LANG_OPENMP(C)
 # ------------------
@@ -1815,10 +1959,17 @@ m4_copy([_AC_LANG_OPENMP(C)], [_AC_LANG_OPENMP(C++)])
 # _AC_LANG_OPENMP(Fortran 77)
 # ---------------------------
 m4_define([_AC_LANG_OPENMP(Fortran 77)],
-[AC_LANG_FUNC_LINK_TRY([omp_get_num_threads])])
+[
+      program main
+      implicit none
+!$    integer tid
+      tid = 42
+      call omp_set_num_threads(2)
+      end
+])
 
 # _AC_LANG_OPENMP(Fortran)
-# ---------------------------
+# ------------------------
 m4_copy([_AC_LANG_OPENMP(Fortran 77)], [_AC_LANG_OPENMP(Fortran)])
 
 # AC_OPENMP
@@ -1838,7 +1989,7 @@ AC_DEFUN([AC_OPENMP],
   AC_ARG_ENABLE([openmp],
     [AS_HELP_STRING([--disable-openmp], [do not use OpenMP])])
   if test "$enable_openmp" != no; then
-    AC_CACHE_CHECK([for $CC option to support OpenMP],
+    AC_CACHE_CHECK([for $[]_AC_CC[] option to support OpenMP],
       [ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp],
       [AC_LINK_IFELSE([_AC_LANG_OPENMP],
 	 [ac_cv_prog_[]_AC_LANG_ABBREV[]_openmp='none needed'],
@@ -1850,12 +2001,16 @@ AC_DEFUN([AC_OPENMP],
 	  dnl   SGI C, PGI C         -mp
 	  dnl   Tru64 Compaq C       -omp
 	  dnl   IBM C (AIX, Linux)   -qsmp=omp
+          dnl   Cray CCE             -homp
+          dnl   NEC SX               -Popenmp
+          dnl   Lahey Fortran (Linux)  --openmp
 	  dnl If in this loop a compiler is passed an option that it doesn't
 	  dnl understand or that it misinterprets, the AC_LINK_IFELSE test
 	  dnl will fail (since we know that it failed without the option),
 	  dnl therefore the loop will continue searching for an option, and
 	  dnl no output file called 'penmp' or 'mp' is created.
-	  for ac_option in -fopenmp -xopenmp -openmp -mp -omp -qsmp=omp; do
+	  for ac_option in -fopenmp -xopenmp -openmp -mp -omp -qsmp=omp -homp \
+                           -Popenmp --openmp; do
 	    ac_save_[]_AC_LANG_PREFIX[]FLAGS=$[]_AC_LANG_PREFIX[]FLAGS
 	    _AC_LANG_PREFIX[]FLAGS="$[]_AC_LANG_PREFIX[]FLAGS $ac_option"
 	    AC_LINK_IFELSE([_AC_LANG_OPENMP],

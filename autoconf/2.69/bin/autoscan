@@ -1,15 +1,14 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/perl -w
 # -*- perl -*-
 # Generated from autoscan.in; do not edit by hand.
 
 # autoscan - Create configure.scan (a preliminary configure.ac) for a package.
-# Copyright (C) 1994, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006,
-# 2007, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 1994, 1999-2012 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,18 +16,16 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Written by David MacKenzie <djm@gnu.ai.mit.edu>.
 
-eval 'case $# in 0) exec /usr/local/bin/perl -S "$0";; *) exec /usr/local/bin/perl -S "$0" "$@";; esac'
+eval 'case $# in 0) exec /usr/bin/perl -S "$0";; *) exec /usr/bin/perl -S "$0" "$@";; esac'
     if 0;
 
 BEGIN
 {
-  my $pkgdatadir = $ENV{'autom4te_perllibdir'} || '/usr/local/share/autoconf';
+  my $pkgdatadir = $ENV{'autom4te_perllibdir'} || '/usr/local/Cellar/autoconf/2.69/share/autoconf';
   unshift @INC, $pkgdatadir;
 
   # Override SHELL.  On DJGPP SHELL may not be set to a shell
@@ -94,10 +91,10 @@ my $configure_scan = 'configure.scan';
 my $log;
 
 # Autoconf and lib files.
-my $autom4te = $ENV{'AUTOM4TE'} || '/usr/local/bin/autom4te';
+my $autom4te = $ENV{'AUTOM4TE'} || '/usr/local/Cellar/autoconf/2.69/bin/autom4te';
 my $autoconf = "$autom4te --language=autoconf";
 my @prepend_include;
-my @include = ('/usr/local/share/autoconf');
+my @include = ('/usr/local/Cellar/autoconf/2.69/share/autoconf');
 
 # $help
 # -----
@@ -125,10 +122,10 @@ General help using GNU software: <http://www.gnu.org/gethelp/>.
 
 # $version
 # --------
-$version = "autoscan (GNU Autoconf) 2.64
-Copyright (C) 2009 Free Software Foundation, Inc.
-License GPLv2+: GNU GPL version 2 or later
-<http://gnu.org/licenses/old-licenses/gpl-2.0.html>
+$version = "autoscan (GNU Autoconf) 2.69
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+/Autoconf: GNU GPL version 3 or later
+<http://gnu.org/licenses/gpl.html>, <http://gnu.org/licenses/exceptions.html>
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 
@@ -256,7 +253,7 @@ sub scan_c_file ($)
 	{
 	  $in_comment = 0;
 	}
-      # The whole line is inside a commment.
+      # The whole line is inside a comment.
       next if $in_comment;
       # All on one line.
       s,/\*.*?\*/,,g;
@@ -530,7 +527,7 @@ sub output ($)
     ("#                                               -*- Autoconf -*-\n" .
      "# Process this file with autoconf to produce a configure script.\n" .
      "\n" .
-     "AC_PREREQ([2.64])\n" .
+     "AC_PREREQ([2.69])\n" .
      "AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])\n");
   if (defined $cfiles[0])
     {

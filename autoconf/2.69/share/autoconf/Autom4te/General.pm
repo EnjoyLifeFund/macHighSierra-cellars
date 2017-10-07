@@ -1,11 +1,11 @@
 # autoconf -- create `configure' using m4 macros
-# Copyright (C) 2001, 2002, 2003, 2004, 2006, 2007 Free Software
+# Copyright (C) 2001-2004, 2006-2007, 2009-2012 Free Software
 # Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,15 +13,13 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package Autom4te::General;
 
 =head1 NAME
 
-Autom4te::General - general support functions for Autoconf and Automake
+Autom4te::General - general support functions for Autoconf
 
 =head1 SYNOPSIS
 
@@ -30,14 +28,15 @@ Autom4te::General - general support functions for Autoconf and Automake
 =head1 DESCRIPTION
 
 This perl module provides various general purpose support functions
-used in several executables of the Autoconf and Automake packages.
+used in several executables of the Autoconf package.
 
 =cut
 
-use 5.005_03;
+use 5.006;
 use Exporter;
 use Autom4te::ChannelDefs;
 use Autom4te::Channels;
+use Autom4te::Getopt ();
 use File::Basename;
 use File::Path ();
 use File::stat;
@@ -77,7 +76,7 @@ my @export_forward_subs =
 =item C<$debug>
 
 Set this variable to 1 if debug messages should be enabled.  Debug
-messages are meant for developpers only, or when tracking down an
+messages are meant for developers only, or when tracking down an
 incorrect execution.
 
 =cut
@@ -97,7 +96,7 @@ $force = undef;
 
 =item C<$help>
 
-Set to the help message associated to the option C<--help>.
+Set to the help message associated with the option C<--help>.
 
 =cut
 
@@ -106,7 +105,7 @@ $help = undef;
 
 =item C<$me>
 
-The name of this application, as should be used in diagostic messages.
+The name of this application, for diagnostic messages.
 
 =cut
 
@@ -234,28 +233,19 @@ sub debug (@)
 
 =item C<getopt (%option)>
 
-Wrapper around C<Getopt::Long>.  In addition to the user C<option>s,
-support C<-h>/C<--help>, C<-V>/C<--version>, C<-v>/C<--verbose>,
-C<-d>/C<--debug>, C<-f>/C<--force>.  Conform to the GNU Coding
-Standards for error messages.  Try to work around a weird behavior
-from C<Getopt::Long> to preserve C<-> as an C<@ARGV> instead of
-rejecting it as a broken option.
+Wrapper around C<Autom4te::Getopt::parse_options>.  In addition to
+the user C<option>s, support C<-h>/C<--help>, C<-V>/C<--version>,
+C<-v>/C<--verbose>, C<-d>/C<--debug>, C<-f>/C<--force>.  Conform to
+the GNU Coding Standards for error messages.
 
 =cut
 
 # getopt (%OPTION)
 # ----------------
 # Handle the %OPTION, plus all the common options.
-# Work around Getopt bugs wrt `-'.
 sub getopt (%)
 {
   my (%option) = @_;
-  use Getopt::Long;
-
-  # F*k.  Getopt seems bogus and dies when given `-' with `bundling'.
-  # If fixed some day, use this: '' => sub { push @ARGV, "-" }
-  my $stdin = grep /^-$/, @ARGV;
-  @ARGV = grep !/^-$/, @ARGV;
   %option = ("h|help"     => sub { print $help; exit 0 },
 	     "V|version"  => sub { print $version; exit 0 },
 
@@ -265,19 +255,7 @@ sub getopt (%)
 
 	     # User options last, so that they have precedence.
 	     %option);
-  Getopt::Long::Configure ("bundling", "pass_through");
-  GetOptions (%option)
-    or exit 1;
-
-  foreach (grep { /^-./ } @ARGV)
-    {
-      print STDERR "$0: unrecognized option `$_'\n";
-      print STDERR "Try `$0 --help' for more information.\n";
-      exit (1);
-    }
-
-  push @ARGV, '-'
-    if $stdin;
+  Autom4te::Getopt::parse_options (%option);
 
   setup_channel 'note', silent => !$verbose;
   setup_channel 'verb', silent => !$verbose;

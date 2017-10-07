@@ -1,50 +1,27 @@
 # This file is part of Autoconf.			-*- Autoconf -*-
 # Checking for functions.
-# Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008
-# Free Software Foundation, Inc.
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# Copyright (C) 2000-2012 Free Software Foundation, Inc.
+
+# This file is part of Autoconf.  This program is free
+# software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
+# Under Section 7 of GPL version 3, you are granted additional
+# permissions described in the Autoconf Configure Script Exception,
+# version 3.0, as published by the Free Software Foundation.
+#
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
-# As a special exception, the Free Software Foundation gives unlimited
-# permission to copy, distribute and modify the configure scripts that
-# are the output of Autoconf.  You need not follow the terms of the GNU
-# General Public License when using or distributing such scripts, even
-# though portions of the text of Autoconf appear in them.  The GNU
-# General Public License (GPL) does govern all other use of the material
-# that constitutes the Autoconf program.
-#
-# Certain portions of the Autoconf source text are designed to be copied
-# (in certain cases, depending on the input) into the output of
-# Autoconf.  We call these the "data" portions.  The rest of the Autoconf
-# source text consists of comments plus executable code that decides which
-# of the data portions to output in any given case.  We call these
-# comments and executable code the "non-data" portions.  Autoconf never
-# copies any of the non-data portions into its output.
-#
-# This special exception to the GPL applies to versions of Autoconf
-# released by the Free Software Foundation.  When you make and
-# distribute a modified version of Autoconf, you may extend this special
-# exception to the GPL to apply to your modified version as well, *unless*
-# your modified version has the potential to copy into its output some
-# of the text that was the non-data portion of the version that you started
-# with.  (In other words, unless your change moves or copies text from
-# the non-data portions to the data portions.)  If your modification has
-# such potential, you must delete any notice of this special exception
-# to the GPL from your modified version.
-#
+# and a copy of the Autoconf Configure Script Exception along with
+# this program; see the files COPYINGv3 and COPYING.EXCEPTION
+# respectively.  If not, see <http://www.gnu.org/licenses/>.
+
 # Written by David MacKenzie, with help from
 # Franc,ois Pinard, Karl Berry, Richard Pixley, Ian Lance Taylor,
 # Roland McGrath, Noah Friedman, david d zuhn, and many others.
@@ -138,12 +115,30 @@ m4_define([_AC_FUNCS_EXPANSION],
 ])
 
 
+# _AC_REPLACE_FUNC(FUNCTION)
+# --------------------------
+# If FUNCTION exists, define HAVE_FUNCTION; else add FUNCTION.c
+# to the list of library objects.  FUNCTION must be literal.
+m4_define([_AC_REPLACE_FUNC],
+[AC_CHECK_FUNC([$1],
+  [_AH_CHECK_FUNC([$1])AC_DEFINE(AS_TR_CPP([HAVE_$1]))],
+  [_AC_LIBOBJ([$1])AC_LIBSOURCE([$1.c])])])
+
 # AC_REPLACE_FUNCS(FUNCTION...)
 # -----------------------------
+# For each FUNCTION in the whitespace separated list, perform the
+# equivalent of AC_CHECK_FUNC, then call AC_LIBOBJ if the function
+# was not found.
 AC_DEFUN([AC_REPLACE_FUNCS],
-[m4_map_args_w([$1], [AC_LIBSOURCE(], [.c)])]dnl
-[AC_CHECK_FUNCS([$1], , [_AC_LIBOBJ($ac_func)])
-])
+[_$0(m4_flatten([$1]))])
+
+m4_define([_AC_REPLACE_FUNCS],
+[AS_LITERAL_IF([$1],
+[m4_map_args_w([$1], [_AC_REPLACE_FUNC(], [)
+])],
+[AC_CHECK_FUNCS([$1],
+  [_AH_CHECK_FUNC([$ac_func])],
+  [_AC_LIBOBJ([$ac_func])])])])
 
 
 # AC_TRY_LINK_FUNC(FUNC, ACTION-IF-FOUND, ACTION-IF-NOT-FOUND)
@@ -330,23 +325,20 @@ AC_CACHE_CHECK([stack direction for C alloca],
 [AC_RUN_IFELSE([AC_LANG_SOURCE(
 [AC_INCLUDES_DEFAULT
 int
-find_stack_direction ()
+find_stack_direction (int *addr, int depth)
 {
-  static char *addr = 0;
-  auto char dummy;
-  if (addr == 0)
-    {
-      addr = &dummy;
-      return find_stack_direction ();
-    }
-  else
-    return (&dummy > addr) ? 1 : -1;
+  int dir, dummy = 0;
+  if (! addr)
+    addr = &dummy;
+  *addr = addr < &dummy ? 1 : addr == &dummy ? 0 : -1;
+  dir = depth ? find_stack_direction (addr, depth - 1) : 0;
+  return dir + dummy;
 }
 
 int
-main ()
+main (int argc, char **argv)
 {
-  return find_stack_direction () < 0;
+  return find_stack_direction (0, argc + !argv + 20) < 0;
 }])],
 	       [ac_cv_c_stack_direction=1],
 	       [ac_cv_c_stack_direction=-1],
@@ -368,6 +360,7 @@ AC_DEFINE_UNQUOTED(STACK_DIRECTION, $ac_cv_c_stack_direction)
 AN_FUNCTION([alloca], [AC_FUNC_ALLOCA])
 AN_HEADER([alloca.h], [AC_FUNC_ALLOCA])
 AC_DEFUN([AC_FUNC_ALLOCA],
+[AC_REQUIRE([AC_TYPE_SIZE_T])]dnl
 [# The Ultrix 4.2 mips builtin alloca declared by alloca.h only works
 # for constant arguments.  Useless!
 AC_CACHE_CHECK([for working alloca.h], ac_cv_working_alloca_h,
@@ -399,7 +392,7 @@ AC_CACHE_CHECK([for alloca], ac_cv_func_alloca_works,
  #pragma alloca
 #   else
 #    ifndef alloca /* predefined by HP cc +Olibcalls */
-char *alloca ();
+void *alloca (size_t);
 #    endif
 #   endif
 #  endif
@@ -682,7 +675,8 @@ AC_CHECK_FUNCS(setlocale)
 # We cannot check for <dwarf.h>, because Solaris 2 does not use dwarf (it
 # uses stabs), but it is still SVR4.  We cannot check for <elf.h> because
 # Irix 4.0.5F has the header but not the library.
-if test $ac_have_func = no && test "$ac_cv_lib_elf_elf_begin" = yes; then
+if test $ac_have_func = no && test "$ac_cv_lib_elf_elf_begin" = yes \
+    && test "$ac_cv_lib_kvm_kvm_open" = yes; then
   ac_have_func=yes
   AC_DEFINE(SVR4, 1, [Define to 1 on System V Release 4.])
 fi
@@ -854,14 +848,14 @@ fi
 AN_FUNCTION([lstat], [AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK])
 AC_DEFUN([AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK],
 [AC_CACHE_CHECK(
-       [whether lstat dereferences a symlink specified with a trailing slash],
+       [whether lstat correctly handles trailing slash],
        [ac_cv_func_lstat_dereferences_slashed_symlink],
 [rm -f conftest.sym conftest.file
 echo >conftest.file
 if test "$as_ln_s" = "ln -s" && ln -s conftest.file conftest.sym; then
   AC_RUN_IFELSE([AC_LANG_PROGRAM([AC_INCLUDES_DEFAULT],
     [struct stat sbuf;
-     /* Linux will dereference the symlink and fail.
+     /* Linux will dereference the symlink and fail, as required by POSIX.
 	That is better in the sense that it means we will not
 	have to compile and use the lstat wrapper.  */
      return lstat ("conftest.sym/", &sbuf) == 0;])],
@@ -877,12 +871,12 @@ rm -f conftest.sym conftest.file
 ])
 
 test $ac_cv_func_lstat_dereferences_slashed_symlink = yes &&
-  AC_DEFINE_UNQUOTED(LSTAT_FOLLOWS_SLASHED_SYMLINK, 1,
+  AC_DEFINE_UNQUOTED([LSTAT_FOLLOWS_SLASHED_SYMLINK], [1],
 		     [Define to 1 if `lstat' dereferences a symlink specified
 		      with a trailing slash.])
 
-if test $ac_cv_func_lstat_dereferences_slashed_symlink = no; then
-  AC_LIBOBJ(lstat)
+if test "x$ac_cv_func_lstat_dereferences_slashed_symlink" = xno; then
+  AC_LIBOBJ([lstat])
 fi
 ])
 
@@ -1026,8 +1020,8 @@ static time_t time_t_max;
 static time_t time_t_min;
 
 /* Values we'll use to set the TZ environment variable.  */
-static char *tz_strings[] = {
-  (char *) 0, "TZ=GMT0", "TZ=JST-9",
+static const char *tz_strings[] = {
+  (const char *) 0, "TZ=GMT0", "TZ=JST-9",
   "TZ=EST+3EDT+2,M10.1.0/00:00:00,M2.3.0/00:00:00"
 };
 #define N_STRINGS (sizeof (tz_strings) / sizeof (tz_strings[0]))
@@ -1044,7 +1038,7 @@ spring_forward_gap ()
      instead of "TZ=America/Vancouver" in order to detect the bug even
      on systems that don't support the Olson extension, or don't have the
      full zoneinfo tables installed.  */
-  putenv ("TZ=PST8PDT,M4.1.0,M10.5.0");
+  putenv ((char*) "TZ=PST8PDT,M4.1.0,M10.5.0");
 
   tm.tm_year = 98;
   tm.tm_mon = 3;
@@ -1057,16 +1051,14 @@ spring_forward_gap ()
 }
 
 static int
-mktime_test1 (now)
-     time_t now;
+mktime_test1 (time_t now)
 {
   struct tm *lt;
   return ! (lt = localtime (&now)) || mktime (lt) == now;
 }
 
 static int
-mktime_test (now)
-     time_t now;
+mktime_test (time_t now)
 {
   return (mktime_test1 (now)
 	  && mktime_test1 ((time_t) (time_t_max - now))
@@ -1090,8 +1082,7 @@ irix_6_4_bug ()
 }
 
 static int
-bigtime_test (j)
-     int j;
+bigtime_test (int j)
 {
   struct tm tm;
   time_t now;
@@ -1135,7 +1126,7 @@ year_2050_test ()
      instead of "TZ=America/Vancouver" in order to detect the bug even
      on systems that don't support the Olson extension, or don't have the
      full zoneinfo tables installed.  */
-  putenv ("TZ=PST8PDT,M4.1.0,M10.5.0");
+  putenv ((char*) "TZ=PST8PDT,M4.1.0,M10.5.0");
 
   t = mktime (&tm);
 
@@ -1170,7 +1161,7 @@ main ()
   for (i = 0; i < N_STRINGS; i++)
     {
       if (tz_strings[i])
-	putenv (tz_strings[i]);
+	putenv ((char*) tz_strings[i]);
 
       for (t = 0; t <= time_t_max - delta; t += delta)
 	if (! mktime_test (t))
@@ -1208,9 +1199,9 @@ AU_ALIAS([AM_FUNC_MKTIME], [AC_FUNC_MKTIME])
 # ------------
 AN_FUNCTION([mmap], [AC_FUNC_MMAP])
 AC_DEFUN([AC_FUNC_MMAP],
-[AC_CHECK_HEADERS(stdlib.h unistd.h)
-AC_CHECK_FUNCS(getpagesize)
-AC_CACHE_CHECK(for working mmap, ac_cv_func_mmap_fixed_mapped,
+[AC_CHECK_HEADERS_ONCE([stdlib.h unistd.h sys/param.h])
+AC_CHECK_FUNCS([getpagesize])
+AC_CACHE_CHECK([for working mmap], [ac_cv_func_mmap_fixed_mapped],
 [AC_RUN_IFELSE([AC_LANG_SOURCE([AC_INCLUDES_DEFAULT]
 [[/* malloc might have been renamed as rpl_malloc. */
 #undef malloc
@@ -1246,11 +1237,6 @@ char *malloc ();
 
 /* This mess was copied from the GNU getpagesize.h.  */
 #ifndef HAVE_GETPAGESIZE
-/* Assume that all systems that can run configure have sys/param.h.  */
-# ifndef HAVE_SYS_PARAM_H
-#  define HAVE_SYS_PARAM_H 1
-# endif
-
 # ifdef _SC_PAGESIZE
 #  define getpagesize() sysconf(_SC_PAGESIZE)
 # else /* no _SC_PAGESIZE */
@@ -1285,8 +1271,9 @@ int
 main ()
 {
   char *data, *data2, *data3;
+  const char *cdata2;
   int i, pagesize;
-  int fd;
+  int fd, fd2;
 
   pagesize = getpagesize ();
 
@@ -1299,27 +1286,41 @@ main ()
   umask (0);
   fd = creat ("conftest.mmap", 0600);
   if (fd < 0)
-    return 1;
+    return 2;
   if (write (fd, data, pagesize) != pagesize)
-    return 1;
+    return 3;
   close (fd);
+
+  /* Next, check that the tail of a page is zero-filled.  File must have
+     non-zero length, otherwise we risk SIGBUS for entire page.  */
+  fd2 = open ("conftest.txt", O_RDWR | O_CREAT | O_TRUNC, 0600);
+  if (fd2 < 0)
+    return 4;
+  cdata2 = "";
+  if (write (fd2, cdata2, 1) != 1)
+    return 5;
+  data2 = (char *) mmap (0, pagesize, PROT_READ | PROT_WRITE, MAP_SHARED, fd2, 0L);
+  if (data2 == MAP_FAILED)
+    return 6;
+  for (i = 0; i < pagesize; ++i)
+    if (*(data2 + i))
+      return 7;
+  close (fd2);
+  if (munmap (data2, pagesize))
+    return 8;
 
   /* Next, try to mmap the file at a fixed address which already has
      something else allocated at it.  If we can, also make sure that
      we see the same garbage.  */
   fd = open ("conftest.mmap", O_RDWR);
   if (fd < 0)
-    return 1;
-  data2 = (char *) malloc (2 * pagesize);
-  if (!data2)
-    return 1;
-  data2 += (pagesize - ((long int) data2 & (pagesize - 1))) & (pagesize - 1);
+    return 9;
   if (data2 != mmap (data2, pagesize, PROT_READ | PROT_WRITE,
 		     MAP_PRIVATE | MAP_FIXED, fd, 0L))
-    return 1;
+    return 10;
   for (i = 0; i < pagesize; ++i)
     if (*(data + i) != *(data2 + i))
-      return 1;
+      return 11;
 
   /* Finally, make sure that changes to the mapped area do not
      percolate back to the file as seen by read().  (This is a bug on
@@ -1328,12 +1329,12 @@ main ()
     *(data2 + i) = *(data2 + i) + 1;
   data3 = (char *) malloc (pagesize);
   if (!data3)
-    return 1;
+    return 12;
   if (read (fd, data3, pagesize) != pagesize)
-    return 1;
+    return 13;
   for (i = 0; i < pagesize; ++i)
     if (*(data + i) != *(data3 + i))
-      return 1;
+      return 14;
   close (fd);
   return 0;
 }]])],
@@ -1341,10 +1342,10 @@ main ()
 	       [ac_cv_func_mmap_fixed_mapped=no],
 	       [ac_cv_func_mmap_fixed_mapped=no])])
 if test $ac_cv_func_mmap_fixed_mapped = yes; then
-  AC_DEFINE(HAVE_MMAP, 1,
+  AC_DEFINE([HAVE_MMAP], [1],
 	    [Define to 1 if you have a working `mmap' system call.])
 fi
-rm -f conftest.mmap
+rm -f conftest.mmap conftest.txt
 ])# AC_FUNC_MMAP
 
 
@@ -1455,7 +1456,7 @@ AC_CACHE_CHECK([types of arguments for select],
  done
 done
 # Provide a safe default value.
-: ${ac_cv_func_select_args='int,int *,struct timeval *'}
+: "${ac_cv_func_select_args=int,int *,struct timeval *}"
 ])
 ac_save_IFS=$IFS; IFS=','
 set dummy `echo "$ac_cv_func_select_args" | sed 's/\*/\*/g'`
@@ -1675,6 +1676,7 @@ LIBS="-lintl $LIBS"])])dnl
 AN_FUNCTION([strnlen], [AC_FUNC_STRNLEN])
 AC_DEFUN([AC_FUNC_STRNLEN],
 [AC_REQUIRE([AC_USE_SYSTEM_EXTENSIONS])dnl
+AC_REQUIRE([AC_CANONICAL_HOST]) dnl for cross-compiles
 AC_CACHE_CHECK([for working strnlen], ac_cv_func_strnlen_working,
 [AC_RUN_IFELSE([AC_LANG_PROGRAM([AC_INCLUDES_DEFAULT], [[
 #define S "foobar"
@@ -1694,7 +1696,11 @@ AC_CACHE_CHECK([for working strnlen], ac_cv_func_strnlen_working,
 ]])],
 	       [ac_cv_func_strnlen_working=yes],
 	       [ac_cv_func_strnlen_working=no],
-	       [ac_cv_func_strnlen_working=no])])
+	       [# Guess no on AIX systems, yes otherwise.
+		case "$host_os" in
+		  aix*) ac_cv_func_strnlen_working=no;;
+		  *)    ac_cv_func_strnlen_working=yes;;
+		esac])])
 test $ac_cv_func_strnlen_working = no && AC_LIBOBJ([strnlen])
 ])# AC_FUNC_STRNLEN
 
@@ -1774,7 +1780,7 @@ AU_ALIAS([AC_UTIME_NULL], [AC_FUNC_UTIME_NULL])
 
 
 # AC_FUNC_FORK
-# -------------
+# ------------
 AN_FUNCTION([fork],  [AC_FUNC_FORK])
 AN_FUNCTION([vfork], [AC_FUNC_FORK])
 AC_DEFUN([AC_FUNC_FORK],
@@ -1835,7 +1841,7 @@ AC_DEFUN([_AC_FUNC_FORK],
 
 
 # _AC_FUNC_VFORK
-# -------------
+# --------------
 AC_DEFUN([_AC_FUNC_VFORK],
 [AC_CACHE_CHECK(for working vfork, ac_cv_func_vfork_works,
 [AC_RUN_IFELSE([AC_LANG_SOURCE([[/* Thanks to Paul Eggert for this test.  */
@@ -1934,7 +1940,7 @@ main ()
 
 
 # AU::AC_FUNC_VFORK
-# ------------
+# -----------------
 AU_ALIAS([AC_FUNC_VFORK], [AC_FUNC_FORK])
 
 # AU::AC_VFORK

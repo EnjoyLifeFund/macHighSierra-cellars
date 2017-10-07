@@ -1,6 +1,6 @@
-# Copyright (C) 2003, 2005, 2006, 2008  Free Software Foundation, Inc.
+# Copyright (C) 2003-2012 Free Software Foundation, Inc.
 
-# This program is free software: you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2, or (at your option)
 # any later version.
@@ -11,17 +11,16 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ###############################################################
-# The main copy of this file is in Automake's CVS repository. #
+# The main copy of this file is in Automake's git repository. #
 # Updates should be sent to automake-patches@gnu.org.         #
 ###############################################################
 
 package Autom4te::Configure_ac;
 
+use 5.006;
 use strict;
 use Exporter;
 use Autom4te::Channels;
@@ -51,6 +50,20 @@ Autom4te::Configure_ac - Locate configure.ac or configure.in.
   my $file_name = find_configure_ac ($dir);
   my $file_name = require_configure_ac ($dir);
 
+=over 4
+
+=back
+
+=head2 Functions
+
+=over 4
+
+=item C<$configure_ac = find_configure_ac ([$directory])>
+
+Find a F<configure.ac> or F<configure.in> file in C<$directory>,
+defaulting to the current directory.  Complain if both files are present.
+Return the name of the file found, or the former if neither is present.
+
 =cut
 
 sub find_configure_ac (;@)
@@ -67,8 +80,8 @@ sub find_configure_ac (;@)
       if (-f $configure_in)
 	{
 	  msg ('unsupported',
-	       "`$configure_ac' and `$configure_in' both present.\n"
-	       . "proceeding with `$configure_ac'.");
+	       "'$configure_ac' and '$configure_in' both present.\n"
+	       . "proceeding with '$configure_ac'");
 	}
       return $configure_ac
     }
@@ -80,10 +93,16 @@ sub find_configure_ac (;@)
 }
 
 
+=item C<$configure_ac = require_configure_ac ([$directory])>
+
+Like C<find_configure_ac>, but fail if neither is present.
+
+=cut
+
 sub require_configure_ac (;$)
 {
   my $res = find_configure_ac (@_);
-  fatal "`configure.ac' or `configure.in' is required"
+  fatal "'configure.ac' or 'configure.in' is required"
     unless -f $res;
   return $res
 }

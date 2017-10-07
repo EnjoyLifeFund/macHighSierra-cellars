@@ -1,52 +1,28 @@
 # This file is part of Autoconf.                       -*- Autoconf -*-
 # Checking for programs.
 
-# Copyright (C) 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001,
-# 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software
-# Foundation, Inc.
+# Copyright (C) 1992-1996, 1998-2012 Free Software Foundation, Inc.
 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# This file is part of Autoconf.  This program is free
+# software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
+# Under Section 7 of GPL version 3, you are granted additional
+# permissions described in the Autoconf Configure Script Exception,
+# version 3.0, as published by the Free Software Foundation.
+#
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
+# and a copy of the Autoconf Configure Script Exception along with
+# this program; see the files COPYINGv3 and COPYING.EXCEPTION
+# respectively.  If not, see <http://www.gnu.org/licenses/>.
 
-# As a special exception, the Free Software Foundation gives unlimited
-# permission to copy, distribute and modify the configure scripts that
-# are the output of Autoconf.  You need not follow the terms of the GNU
-# General Public License when using or distributing such scripts, even
-# though portions of the text of Autoconf appear in them.  The GNU
-# General Public License (GPL) does govern all other use of the material
-# that constitutes the Autoconf program.
-#
-# Certain portions of the Autoconf source text are designed to be copied
-# (in certain cases, depending on the input) into the output of
-# Autoconf.  We call these the "data" portions.  The rest of the Autoconf
-# source text consists of comments plus executable code that decides which
-# of the data portions to output in any given case.  We call these
-# comments and executable code the "non-data" portions.  Autoconf never
-# copies any of the non-data portions into its output.
-#
-# This special exception to the GPL applies to versions of Autoconf
-# released by the Free Software Foundation.  When you make and
-# distribute a modified version of Autoconf, you may extend this special
-# exception to the GPL to apply to your modified version as well, *unless*
-# your modified version has the potential to copy into its output some
-# of the text that was the non-data portion of the version that you started
-# with.  (In other words, unless your change moves or copies text from
-# the non-data portions to the data portions.)  If your modification has
-# such potential, you must delete any notice of this special exception
-# to the GPL from your modified version.
-#
 # Written by David MacKenzie, with help from
 # Franc,ois Pinard, Karl Berry, Richard Pixley, Ian Lance Taylor,
 # Roland McGrath, Noah Friedman, david d zuhn, and many others.
@@ -467,7 +443,7 @@ fi
 # AC_PATH_PROGS_FEATURE_CHECK(VARIABLE, PROGNAME-LIST,
 #                             FEATURE-TEST, [ACTION-IF-NOT-FOUND=:],
 #                             [PATH=$PATH])
-# ----------------------------------------------------------------
+# ------------------------------------------------------------------
 # Designed to be used inside AC_CACHE_VAL.  It is recommended,
 # but not required, that the user also use AC_ARG_VAR([VARIABLE]).
 # If VARIABLE is not empty, set the cache variable
@@ -702,6 +678,7 @@ if test -z "$MKDIR_P"; then
 	   esac
 	 done
        done])])
+  test -d ./--version && rmdir ./--version
   if test "${ac_cv_path_mkdir+set}" = set; then
     MKDIR_P="$ac_cv_path_mkdir -p"
   else
@@ -709,7 +686,6 @@ if test -z "$MKDIR_P"; then
     # value for MKDIR_P within a source directory, because that will
     # break other packages using the cache if that directory is
     # removed, or if the value is a relative name.
-    test -d ./--version && rmdir ./--version
     MKDIR_P="$ac_install_sh -d"
   fi
 fi
@@ -748,7 +724,8 @@ a { ECHO; }
 b { REJECT; }
 c { yymore (); }
 d { yyless (1); }
-e { yyless (input () != 0); }
+e { /* IRIX 6.5 flex 2.5.4 underquotes its yyless argument.  */
+    yyless ((input () != 0)); }
 f { unput (yytext[0]); }
 . { BEGIN INITIAL; }
 %%
@@ -778,7 +755,8 @@ if test -z "${LEXLIB+set}"; then
     ac_cv_lib_lex='none needed'
     for ac_lib in '' -lfl -ll; do
       LIBS="$ac_lib $ac_save_LIBS"
-      AC_LINK_IFELSE([`cat $LEX_OUTPUT_ROOT.c`], [ac_cv_lib_lex=$ac_lib])
+      AC_LINK_IFELSE([AC_LANG_DEFINES_PROVIDED[`cat $LEX_OUTPUT_ROOT.c`]],
+	[ac_cv_lib_lex=$ac_lib])
       test "$ac_cv_lib_lex" != 'none needed' && break
     done
     LIBS=$ac_save_LIBS
@@ -794,9 +772,9 @@ AC_CACHE_CHECK(whether yytext is a pointer, ac_cv_prog_lex_yytext_pointer,
 ac_cv_prog_lex_yytext_pointer=no
 ac_save_LIBS=$LIBS
 LIBS="$LEXLIB $ac_save_LIBS"
-AC_LINK_IFELSE(
+AC_LINK_IFELSE([AC_LANG_DEFINES_PROVIDED
   [#define YYTEXT_POINTER 1
-`cat $LEX_OUTPUT_ROOT.c`],
+`cat $LEX_OUTPUT_ROOT.c`]],
   [ac_cv_prog_lex_yytext_pointer=yes])
 LIBS=$ac_save_LIBS
 ])
@@ -847,7 +825,7 @@ SHELL = /bin/sh
 all:
 	@echo '@@@%%%=$(MAKE)=@@@%%%'
 _ACEOF
-# GNU make sometimes prints "make[1]: Entering...", which would confuse us.
+# GNU make sometimes prints "make[1]: Entering ...", which would confuse us.
 case `${MAKE-make} -f conftest.make 2>/dev/null` in
   *@@@%%%=?*=@@@%%%*)
     eval ac_cv_prog_make_${ac_make}_set=yes;;
@@ -916,8 +894,8 @@ AN_PROGRAM([bison], [AC_PROG_YACC])
 AC_DEFUN([AC_PROG_YACC],
 [AC_CHECK_PROGS(YACC, 'bison -y' byacc, yacc)dnl
 AC_ARG_VAR(YACC,
-[The `Yet Another C Compiler' implementation to use.  Defaults to the first
-program found out of: `bison -y', `byacc', `yacc'.])dnl
+[The `Yet Another Compiler Compiler' implementation to use.  Defaults to
+the first program found out of: `bison -y', `byacc', `yacc'.])dnl
 AC_ARG_VAR(YFLAGS,
 [The list of arguments that will be passed by default to $YACC.  This script
 will default YFLAGS to the empty string to avoid a default value of `-d' given

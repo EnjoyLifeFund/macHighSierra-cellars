@@ -1,51 +1,28 @@
 # This file is part of Autoconf.			-*- Autoconf -*-
 # Type related macros: existence, sizeof, and structure members.
 #
-# Copyright (C) 2000, 2001, 2002, 2004, 2005, 2006, 2007, 2008 Free
-# Software Foundation, Inc.
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# Copyright (C) 2000-2002, 2004-2012 Free Software Foundation, Inc.
+
+# This file is part of Autoconf.  This program is free
+# software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
+# Under Section 7 of GPL version 3, you are granted additional
+# permissions described in the Autoconf Configure Script Exception,
+# version 3.0, as published by the Free Software Foundation.
+#
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
-# As a special exception, the Free Software Foundation gives unlimited
-# permission to copy, distribute and modify the configure scripts that
-# are the output of Autoconf.  You need not follow the terms of the GNU
-# General Public License when using or distributing such scripts, even
-# though portions of the text of Autoconf appear in them.  The GNU
-# General Public License (GPL) does govern all other use of the material
-# that constitutes the Autoconf program.
-#
-# Certain portions of the Autoconf source text are designed to be copied
-# (in certain cases, depending on the input) into the output of
-# Autoconf.  We call these the "data" portions.  The rest of the Autoconf
-# source text consists of comments plus executable code that decides which
-# of the data portions to output in any given case.  We call these
-# comments and executable code the "non-data" portions.  Autoconf never
-# copies any of the non-data portions into its output.
-#
-# This special exception to the GPL applies to versions of Autoconf
-# released by the Free Software Foundation.  When you make and
-# distribute a modified version of Autoconf, you may extend this special
-# exception to the GPL to apply to your modified version as well, *unless*
-# your modified version has the potential to copy into its output some
-# of the text that was the non-data portion of the version that you started
-# with.  (In other words, unless your change moves or copies text from
-# the non-data portions to the data portions.)  If your modification has
-# such potential, you must delete any notice of this special exception
-# to the GPL from your modified version.
-#
+# and a copy of the Autoconf Configure Script Exception along with
+# this program; see the files COPYINGv3 and COPYING.EXCEPTION
+# respectively.  If not, see <http://www.gnu.org/licenses/>.
+
 # Written by David MacKenzie, with help from
 # Franc,ois Pinard, Karl Berry, Richard Pixley, Ian Lance Taylor,
 # Roland McGrath, Noah Friedman, david d zuhn, and many others.
@@ -103,15 +80,15 @@
 #	  int foo (TYPE param);
 #
 # but of course you soon realize this does not make it with K&R
-# compilers.  And by no ways you want to
+# compilers.  And by no means do you want to use this:
 #
 #	  int foo (param)
 #	    TYPE param
 #	  { ; }
 #
-# since this time it's C++ who is not happy.
+# since C++ would complain loudly.
 #
-# Don't even think of the return type of a function, since K&R cries
+# Don't even think of using a function return type, since K&R cries
 # there too.  So you start thinking of declaring a *pointer* to this TYPE:
 #
 #	  TYPE *p;
@@ -124,14 +101,16 @@
 #
 #	  sizeof (TYPE);
 #
-# But this succeeds if TYPE is a variable: you get the size of the
-# variable's type!!!
+# That is great, but has one drawback: it succeeds when TYPE happens
+# to be a variable: you'd get the size of the variable's type.
+# Obviously, we must not accept a variable in place of a type name.
 #
-# So, to filter out the last possibility, you try this too:
+# So, to filter out the last possibility, we will require that this fail:
 #
 #	  sizeof ((TYPE));
 #
-# This fails if TYPE is a type, but succeeds if TYPE is actually a variable.
+# This evokes a syntax error when TYPE is a type, but succeeds if TYPE
+# is actually a variable.
 #
 # Also note that we use
 #
@@ -220,7 +199,7 @@ m4_define([_AC_CHECK_TYPE_OLD],
 # `long', `short', `signed', or `unsigned' followed by characters
 # that are defining types.
 # Because many people have used `off_t' and `size_t' too, they are added
-# for better common-useward backward compatibility.
+# for better common-use backward compatibility.
 m4_define([_AC_CHECK_TYPE_REPLACEMENT_TYPE_P],
 [m4_bmatch([$1],
 	  [^\(_Bool\|bool\|char\|double\|float\|int\|long\|short\|\(un\)?signed\|[_a-zA-Z][_a-zA-Z0-9]*_t\)[][_a-zA-Z0-9() *]*$],
@@ -327,7 +306,7 @@ AU_DEFUN([AM_TYPE_PTRDIFF_T],
 
 
 # AC_TYPE_INTMAX_T
-# -----------------
+# ----------------
 AC_DEFUN([AC_TYPE_INTMAX_T],
 [
   AC_REQUIRE([AC_TYPE_LONG_LONG_INT])
@@ -361,7 +340,7 @@ AC_DEFUN([AC_TYPE_UINTMAX_T],
 
 
 # AC_TYPE_INTPTR_T
-# -----------------
+# ----------------
 AC_DEFUN([AC_TYPE_INTPTR_T],
 [
   AC_CHECK_TYPE([intptr_t],
@@ -523,37 +502,41 @@ AC_DEFUN([_AC_TYPE_LONG_LONG_SNIPPET],
 # ---------------------
 AC_DEFUN([AC_TYPE_LONG_LONG_INT],
 [
+  AC_REQUIRE([AC_TYPE_UNSIGNED_LONG_LONG_INT])
   AC_CACHE_CHECK([for long long int], [ac_cv_type_long_long_int],
-    [AC_LINK_IFELSE(
-       [_AC_TYPE_LONG_LONG_SNIPPET],
-       [dnl This catches a bug in Tandem NonStop Kernel (OSS) cc -O circa 2004.
-	dnl If cross compiling, assume the bug isn't important, since
-	dnl nobody cross compiles for this platform as far as we know.
-	AC_RUN_IFELSE(
-	  [AC_LANG_PROGRAM(
-	     [[@%:@include <limits.h>
-	       @%:@ifndef LLONG_MAX
-	       @%:@ define HALF \
-			(1LL << (sizeof (long long int) * CHAR_BIT - 2))
-	       @%:@ define LLONG_MAX (HALF - 1 + HALF)
-	       @%:@endif]],
-	     [[long long int n = 1;
-	       int i;
-	       for (i = 0; ; i++)
-		 {
-		   long long int m = n << i;
-		   if (m >> i != n)
-		     return 1;
-		   if (LLONG_MAX / 2 < m)
-		     break;
-		 }
-	       return 0;]])],
-	  [ac_cv_type_long_long_int=yes],
-	  [ac_cv_type_long_long_int=no],
-	  [ac_cv_type_long_long_int=yes])],
-       [ac_cv_type_long_long_int=no])])
+     [ac_cv_type_long_long_int=yes
+      if test "x${ac_cv_prog_cc_c99-no}" = xno; then
+	ac_cv_type_long_long_int=$ac_cv_type_unsigned_long_long_int
+	if test $ac_cv_type_long_long_int = yes; then
+	  dnl Catch a bug in Tandem NonStop Kernel (OSS) cc -O circa 2004.
+	  dnl If cross compiling, assume the bug is not important, since
+	  dnl nobody cross compiles for this platform as far as we know.
+	  AC_RUN_IFELSE(
+	    [AC_LANG_PROGRAM(
+	       [[@%:@include <limits.h>
+		 @%:@ifndef LLONG_MAX
+		 @%:@ define HALF \
+			  (1LL << (sizeof (long long int) * CHAR_BIT - 2))
+		 @%:@ define LLONG_MAX (HALF - 1 + HALF)
+		 @%:@endif]],
+	       [[long long int n = 1;
+		 int i;
+		 for (i = 0; ; i++)
+		   {
+		     long long int m = n << i;
+		     if (m >> i != n)
+		       return 1;
+		     if (LLONG_MAX / 2 < m)
+		       break;
+		   }
+		 return 0;]])],
+	    [],
+	    [ac_cv_type_long_long_int=no],
+	    [:])
+	fi
+      fi])
   if test $ac_cv_type_long_long_int = yes; then
-    AC_DEFINE([HAVE_LONG_LONG_INT], 1,
+    AC_DEFINE([HAVE_LONG_LONG_INT], [1],
       [Define to 1 if the system has the type `long long int'.])
   fi
 ])
@@ -565,12 +548,15 @@ AC_DEFUN([AC_TYPE_UNSIGNED_LONG_LONG_INT],
 [
   AC_CACHE_CHECK([for unsigned long long int],
     [ac_cv_type_unsigned_long_long_int],
-    [AC_LINK_IFELSE(
-       [_AC_TYPE_LONG_LONG_SNIPPET],
-       [ac_cv_type_unsigned_long_long_int=yes],
-       [ac_cv_type_unsigned_long_long_int=no])])
+    [ac_cv_type_unsigned_long_long_int=yes
+     if test "x${ac_cv_prog_cc_c99-no}" = xno; then
+       AC_LINK_IFELSE(
+	 [_AC_TYPE_LONG_LONG_SNIPPET],
+	 [],
+	 [ac_cv_type_unsigned_long_long_int=no])
+     fi])
   if test $ac_cv_type_unsigned_long_long_int = yes; then
-    AC_DEFINE([HAVE_UNSIGNED_LONG_LONG_INT], 1,
+    AC_DEFINE([HAVE_UNSIGNED_LONG_LONG_INT], [1],
       [Define to 1 if the system has the type `unsigned long long int'.])
   fi
 ])
@@ -651,17 +637,21 @@ m4_define([_AC_TYPE_INT_BODY],
 [  AS_LINENO_PUSH([$[]1])
   AC_CACHE_CHECK([for int$[]2_t], [$[]3],
     [AS_VAR_SET([$[]3], [no])
+     # Order is important - never check a type that is potentially smaller
+     # than half of the expected target width.
      for ac_type in int$[]2_t 'int' 'long int' \
 	 'long long int' 'short int' 'signed char'; do
        AC_COMPILE_IFELSE(
 	 [AC_LANG_BOOL_COMPILE_TRY(
-	    [AC_INCLUDES_DEFAULT],
-	    [0 < ($ac_type) (((($ac_type) 1 << ($[]2 - 2)) - 1) * 2 + 1)])],
+	    [AC_INCLUDES_DEFAULT
+	     enum { N = $[]2 / 2 - 1 };],
+	    [0 < ($ac_type) ((((($ac_type) 1 << N) << N) - 1) * 2 + 1)])],
 	 [AC_COMPILE_IFELSE(
 	    [AC_LANG_BOOL_COMPILE_TRY(
-	       [AC_INCLUDES_DEFAULT],
-	       [($ac_type) (((($ac_type) 1 << ($[]2 - 2)) - 1) * 2 + 1)
-		 < ($ac_type) (((($ac_type) 1 << ($[]2 - 2)) - 1) * 2 + 2)])],
+	       [AC_INCLUDES_DEFAULT
+	        enum { N = $[]2 / 2 - 1 };],
+	       [($ac_type) ((((($ac_type) 1 << N) << N) - 1) * 2 + 1)
+		 < ($ac_type) ((((($ac_type) 1 << N) << N) - 1) * 2 + 2)])],
 	    [],
 	    [AS_CASE([$ac_type], [int$[]2_t],
 	       [AS_VAR_SET([$[]3], [yes])],
@@ -701,12 +691,14 @@ m4_define([_AC_TYPE_UNSIGNED_INT_BODY],
 [  AS_LINENO_PUSH([$[]1])
   AC_CACHE_CHECK([for uint$[]2_t], $[]3,
     [AS_VAR_SET([$[]3], [no])
+     # Order is important - never check a type that is potentially smaller
+     # than half of the expected target width.
      for ac_type in uint$[]2_t 'unsigned int' 'unsigned long int' \
 	 'unsigned long long int' 'unsigned short int' 'unsigned char'; do
        AC_COMPILE_IFELSE(
 	 [AC_LANG_BOOL_COMPILE_TRY(
 	    [AC_INCLUDES_DEFAULT],
-	    [($ac_type) -1 >> ($[]2 - 1) == 1])],
+	    [(($ac_type) -1 >> ($[]2 / 2 - 1)) >> ($[]2 / 2 - 1) == 3])],
 	 [AS_CASE([$ac_type], [uint$[]2_t],
 	    [AS_VAR_SET([$[]3], [yes])],
 	    [AS_VAR_SET([$[]3], [$ac_type])])])
@@ -779,7 +771,7 @@ Remove this warning and the `AC_CACHE_CHECK' when you adjust the code.])
 # AC_CHECK_SIZEOF(TYPE, [IGNORED], [INCLUDES = DEFAULT-INCLUDES])
 # ---------------------------------------------------------------
 AC_DEFUN([AC_CHECK_SIZEOF],
-[AS_LITERAL_IF([$1], [],
+[AS_LITERAL_IF(m4_translit([[$1]], [*], [p]), [],
 	       [m4_fatal([$0: requires literal arguments])])]dnl
 [# The cast to long int works around a bug in the HP C Compiler
 # version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
@@ -801,25 +793,32 @@ AC_DEFINE_UNQUOTED(AS_TR_CPP(sizeof_$1), $AS_TR_SH([ac_cv_sizeof_$1]),
 
 # AC_CHECK_ALIGNOF(TYPE, [INCLUDES = DEFAULT-INCLUDES])
 # -----------------------------------------------------
+# TYPE can include braces and semicolon, which AS_TR_CPP and AS_TR_SH
+# (correctly) recognize as potential shell metacharacters.  So we
+# have to flatten problematic characters ourselves to guarantee that
+# AC_DEFINE_UNQUOTED will see a literal.
 AC_DEFUN([AC_CHECK_ALIGNOF],
-[AS_LITERAL_IF([$1], [],
-	       [m4_fatal([$0: requires literal arguments])])]dnl
+[m4_if(m4_index(m4_translit([[$1]], [`\"], [$]), [$]), [-1], [],
+       [m4_fatal([$0: requires literal arguments])])]dnl
+[_$0([$1], [$2], m4_translit([[$1]], [{;}], [___]))])
+
+m4_define([_AC_CHECK_ALIGNOF],
 [# The cast to long int works around a bug in the HP C Compiler,
 # see AC_CHECK_SIZEOF for more information.
-_AC_CACHE_CHECK_INT([alignment of $1], [AS_TR_SH([ac_cv_alignof_$1])],
+_AC_CACHE_CHECK_INT([alignment of $1], [AS_TR_SH([ac_cv_alignof_$3])],
   [(long int) offsetof (ac__type_alignof_, y)],
   [AC_INCLUDES_DEFAULT([$2])
 #ifndef offsetof
 # define offsetof(type, member) ((char *) &((type *) 0)->member - (char *) 0)
 #endif
 typedef struct { char x; $1 y; } ac__type_alignof_;],
-  [if test "$AS_TR_SH([ac_cv_type_$1])" = yes; then
+  [if test "$AS_TR_SH([ac_cv_type_$3])" = yes; then
      AC_MSG_FAILURE([cannot compute alignment of $1], 77)
    else
-     AS_TR_SH([ac_cv_alignof_$1])=0
+     AS_TR_SH([ac_cv_alignof_$3])=0
    fi])
 
-AC_DEFINE_UNQUOTED(AS_TR_CPP(alignof_$1), $AS_TR_SH([ac_cv_alignof_$1]),
+AC_DEFINE_UNQUOTED(AS_TR_CPP(alignof_$3), $AS_TR_SH([ac_cv_alignof_$3]),
 		   [The normal alignment of `$1', in bytes.])
 ])# AC_CHECK_ALIGNOF
 
@@ -894,7 +893,8 @@ AC_DEFUN([AC_CHECK_MEMBER],
      INCLUDES, setting cache variable VAR accordingly.])],
     [_$0_BODY])]dnl
 [AS_LITERAL_IF([$1], [], [m4_fatal([$0: requires literal arguments])])]dnl
-[m4_if(m4_index([$1], [.]), -1, [m4_fatal([$0: Did not see any dot in `$1'])])]dnl
+[m4_if(m4_index([$1], [.]), [-1],
+  [m4_fatal([$0: Did not see any dot in `$1'])])]dnl
 [AS_VAR_PUSHDEF([ac_Member], [ac_cv_member_$1])]dnl
 [ac_fn_[]_AC_LANG_ABBREV[]_check_member "$LINENO" ]dnl
 [m4_bpatsubst([$1], [^\([^.]*\)\.\(.*\)], ["\1" "\2"]) "ac_Member" ]dnl
@@ -911,12 +911,12 @@ AS_VAR_POPDEF([ac_Member])dnl
 m4_define([_AC_CHECK_MEMBERS],
 [[$1], [AC_DEFINE_UNQUOTED(AS_TR_CPP([HAVE_$1]), [1],
   [Define to 1 if `]m4_bpatsubst([$1],
-    [^\([^.]*\)\.\(.*\)], [[\1' is a member of `\2]])['.])]])
+    [^\([^.]*\)\.\(.*\)], [[\2' is a member of `\1]])['.])]])
 
 # AC_CHECK_MEMBERS([AGGREGATE.MEMBER, ...],
-#		   [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND]
+#		   [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND],
 #		   [INCLUDES = DEFAULT-INCLUDES])
-# ---------------------------------------------------------
+# ----------------------------------------------------------
 # The first argument is an m4 list.
 AC_DEFUN([AC_CHECK_MEMBERS],
 [m4_map_args_sep([AC_CHECK_MEMBER(_$0(], [)[
@@ -960,11 +960,11 @@ AC_DEFUN([_AC_STRUCT_DIRENT],
 ])
 
 # AC_STRUCT_DIRENT_D_INO
-# -----------------------------------
+# ----------------------
 AC_DEFUN([AC_STRUCT_DIRENT_D_INO], [_AC_STRUCT_DIRENT([d_ino])])
 
 # AC_STRUCT_DIRENT_D_TYPE
-# ------------------------------------
+# -----------------------
 AC_DEFUN([AC_STRUCT_DIRENT_D_TYPE], [_AC_STRUCT_DIRENT([d_type])])
 
 

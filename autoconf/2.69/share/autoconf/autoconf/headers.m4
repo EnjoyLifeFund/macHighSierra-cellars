@@ -1,51 +1,29 @@
 # This file is part of Autoconf.			-*- Autoconf -*-
 # Checking for headers.
 #
-# Copyright (C) 1988, 1999, 2000, 2001, 2002, 2003, 2004, 2006, 2008,
-# 2009 Free Software Foundation, Inc.
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# Copyright (C) 1988, 1999-2004, 2006, 2008-2012 Free Software
+# Foundation, Inc.
+
+# This file is part of Autoconf.  This program is free
+# software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
+# Under Section 7 of GPL version 3, you are granted additional
+# permissions described in the Autoconf Configure Script Exception,
+# version 3.0, as published by the Free Software Foundation.
+#
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
-#
-# As a special exception, the Free Software Foundation gives unlimited
-# permission to copy, distribute and modify the configure scripts that
-# are the output of Autoconf.  You need not follow the terms of the GNU
-# General Public License when using or distributing such scripts, even
-# though portions of the text of Autoconf appear in them.  The GNU
-# General Public License (GPL) does govern all other use of the material
-# that constitutes the Autoconf program.
-#
-# Certain portions of the Autoconf source text are designed to be copied
-# (in certain cases, depending on the input) into the output of
-# Autoconf.  We call these the "data" portions.  The rest of the Autoconf
-# source text consists of comments plus executable code that decides which
-# of the data portions to output in any given case.  We call these
-# comments and executable code the "non-data" portions.  Autoconf never
-# copies any of the non-data portions into its output.
-#
-# This special exception to the GPL applies to versions of Autoconf
-# released by the Free Software Foundation.  When you make and
-# distribute a modified version of Autoconf, you may extend this special
-# exception to the GPL to apply to your modified version as well, *unless*
-# your modified version has the potential to copy into its output some
-# of the text that was the non-data portion of the version that you started
-# with.  (In other words, unless your change moves or copies text from
-# the non-data portions to the data portions.)  If your modification has
-# such potential, you must delete any notice of this special exception
-# to the GPL from your modified version.
-#
+# and a copy of the Autoconf Configure Script Exception along with
+# this program; see the files COPYINGv3 and COPYING.EXCEPTION
+# respectively.  If not, see <http://www.gnu.org/licenses/>.
+
 # Written by David MacKenzie, with help from
 # Franc,ois Pinard, Karl Berry, Richard Pixley, Ian Lance Taylor,
 # Roland McGrath, Noah Friedman, david d zuhn, and many others.
@@ -147,7 +125,7 @@ esac
 #
 # This is not based on _AC_CHECK_HEADER_COMPILE and _AC_CHECK_HEADER_PREPROC
 # because it obfuscate the code to try to factor everything, in particular
-# because of the cache variables, and the `checking...' messages.
+# because of the cache variables, and the `checking ...' messages.
 AC_DEFUN([_AC_CHECK_HEADER_MONGREL],
 [AC_REQUIRE_SHELL_FN([ac_fn_]_AC_LANG_ABBREV[_check_header_mongrel],
   [AS_FUNCTION_DESCRIBE([ac_fn_]_AC_LANG_ABBREV[_check_header_mongrel],
@@ -251,6 +229,12 @@ You should use AC_CHECK_HEADER with a fourth argument.])]dnl
 m4_define([_AH_CHECK_HEADER],
 [AH_TEMPLATE(AS_TR_CPP([HAVE_$1]),
   [Define to 1 if you have the <$1> header file.])])
+
+
+# AH_CHECK_HEADERS(HEADER-FILE...)
+# --------------------------------
+m4_define([AH_CHECK_HEADERS],
+[m4_foreach_w([AC_Header], [$1], [_AH_CHECK_HEADER(m4_defn([AC_Header]))])])
 
 
 # AC_CHECK_HEADERS(HEADER-FILE...,
@@ -607,90 +591,81 @@ fi
 ])# AC_HEADER_STAT
 
 
-# AC_HEADER_STDBOOL
+# AC_CHECK_HEADER_STDBOOL
 # -----------------
 # Check for stdbool.h that conforms to C99.
-AN_IDENTIFIER([bool], [AC_HEADER_STDBOOL])
-AN_IDENTIFIER([true], [AC_HEADER_STDBOOL])
-AN_IDENTIFIER([false],[AC_HEADER_STDBOOL])
+AN_IDENTIFIER([bool], [AC_CHECK_HEADER_STDBOOL])
+AN_IDENTIFIER([true], [AC_CHECK_HEADER_STDBOOL])
+AN_IDENTIFIER([false],[AC_CHECK_HEADER_STDBOOL])
+AC_DEFUN([AC_CHECK_HEADER_STDBOOL],
+  [AC_CACHE_CHECK([for stdbool.h that conforms to C99],
+     [ac_cv_header_stdbool_h],
+     [AC_COMPILE_IFELSE(
+        [AC_LANG_PROGRAM(
+           [[
+             #include <stdbool.h>
+             #ifndef bool
+              "error: bool is not defined"
+             #endif
+             #ifndef false
+              "error: false is not defined"
+             #endif
+             #if false
+              "error: false is not 0"
+             #endif
+             #ifndef true
+              "error: true is not defined"
+             #endif
+             #if true != 1
+              "error: true is not 1"
+             #endif
+             #ifndef __bool_true_false_are_defined
+              "error: __bool_true_false_are_defined is not defined"
+             #endif
+
+             struct s { _Bool s: 1; _Bool t; } s;
+
+             char a[true == 1 ? 1 : -1];
+             char b[false == 0 ? 1 : -1];
+             char c[__bool_true_false_are_defined == 1 ? 1 : -1];
+             char d[(bool) 0.5 == true ? 1 : -1];
+             /* See body of main program for 'e'.  */
+             char f[(_Bool) 0.0 == false ? 1 : -1];
+             char g[true];
+             char h[sizeof (_Bool)];
+             char i[sizeof s.t];
+             enum { j = false, k = true, l = false * true, m = true * 256 };
+             /* The following fails for
+                HP aC++/ANSI C B3910B A.05.55 [Dec 04 2003]. */
+             _Bool n[m];
+             char o[sizeof n == m * sizeof n[0] ? 1 : -1];
+             char p[-1 - (_Bool) 0 < 0 && -1 - (bool) 0 < 0 ? 1 : -1];
+             /* Catch a bug in an HP-UX C compiler.  See
+                http://gcc.gnu.org/ml/gcc-patches/2003-12/msg02303.html
+                http://lists.gnu.org/archive/html/bug-coreutils/2005-11/msg00161.html
+              */
+             _Bool q = true;
+             _Bool *pq = &q;
+           ]],
+           [[
+             bool e = &s;
+             *pq |= q;
+             *pq |= ! q;
+             /* Refer to every declared value, to avoid compiler optimizations.  */
+             return (!a + !b + !c + !d + !e + !f + !g + !h + !i + !!j + !k + !!l
+                     + !m + !n + !o + !p + !q + !pq);
+           ]])],
+        [ac_cv_header_stdbool_h=yes],
+        [ac_cv_header_stdbool_h=no])])
+   AC_CHECK_TYPES([_Bool])
+])# AC_CHECK_HEADER_STDBOOL
+
+
+# AC_HEADER_STDBOOL
+# -----------------
+# Define HAVE_STDBOOL_H if tdbool.h that conforms to C99.
 AC_DEFUN([AC_HEADER_STDBOOL],
-[AC_CACHE_CHECK([for stdbool.h that conforms to C99],
-   [ac_cv_header_stdbool_h],
-   [AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
-      [[
-#include <stdbool.h>
-#ifndef bool
- "error: bool is not defined"
-#endif
-#ifndef false
- "error: false is not defined"
-#endif
-#if false
- "error: false is not 0"
-#endif
-#ifndef true
- "error: true is not defined"
-#endif
-#if true != 1
- "error: true is not 1"
-#endif
-#ifndef __bool_true_false_are_defined
- "error: __bool_true_false_are_defined is not defined"
-#endif
-
-	struct s { _Bool s: 1; _Bool t; } s;
-
-	char a[true == 1 ? 1 : -1];
-	char b[false == 0 ? 1 : -1];
-	char c[__bool_true_false_are_defined == 1 ? 1 : -1];
-	char d[(bool) 0.5 == true ? 1 : -1];
-	bool e = &s;
-	char f[(_Bool) 0.0 == false ? 1 : -1];
-	char g[true];
-	char h[sizeof (_Bool)];
-	char i[sizeof s.t];
-	enum { j = false, k = true, l = false * true, m = true * 256 };
-	/* The following fails for
-	   HP aC++/ANSI C B3910B A.05.55 [Dec 04 2003]. */
-	_Bool n[m];
-	char o[sizeof n == m * sizeof n[0] ? 1 : -1];
-	char p[-1 - (_Bool) 0 < 0 && -1 - (bool) 0 < 0 ? 1 : -1];
-#	if defined __xlc__ || defined __GNUC__
-	 /* Catch a bug in IBM AIX xlc compiler version 6.0.0.0
-	    reported by James Lemley on 2005-10-05; see
-	    http://lists.gnu.org/archive/html/bug-coreutils/2005-10/msg00086.html
-	    This test is not quite right, since xlc is allowed to
-	    reject this program, as the initializer for xlcbug is
-	    not one of the forms that C requires support for.
-	    However, doing the test right would require a runtime
-	    test, and that would make cross-compilation harder.
-	    Let us hope that IBM fixes the xlc bug, and also adds
-	    support for this kind of constant expression.  In the
-	    meantime, this test will reject xlc, which is OK, since
-	    our stdbool.h substitute should suffice.  We also test
-	    this with GCC, where it should work, to detect more
-	    quickly whether someone messes up the test in the
-	    future.  */
-	 char digs[] = "0123456789";
-	 int xlcbug = 1 / (&(digs + 5)[-2 + (bool) 1] == &digs[4] ? 1 : -1);
-#	endif
-	/* Catch a bug in an HP-UX C compiler.  See
-	   http://gcc.gnu.org/ml/gcc-patches/2003-12/msg02303.html
-	   http://lists.gnu.org/archive/html/bug-coreutils/2005-11/msg00161.html
-	 */
-	_Bool q = true;
-	_Bool *pq = &q;
-      ]],
-      [[
-	*pq |= q;
-	*pq |= ! q;
-	/* Refer to every declared value, to avoid compiler optimizations.  */
-	return (!a + !b + !c + !d + !e + !f + !g + !h + !i + !!j + !k + !!l
-		+ !m + !n + !o + !p + !q + !pq);
-      ]])],
-      [ac_cv_header_stdbool_h=yes],
-      [ac_cv_header_stdbool_h=no])])
-AC_CHECK_TYPES([_Bool])
+[AC_CHECK_HEADER_STDBOOL
 if test $ac_cv_header_stdbool_h = yes; then
   AC_DEFINE(HAVE_STDBOOL_H, 1, [Define to 1 if stdbool.h conforms to C99.])
 fi

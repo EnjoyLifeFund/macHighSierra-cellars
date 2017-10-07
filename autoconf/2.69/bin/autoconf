@@ -1,15 +1,15 @@
 #! /bin/sh
-# Generated from autoconf.as by GNU Autoconf 2.64.
+# Generated from autoconf.as by GNU Autoconf 2.69.
 # Generated from autoconf.in; do not edit by hand.
 # autoconf -- create `configure' using m4 macros
 
-# Copyright (C) 1992, 1993, 1994, 1996, 1999, 2000, 2001, 2002, 2003,
-# 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 1992-1994, 1996, 1999-2012 Free Software Foundation,
+# Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,9 +17,7 @@
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## -------------------- ##
 ## M4sh Initialization. ##
@@ -100,6 +98,7 @@ fi
 IFS=" ""	$as_nl"
 
 # Find who we are.  Look in the path if we contain no directory separator.
+as_myself=
 case $0 in #((
   *[\\/]* ) as_myself=$0 ;;
   *) as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -177,7 +176,8 @@ if ( set x; as_fn_ret_success y && test x = \"\$1\" ); then :
 else
   exitcode=1; echo positional parameters were not saved.
 fi
-test x\$exitcode = x0 || exit 1"
+test x\$exitcode = x0 || exit 1
+test -x / || exit 1"
   as_suggested=""
   if (eval "$as_required") 2>/dev/null; then :
   as_have_required=yes
@@ -216,14 +216,25 @@ IFS=$as_save_IFS
 
 
       if test "x$CONFIG_SHELL" != x; then :
-  # We cannot yet assume a decent shell, so we have to provide a
-	# neutralization value for shells without unset; and this also
-	# works around shells that cannot unset nonexistent variables.
-	BASH_ENV=/dev/null
-	ENV=/dev/null
-	(unset BASH_ENV) >/dev/null 2>&1 && unset BASH_ENV ENV
-	export CONFIG_SHELL
-	exec "$CONFIG_SHELL" "$as_myself" ${1+"$@"}
+  export CONFIG_SHELL
+             # We cannot yet assume a decent shell, so we have to provide a
+# neutralization value for shells without unset; and this also
+# works around shells that cannot unset nonexistent variables.
+# Preserve -v and -x to the replacement shell.
+BASH_ENV=/dev/null
+ENV=/dev/null
+(unset BASH_ENV) >/dev/null 2>&1 && unset BASH_ENV ENV
+case $- in # ((((
+  *v*x* | *x*v* ) as_opts=-vx ;;
+  *v* ) as_opts=-v ;;
+  *x* ) as_opts=-x ;;
+  * ) as_opts= ;;
+esac
+exec $CONFIG_SHELL $as_opts "$as_myself" ${1+"$@"}
+# Admittedly, this is quite paranoid, since all the known shells bail
+# out after a failed `exec'.
+$as_echo "$0: could not re-execute with $CONFIG_SHELL" >&2
+exit 255
 fi
 
     if test x$as_have_required = xno; then :
@@ -279,14 +290,14 @@ as_fn_exit ()
 } # as_fn_exit
 
 
-# as_fn_error ERROR
-# -----------------
+# as_fn_error STATUS ERROR
+# ------------------------
 # Output "`basename $0`: error: ERROR" to stderr. Then exit the script with
-# status $?, using 1 if that was 0.
+# STATUS, using 1 if that was 0.
 as_fn_error ()
 {
-  as_status=$?; test $as_status -eq 0 && as_status=1
-  $as_echo "$as_me: error: $1" >&2
+  as_status=$1; test $as_status -eq 0 && as_status=1
+  $as_echo "$as_me: error: $2" >&2
   as_fn_exit $as_status
 } # as_fn_error
 
@@ -370,10 +381,10 @@ GNU Autoconf home page: <http://www.gnu.org/software/autoconf/>.
 General help using GNU software: <http://www.gnu.org/gethelp/>."
 
 version="\
-autoconf (GNU Autoconf) 2.64
-Copyright (C) 2009 Free Software Foundation, Inc.
-License GPLv2+: GNU GPL version 2 or later
-<http://gnu.org/licenses/old-licenses/gpl-2.0.html>
+autoconf (GNU Autoconf) 2.69
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+/Autoconf: GNU GPL version 3 or later
+<http://gnu.org/licenses/gpl.html>, <http://gnu.org/licenses/exceptions.html>
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 
@@ -383,11 +394,11 @@ help="\
 Try \`$as_me --help' for more information."
 
 exit_missing_arg='
-  as_fn_error "option \`$1'\'' requires an argument$as_nl$help"'
+  as_fn_error $? "option \`$1'\'' requires an argument$as_nl$help"'
 # restore font-lock: '
 
 # Variables.
-: ${AUTOM4TE='/usr/local/bin/autom4te'}
+: ${AUTOM4TE='/usr/local/Cellar/autoconf/2.69/bin/autom4te'}
 autom4te_options=
 outfile=
 verbose=false
@@ -456,7 +467,7 @@ while test $# -gt 0 ; do
        break ;;
     -* )
        exec >&2
-       as_fn_error "invalid option \`$1'$as_nl$help" ;; #`
+       as_fn_error $? "invalid option \`$1'$as_nl$help" ;; #`
     * )
        break ;;
   esac
@@ -474,13 +485,13 @@ case $# in
     elif test -f configure.in; then
       infile=configure.in
     else
-      as_fn_error "no input file"
+      as_fn_error $? "no input file"
     fi
     test -z "$traces" && test -z "$outfile" && outfile=configure;;
   1)
     infile=$1 ;;
   *) exec >&2
-     as_fn_error "invalid number of arguments$as_nl$help" ;;
+     as_fn_error $? "invalid number of arguments$as_nl$help" ;;
 esac
 
 # Unless specified, the output is stdout.

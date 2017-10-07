@@ -1,52 +1,29 @@
 # This file is part of Autoconf.                       -*- Autoconf -*-
 # Parameterized macros.
-m4_define([_AC_COPYRIGHT_YEARS],
-[Copyright (C) 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001,
-2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software
-Foundation, Inc.])
+m4_define([_AC_COPYRIGHT_YEARS], [
+Copyright (C) 1992-1996, 1998-2012 Free Software Foundation, Inc.
+])
 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
+# This file is part of Autoconf.  This program is free
+# software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
+# Under Section 7 of GPL version 3, you are granted additional
+# permissions described in the Autoconf Configure Script Exception,
+# version 3.0, as published by the Free Software Foundation.
+#
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
+# and a copy of the Autoconf Configure Script Exception along with
+# this program; see the files COPYINGv3 and COPYING.EXCEPTION
+# respectively.  If not, see <http://www.gnu.org/licenses/>.
 
-# As a special exception, the Free Software Foundation gives unlimited
-# permission to copy, distribute and modify the configure scripts that
-# are the output of Autoconf.  You need not follow the terms of the GNU
-# General Public License when using or distributing such scripts, even
-# though portions of the text of Autoconf appear in them.  The GNU
-# General Public License (GPL) does govern all other use of the material
-# that constitutes the Autoconf program.
-#
-# Certain portions of the Autoconf source text are designed to be copied
-# (in certain cases, depending on the input) into the output of
-# Autoconf.  We call these the "data" portions.  The rest of the Autoconf
-# source text consists of comments plus executable code that decides which
-# of the data portions to output in any given case.  We call these
-# comments and executable code the "non-data" portions.  Autoconf never
-# copies any of the non-data portions into its output.
-#
-# This special exception to the GPL applies to versions of Autoconf
-# released by the Free Software Foundation.  When you make and
-# distribute a modified version of Autoconf, you may extend this special
-# exception to the GPL to apply to your modified version as well, *unless*
-# your modified version has the potential to copy into its output some
-# of the text that was the non-data portion of the version that you started
-# with.  (In other words, unless your change moves or copies text from
-# the non-data portions to the data portions.)  If your modification has
-# such potential, you must delete any notice of this special exception
-# to the GPL from your modified version.
-#
 # Written by David MacKenzie, with help from
 # Franc,ois Pinard, Karl Berry, Richard Pixley, Ian Lance Taylor,
 # Roland McGrath, Noah Friedman, david d zuhn, and many others.
@@ -245,20 +222,28 @@ AU_ALIAS([AC_HELP_STRING], [AS_HELP_STRING])
 # The solution is to require AC_INIT in each of these macros.  AC_INIT
 # has the needed magic so that it can't be expanded twice.
 
-
+# _AC_INIT_LITERAL(STRING)
+# ------------------------
+# Reject STRING if it contains newline, or if it cannot be used as-is
+# in single-quoted strings, double-quoted strings, and quoted and
+# unquoted here-docs.
+m4_define([_AC_INIT_LITERAL],
+[m4_if(m4_index(m4_translit([[$1]], [
+""], ['']), ['])AS_LITERAL_HEREDOC_IF([$1], [-]), [-1-], [],
+  [m4_warn([syntax], [AC_INIT: not a literal: $1])])])
 
 # _AC_INIT_PACKAGE(PACKAGE-NAME, VERSION, BUG-REPORT, [TARNAME], [URL])
 # ---------------------------------------------------------------------
 m4_define([_AC_INIT_PACKAGE],
-[AS_LITERAL_IF([$1], [], [m4_warn([syntax], [AC_INIT: not a literal: $1])])
-AS_LITERAL_IF([$2], [],  [m4_warn([syntax], [AC_INIT: not a literal: $2])])
-AS_LITERAL_IF([$3], [],  [m4_warn([syntax], [AC_INIT: not a literal: $3])])
+[_AC_INIT_LITERAL([$1])
+_AC_INIT_LITERAL([$2])
+_AC_INIT_LITERAL([$3])
 m4_ifndef([AC_PACKAGE_NAME],
 	  [m4_define([AC_PACKAGE_NAME],     [$1])])
 m4_ifndef([AC_PACKAGE_TARNAME],
 	  [m4_define([AC_PACKAGE_TARNAME],
 		     m4_default([$4],
-				[m4_bpatsubst(m4_tolower(m4_bpatsubst([[[$1]]],
+				[m4_bpatsubst(m4_tolower(m4_bpatsubst([[$1]],
 								     [GNU ])),
 				 [[^_abcdefghijklmnopqrstuvwxyz0123456789]],
 				 [-])]))])
@@ -319,7 +304,7 @@ m4_define([AC_REVISION],
 # Autoconf, which is certainly not what the user intended.
 AU_DEFUN([AC_PREREQ],
 [m4_version_prereq([$1])[]dnl
-[AC_PREREQ(]]m4_defn([m4_PACKAGE_VERSION])[[)]])
+[AC_PREREQ(]]m4_dquote(m4_dquote(m4_defn([m4_PACKAGE_VERSION])))[[)]])
 
 
 # AC_PREREQ(VERSION)
@@ -406,10 +391,11 @@ AU_ALIAS([AC_FD_MSG], [AS_MESSAGE_FD])
 m4_define([_AC_INIT_DEFAULTS],
 [m4_divert_push([DEFAULTS])dnl
 
-exec AS_ORIGINAL_STDIN_FD<&0 </dev/null AS_MESSAGE_FD>&1
+test -n "$DJDIR" || exec AS_ORIGINAL_STDIN_FD<&0 </dev/null
+exec AS_MESSAGE_FD>&1
 
 # Name of the host.
-# hostname on some systems (SVR3.2, Linux) returns a bogus exit status,
+# hostname on some systems (SVR3.2, old GNU/Linux) returns a bogus exit status,
 # so uname gets run too.
 ac_hostname=`(hostname || uname -n) 2>/dev/null | sed 1q`
 
@@ -626,8 +612,9 @@ do
   fi
 
   case $ac_option in
-  *=*)	ac_optarg=`expr "X$ac_option" : '[[^=]]*=\(.*\)'` ;;
-  *)	ac_optarg=yes ;;
+  *=?*) ac_optarg=`expr "X$ac_option" : '[[^=]]*=\(.*\)'` ;;
+  *=)   ac_optarg= ;;
+  *)    ac_optarg=yes ;;
   esac
 
   # Accept the important Cygnus configure options, so we can diagnose typos.
@@ -893,7 +880,7 @@ do
     x_libraries=$ac_optarg ;;
 
   -*) AC_MSG_ERROR([unrecognized option: `$ac_option'
-Try `$[0] --help' for more information.])
+Try `$[0] --help' for more information])
     ;;
 
   *=*)
@@ -911,7 +898,7 @@ Try `$[0] --help' for more information.])
     AC_MSG_WARN([you should use --build, --host, --target])
     expr "x$ac_option" : "[.*[^-._$as_cr_alnum]]" >/dev/null &&
       AC_MSG_WARN([invalid host type: $ac_option])
-    : ${build_alias=$ac_option} ${host_alias=$ac_option} ${target_alias=$ac_option}
+    : "${build_alias=$ac_option} ${host_alias=$ac_option} ${target_alias=$ac_option}"
     ;;
 
   esac
@@ -962,8 +949,6 @@ target=$target_alias
 if test "x$host_alias" != x; then
   if test "x$build_alias" = x; then
     cross_compiling=maybe
-    AC_MSG_WARN([If you wanted to set the --build type, don't use --host.
-    If a cross compiler is detected then cross compile mode will be used.])
   elif test "x$build_alias" != "x$host_alias"; then
     cross_compiling=yes
   fi
@@ -1047,7 +1032,7 @@ Configuration:
       --help=short        display options specific to this package
       --help=recursive    display the short help of all the included packages
   -V, --version           display version information and exit
-  -q, --quiet, --silent   do not print \`checking...' messages
+  -q, --quiet, --silent   do not print \`checking ...' messages
       --cache-file=FILE   cache test results in FILE [disabled]
   -C, --config-cache      alias for \`--cache-file=config.cache'
   -n, --no-create         do not create output files
@@ -1399,6 +1384,9 @@ m4_pattern_forbid([^LIBOBJS$],
 		  [do not use LIBOBJS directly, use AC_LIBOBJ (see section `AC_LIBOBJ vs LIBOBJS'])
 # Actually reserved by M4sh.
 m4_pattern_allow([^AS_FLAGS$])
+# So that the autoconf-generated scripts will always re-execute
+# themselves with $CONFIG_SHELL, if that's set in the environment.
+m4_define([_AS_FORCE_REEXEC_WITH_CONFIG_SHELL], [yes])
 AS_INIT[]dnl
 AS_PREPARE[]dnl
 m4_divert_push([KILL])
@@ -1460,7 +1448,7 @@ m4_define([_m4_divert(HELP_ENABLE)],    _m4_divert(HELP_WITH))
 #
 m4_define([_AC_ENABLE_IF],
 [@%:@ Check whether --$1-$2 was given.
-_AC_ENABLE_IF_ACTION([$1], m4_translit([$2], [-.], [__]), [$3], [$4])
+_AC_ENABLE_IF_ACTION([$1], m4_translit([$2], [-+.], [___]), [$3], [$4])
 ])
 
 m4_define([_AC_ENABLE_IF_ACTION],
@@ -1505,7 +1493,7 @@ AU_DEFUN([AC_WITH],
 [AC_ARG_WITH([$1], [  --with-$1], [$2], [$3])])
 
 # AC_DISABLE_OPTION_CHECKING
-# --------------------------------------------------------------------
+# --------------------------
 AC_DEFUN([AC_DISABLE_OPTION_CHECKING],
 [m4_divert_once([DEFAULTS], [enable_option_checking=no])
 ])# AC_DISABLE_OPTION_CHECKING
@@ -1700,13 +1688,19 @@ AC_DEFUN([AC_CONFIG_AUX_DIR_DEFAULT],
 AC_DEFUN([AC_CONFIG_AUX_DIRS],
 [ac_aux_dir=
 for ac_dir in $1; do
-  for ac_t in install-sh install.sh shtool; do
-    if test -f "$ac_dir/$ac_t"; then
-      ac_aux_dir=$ac_dir
-      ac_install_sh="$ac_aux_dir/$ac_t -c"
-      break 2
-    fi
-  done
+  if test -f "$ac_dir/install-sh"; then
+    ac_aux_dir=$ac_dir
+    ac_install_sh="$ac_aux_dir/install-sh -c"
+    break
+  elif test -f "$ac_dir/install.sh"; then
+    ac_aux_dir=$ac_dir
+    ac_install_sh="$ac_aux_dir/install.sh -c"
+    break
+  elif test -f "$ac_dir/shtool"; then
+    ac_aux_dir=$ac_dir
+    ac_install_sh="$ac_aux_dir/shtool install -c"
+    break
+  fi
 done
 if test -z "$ac_aux_dir"; then
   AC_MSG_ERROR([cannot find install-sh, install.sh, or shtool in $1])
@@ -1747,7 +1741,7 @@ AC_DEFUN([AC_CONFIG_MACRO_DIR], [])
 # This macro does nothing, it's a hook to be read with `autoconf --trace'.
 # It announces FILE is required in the auxdir.
 m4_define([AC_REQUIRE_AUX_FILE],
-[AS_LITERAL_IF([$1], [],
+[AS_LITERAL_WORD_IF([$1], [],
 	       [m4_fatal([$0: requires a literal argument])])])
 
 
@@ -1884,7 +1878,12 @@ m4_define([AC_SITE_LOAD],
 ac_site_file1=NONE
 ac_site_file2=NONE
 if test -n "$CONFIG_SITE"; then
-  ac_site_file1=$CONFIG_SITE
+  # We do not want a PATH search for config.site.
+  case $CONFIG_SITE in @%:@((
+    -*)  ac_site_file1=./$CONFIG_SITE;;
+    */*) ac_site_file1=$CONFIG_SITE;;
+    *)   ac_site_file1=./$CONFIG_SITE;;
+  esac
 elif test "x$prefix" != xNONE; then
   ac_site_file1=$prefix/share/config.site
   ac_site_file2=$prefix/etc/config.site
@@ -1895,10 +1894,11 @@ fi
 for ac_site_file in "$ac_site_file1" "$ac_site_file2"
 do
   test "x$ac_site_file" = xNONE && continue
-  if test -r "$ac_site_file"; then
+  if test /dev/null != "$ac_site_file" && test -r "$ac_site_file"; then
     AC_MSG_NOTICE([loading site script $ac_site_file])
     sed 's/^/| /' "$ac_site_file" >&AS_MESSAGE_LOG_FD
-    . "$ac_site_file"
+    . "$ac_site_file" \
+      || AC_MSG_FAILURE([failed to load site script $ac_site_file])
   fi
 done
 ])
@@ -1908,9 +1908,9 @@ done
 # -------------
 m4_define([AC_CACHE_LOAD],
 [if test -r "$cache_file"; then
-  # Some versions of bash will fail to source /dev/null (special
-  # files actually), so we avoid doing that.
-  if test -f "$cache_file"; then
+  # Some versions of bash will fail to source /dev/null (special files
+  # actually), so we avoid doing that.  DJGPP emulates it as a regular file.
+  if test /dev/null != "$cache_file" && test -f "$cache_file"; then
     AC_MSG_NOTICE([loading cache $cache_file])
     case $cache_file in
       [[\\/]]* | ?:[[\\/]]* ) . "$cache_file";;
@@ -2000,9 +2000,22 @@ _AC_CACHE_DUMP() |
      :end'] >>confcache
 if diff "$cache_file" confcache >/dev/null 2>&1; then :; else
   if test -w "$cache_file"; then
-    test "x$cache_file" != "x/dev/null" &&
+    if test "x$cache_file" != "x/dev/null"; then
       AC_MSG_NOTICE([updating cache $cache_file])
-    cat confcache >$cache_file
+      if test ! -f "$cache_file" || test -h "$cache_file"; then
+	cat confcache >"$cache_file"
+      else
+dnl Try to update the cache file atomically even on different mount points;
+dnl at the same time, avoid filename limitation issues in the common case.
+        case $cache_file in #(
+        */* | ?:*)
+	  mv -f confcache "$cache_file"$$ &&
+	  mv -f "$cache_file"$$ "$cache_file" ;; #(
+        *)
+	  mv -f confcache "$cache_file" ;;
+	esac
+      fi
+    fi
   else
     AC_MSG_NOTICE([not updating unwritable cache $cache_file])
   fi
@@ -2016,7 +2029,7 @@ rm -f confcache[]dnl
 # The name of shell var CACHE-ID must contain `_cv_' in order to get saved.
 # Should be dnl'ed.  Try to catch common mistakes.
 m4_defun([AC_CACHE_VAL],
-[AS_LITERAL_IF([$1], [m4_if(m4_index(m4_quote($1), [_cv_]), [-1],
+[AS_LITERAL_WORD_IF([$1], [m4_if(m4_index(m4_quote($1), [_cv_]), [-1],
 			    [AC_DIAGNOSE([syntax],
 [$0($1, ...): suspicious cache-id, must contain _cv_ to be cached])])])dnl
 m4_if(m4_index([$2], [AC_DEFINE]), [-1], [],
@@ -2039,7 +2052,7 @@ AS_VAR_SET_IF([$1],
 m4_defun([AC_CACHE_CHECK],
 [AC_MSG_CHECKING([$1])
 AC_CACHE_VAL([$2], [$3])dnl
-AS_LITERAL_IF([$2],
+AS_LITERAL_WORD_IF([$2],
 	      [AC_MSG_RESULT([$$2])],
 	      [AS_VAR_COPY([ac_res], [$2])
 	       AC_MSG_RESULT([$ac_res])])dnl
@@ -2047,7 +2060,7 @@ AS_LITERAL_IF([$2],
 
 # _AC_CACHE_CHECK_INT(MESSAGE, CACHE-ID, EXPRESSION,
 #                     [PROLOGUE = DEFAULT-INCLUDES], [IF-FAILS])
-# -------------------------------------------------------------
+# --------------------------------------------------------------
 AC_DEFUN([_AC_CACHE_CHECK_INT],
 [AC_CACHE_CHECK([$1], [$2],
    [AC_COMPUTE_INT([$2], [$3], [$4], [$5])])
@@ -2075,7 +2088,7 @@ AS_IDENTIFIER_IF([$1], [],
 # This macro is a wrapper around AC_DEFINE_TRACE_LITERAL which filters
 # out non literal symbols.  CPP-SYMBOL must not include any parameters.
 m4_define([AC_DEFINE_TRACE],
-[AS_LITERAL_IF([$1], [AC_DEFINE_TRACE_LITERAL(_m4_expand([$1]))])])
+[AS_LITERAL_WORD_IF([$1], [AC_DEFINE_TRACE_LITERAL(_m4_expand([$1]))])])
 
 
 # AC_DEFINE(VARIABLE, [VALUE], [DESCRIPTION])
@@ -2131,8 +2144,8 @@ m4_define([_AC_DEFINE_Q],
 [AC_DEFINE_TRACE(AC_name)]dnl
 [m4_cond([m4_index([$3], [
 ])], [-1], [],
-	[AS_LITERAL_IF([$3], [m4_bregexp([[$3]], [[^\\]
-], [-])])], [], [],
+	[m4_bregexp([[$3]], [[^\\]
+], [-])], [], [],
 	[m4_warn([syntax], [AC_DEFINE]m4_if([$1], [_AC_DEFINE], [],
   [[_UNQUOTED]])[: `$3' is not a valid preprocessor define value])])]dnl
 [m4_ifval([$4], [AH_TEMPLATE(AC_name, [$4])
@@ -2237,7 +2250,7 @@ m4_copy([AS_ERROR],   [AC_MSG_ERROR])
 m4_define([AC_MSG_FAILURE],
 [{ AS_MESSAGE([error: in `$ac_pwd':], 2)
 AC_MSG_ERROR([$1
-See `config.log' for more details.], [$2]); }])
+See `config.log' for more details], [$2]); }])
 
 
 # _AC_MSG_LOG_CONFTEST
@@ -2325,8 +2338,8 @@ AC_DEFUN([_AC_RUN_LOG_LIMIT],
 ... rest of stderr output deleted ...
          m4_default([$3], [10])q' conftest.err >conftest.er1
     cat conftest.er1 >&AS_MESSAGE_LOG_FD
-    rm -f conftest.er1 conftest.err
   fi
+  rm -f conftest.er1 conftest.err
   _AS_ECHO_LOG([\$? = $ac_status])
   test $ac_status = 0; }])
 
@@ -2469,7 +2482,7 @@ AC_DEFUN([AC_RUN_LOG],
 # Shell function body for _AC_PREPROC_IFELSE.
 m4_define([_AC_PREPROC_IFELSE_BODY],
 [  AS_LINENO_PUSH([$[]1])
-  AS_IF([_AC_DO_STDERR([$ac_cpp conftest.$ac_ext]) >/dev/null && {
+  AS_IF([_AC_DO_STDERR([$ac_cpp conftest.$ac_ext]) > conftest.i && {
 	 test -z "$ac_[]_AC_LANG_ABBREV[]_preproc_warn_flag$ac_[]_AC_LANG_ABBREV[]_werror_flag" ||
 	 test ! -s conftest.err
        }],
@@ -2477,7 +2490,7 @@ m4_define([_AC_PREPROC_IFELSE_BODY],
     [_AC_MSG_LOG_CONFTEST
     ac_retval=1])
   AS_LINENO_POP
-  return $ac_retval
+  AS_SET_STATUS([$ac_retval])
 ])# _AC_PREPROC_IFELSE_BODY
 
 
@@ -2494,7 +2507,7 @@ AC_DEFUN([_AC_PREPROC_IFELSE],
   [$0_BODY])]dnl
 [m4_ifvaln([$1], [AC_LANG_CONFTEST([$1])])]dnl
 [AS_IF([ac_fn_[]_AC_LANG_ABBREV[]_try_cpp "$LINENO"], [$2], [$3])
-rm -f conftest.err[]m4_ifval([$1], [ conftest.$ac_ext])[]dnl
+rm -f conftest.err conftest.i[]m4_ifval([$1], [ conftest.$ac_ext])[]dnl
 ])# _AC_PREPROC_IFELSE
 
 # AC_PREPROC_IFELSE(PROGRAM, [ACTION-IF-TRUE], [ACTION-IF-FALSE])
@@ -2566,7 +2579,7 @@ m4_define([_AC_COMPILE_IFELSE_BODY],
       [_AC_MSG_LOG_CONFTEST
 	ac_retval=1])
   AS_LINENO_POP
-  return $ac_retval
+  AS_SET_STATUS([$ac_retval])
 ])# _AC_COMPILE_IFELSE_BODY
 
 
@@ -2630,7 +2643,7 @@ m4_define([_AC_LINK_IFELSE_BODY],
   # left behind by Apple's compiler.  We do this before executing the actions.
   rm -rf conftest.dSYM conftest_ipa8_conftest.oo
   AS_LINENO_POP
-  return $ac_retval
+  AS_SET_STATUS([$ac_retval])
 ])# _AC_LINK_IFELSE_BODY
 
 
@@ -2702,7 +2715,7 @@ m4_define([_AC_RUN_IFELSE_BODY],
        ac_retval=$ac_status])
   rm -rf conftest.dSYM conftest_ipa8_conftest.oo
   AS_LINENO_POP
-  return $ac_retval
+  AS_SET_STATUS([$ac_retval])
 ])# _AC_RUN_IFELSE_BODY
 
 
@@ -2747,7 +2760,7 @@ AS_IF([test "$cross_compiling" = yes],
 # AC_TRY_RUN(PROGRAM,
 #            [ACTION-IF-TRUE], [ACTION-IF-FALSE],
 #            [ACTION-IF-CROSS-COMPILING = RUNTIME-ERROR])
-# --------------------------------------------------------
+# -------------------------------------------------------
 AU_DEFUN([AC_TRY_RUN],
 [AC_RUN_IFELSE([AC_LANG_SOURCE([[$1]])], [$2], [$3], [$4])])
 
@@ -2806,10 +2819,16 @@ AC_DEFUN([AC_CHECK_FILES],
 # Shell function body for AC_CHECK_DECL.
 m4_define([_AC_CHECK_DECL_BODY],
 [  AS_LINENO_PUSH([$[]1])
-  AC_CACHE_CHECK([whether $[]2 is declared], [$[]3],
+  [as_decl_name=`echo $][2|sed 's/ *(.*//'`]
+  [as_decl_use=`echo $][2|sed -e 's/(/((/' -e 's/)/) 0&/' -e 's/,/) 0& (/g'`]
+  AC_CACHE_CHECK([whether $as_decl_name is declared], [$[]3],
   [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([$[]4],
-[@%:@ifndef $[]2
-  (void) $[]2;
+[@%:@ifndef $[]as_decl_name
+@%:@ifdef __cplusplus
+  (void) $[]as_decl_use;
+@%:@else
+  (void) $[]as_decl_name;
+@%:@endif
 @%:@endif
 ])],
 		   [AS_VAR_SET([$[]3], [yes])],
@@ -2825,8 +2844,9 @@ m4_define([_AC_CHECK_DECL_BODY],
 AC_DEFUN([AC_CHECK_DECL],
 [AC_REQUIRE_SHELL_FN([ac_fn_]_AC_LANG_ABBREV[_check_decl],
   [AS_FUNCTION_DESCRIBE([ac_fn_]_AC_LANG_ABBREV[_check_decl],
-    [LINENO SYMBOL VAR],
-    [Tests whether SYMBOL is declared, setting cache variable VAR accordingly.])],
+    [LINENO SYMBOL VAR INCLUDES],
+    [Tests whether SYMBOL is declared in INCLUDES, setting cache variable
+     VAR accordingly.])],
   [_$0_BODY])]dnl
 [AS_VAR_PUSHDEF([ac_Symbol], [ac_cv_have_decl_$1])]dnl
 [ac_fn_[]_AC_LANG_ABBREV[]_check_decl ]dnl
@@ -2844,7 +2864,8 @@ AS_VAR_POPDEF([ac_Symbol])dnl
 # ACTION-IF-FOUND or ACTION-IF-NOT-FOUND.
 m4_define([_AC_CHECK_DECLS],
 [AC_CHECK_DECL([$1], [ac_have_decl=1], [ac_have_decl=0], [$4])]dnl
-[AC_DEFINE_UNQUOTED(AS_TR_CPP([HAVE_DECL_$1]), [$ac_have_decl],
+[AC_DEFINE_UNQUOTED(AS_TR_CPP(m4_bpatsubst(HAVE_DECL_[$1],[ *(.*])),
+  [$ac_have_decl],
   [Define to 1 if you have the declaration of `$1',
    and to 0 if you don't.])]dnl
 [m4_ifvaln([$2$3], [AS_IF([test $ac_have_decl = 1], [$2], [$3])])])
@@ -2894,7 +2915,7 @@ m4_define([AC_LIBSOURCE], [])
 
 
 # AC_LIBSOURCES([FILE-NAME1, ...])
-# -------------------------------
+# --------------------------------
 # Announce we might need these files.
 AC_DEFUN([AC_LIBSOURCES],
 [m4_map_args([AC_LIBSOURCE], $1)])
@@ -2904,10 +2925,7 @@ AC_DEFUN([AC_LIBSOURCES],
 # --------------------------------------------
 # We need `FILE-NAME-NOEXT.o', save this into `LIBOBJS'.
 m4_define([_AC_LIBOBJ],
-[AS_LITERAL_IF([$1],
-	       [AC_LIBSOURCE([$1.c])],
-	       [$2])dnl
-case " $LIB@&t@OBJS " in
+[case " $LIB@&t@OBJS " in
   *" $1.$ac_objext "* ) ;;
   *) AC_SUBST([LIB@&t@OBJS], ["$LIB@&t@OBJS $1.$ac_objext"]) ;;
 esac
@@ -2915,13 +2933,12 @@ esac
 
 
 # AC_LIBOBJ(FILE-NAME-NOEXT)
-# -------------------------
+# --------------------------
 # We need `FILE-NAME-NOEXT.o', save this into `LIBOBJS'.
 AC_DEFUN([AC_LIBOBJ],
-[_AC_LIBOBJ([$1],
-	    [AC_DIAGNOSE(syntax,
-			 [$0($1): you should use literals])])dnl
-])
+[_AC_LIBOBJ([$1])]dnl
+[AS_LITERAL_WORD_IF([$1], [AC_LIBSOURCE([$1.c])],
+  [AC_DIAGNOSE([syntax], [$0($1): you should use literals])])])
 
 
 # _AC_LIBOBJS_NORMALIZE
@@ -2932,6 +2949,8 @@ AC_DEFUN([AC_LIBOBJ],
 AC_DEFUN([_AC_LIBOBJS_NORMALIZE],
 [ac_libobjs=
 ac_ltlibobjs=
+m4_ifndef([AM_C_PROTOTYPES], [U=
+])dnl
 for ac_i in : $LIB@&t@OBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_script='s/\$U\././;s/\.o$//;s/\.obj$//'
@@ -3024,7 +3043,7 @@ m4_define([_AC_COMPUTE_INT_BODY],
 			[ac_retval=0], [ac_retval=1])
   fi
   AS_LINENO_POP
-  return $ac_retval
+  AS_SET_STATUS([$ac_retval])
 ])# _AC_COMPUTE_INT_BODY
 
 # AC_COMPUTE_INT(VARIABLE, EXPRESSION, PROLOGUE, [IF-FAILS])
