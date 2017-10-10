@@ -1,0 +1,11 @@
+prefix=/usr/local/Cellar/xerces-c/3.2.0
+exec_prefix=/usr/local/Cellar/xerces-c/3.2.0
+libdir=/usr/local/Cellar/xerces-c/3.2.0/lib
+includedir=/usr/local/Cellar/xerces-c/3.2.0/include
+
+Name: Xerces-C++
+Description: Validating XML parser library for C++
+Version: 
+Libs: -L/usr/local/Cellar/xerces-c/3.2.0/lib -lxerces-c
+Libs.private: 
+Cflags: -I/usr/local/Cellar/xerces-c/3.2.0/include

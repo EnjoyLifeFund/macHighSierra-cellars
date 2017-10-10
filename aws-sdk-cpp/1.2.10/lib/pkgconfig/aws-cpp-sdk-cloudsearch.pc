@@ -1,0 +1,12 @@
+prefix=/usr/local/Cellar/aws-sdk-cpp/1.2.10
+exec_prefix=${prefix}
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib
+
+Name: aws-cpp-sdk-cloudsearch
+Description: C++ SDK for the AWS cloudsearch service
+Version: 1.2.10
+Cflags: -I${includedir} 
+Libs: -L${libdir} -laws-cpp-sdk-cloudsearch 
+Libs.private: -lpthread -lcurl
+Requires:  aws-cpp-sdk-core
